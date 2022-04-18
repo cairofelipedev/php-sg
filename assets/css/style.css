@@ -305,7 +305,7 @@ h1, h2, h3, h4, h5, h6 {
   color: #899bbd;
 }
 .breadcrumb .active {
-  color: #51678f;
+  color: black;
   font-weight: 600;
 }
 
