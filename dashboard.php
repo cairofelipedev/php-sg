@@ -224,7 +224,7 @@ endif;
             </div>
 
             <div class="card-body pb-0">
-              <h5 class="card-title">Top Selling <span>| Today</span></h5>
+              <h5 class="card-title">Ranking <span>| Todos</span></h5>
 
               <table class="table table-borderless">
                 <thead>
@@ -238,43 +238,28 @@ endif;
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                  <td class="fw-bold">1 º</td>
-                    <th scope="row"><a href="#"><img src="assets/img/product-1.jpg" alt=""></a></th>
+                  <?php
+                  $stmt = $DB_con->prepare("SELECT * FROM users where type='2' ORDER BY points ASC");
+                  $stmt->execute();
+                  if ($stmt->rowCount() > 0) {
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                      extract($row);
+                  ?>
+                      <tr>
+                        <td class="fw-bold">
 
-                    <td><a href="#" class="text-primary fw-bold">Cairo</a></td>
-                    <td>64</td>
+                        </td>
+                        <th scope="row"><a href="#"><img src="assets/img/product-1.jpg" alt=""></a></th>
 
-                    <td>100</td>
-                  </tr>
-                  <tr>
-                    <th scope="row"><a href="#"><img src="assets/img/product-2.jpg" alt=""></a></th>
-                    <td><a href="#" class="text-primary fw-bold">Exercitationem similique doloremque</a></td>
-                    <td>$46</td>
-                    <td class="fw-bold">98</td>
-                    <td>$4,508</td>
-                  </tr>
-                  <tr>
-                    <th scope="row"><a href="#"><img src="assets/img/product-3.jpg" alt=""></a></th>
-                    <td><a href="#" class="text-primary fw-bold">Doloribus nisi exercitationem</a></td>
-                    <td>$59</td>
-                    <td class="fw-bold">74</td>
-                    <td>$4,366</td>
-                  </tr>
-                  <tr>
-                    <th scope="row"><a href="#"><img src="assets/img/product-4.jpg" alt=""></a></th>
-                    <td><a href="#" class="text-primary fw-bold">Officiis quaerat sint rerum error</a></td>
-                    <td>$32</td>
-                    <td class="fw-bold">63</td>
-                    <td>$2,016</td>
-                  </tr>
-                  <tr>
-                    <th scope="row"><a href="#"><img src="assets/img/product-5.jpg" alt=""></a></th>
-                    <td><a href="#" class="text-primary fw-bold">Sit unde debitis delectus repellendus</a></td>
-                    <td>$79</td>
-                    <td class="fw-bold">41</td>
-                    <td>$3,239</td>
-                  </tr>
+                        <td><a href="#" class="text-primary fw-bold"><?php echo $name ?></a></td>
+                        <td>64</td>
+
+                        <td><?php echo $points ?></td>
+                      </tr>
+                  <?php
+                    }
+                  }
+                  ?>
                 </tbody>
               </table>
 
