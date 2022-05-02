@@ -13,7 +13,7 @@ if (isset($_POST['ok'])) :
   $_1->setPassword($password);
 
   if ($_1->logar()) :
-    $successMSG = "Login no sistema";
+    $successMSG = "Entrando";
   else :
     $errMSG = "Usuário ou senha inválidos ...";
   endif;
@@ -26,6 +26,13 @@ endif;
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
+  <title>SG Sports - Sistema de Streamers e Influenciadores</title>
+  <meta content="SG Sports - Sistema de Streamers e Influenciadores" name="description">
+  <meta content="SG Sports, Sistema de Streamers, Influenciadores" name="keywords">
+  <!-- Favicons -->
+  <link href="img/SG.png" rel="icon">
+  <link href="img/SG.png" rel="apple-touch-icon">
+
 </head>
 
 <body>

@@ -895,11 +895,11 @@ h6 {
   width: 80px;
   float: left;
   border-radius: 5px;
+  margin: 10px;
 }
 
 .dashboard .news h4 {
   font-size: 15px;
-  margin-left: 95px;
   font-weight: bold;
   margin-bottom: 5px;
 }
@@ -916,7 +916,6 @@ h6 {
 .dashboard .news p {
   font-size: 14px;
   color: #777777;
-  margin-left: 95px;
 }
 
 /* Recent Sales */

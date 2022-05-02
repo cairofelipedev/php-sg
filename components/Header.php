@@ -2,7 +2,7 @@
   <header id="header" class="header fixed-top bg-black d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="#" class="logo d-flex align-items-center">
         <img src="img/SG.png" alt="">
         <!-- <span class="d-none d-lg-block">NiceAdmin</span> -->
       </a>
@@ -34,7 +34,7 @@
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="perfil.php?edit_id=<?php echo $_SESSION['id']; ?>">
+              <a class="dropdown-item d-flex align-items-center" href="#">
                 <i class="bi bi-person"></i>
                 <span>Perfil</span>
               </a>
@@ -44,7 +44,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="logout.php">
+              <a class="dropdown-item d-flex align-items-center" href="logout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sair</span>
               </a>

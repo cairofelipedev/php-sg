@@ -26,7 +26,7 @@ endif;
       <h1 class="text-black">Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
@@ -64,9 +64,14 @@ endif;
                       <i class="text-black bi bi-layout-text-window-reverse"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>145</h6>
-                      <span class="text-success small pt-1 fw-bold">+12 posts</span> <span class="text-muted small pt-2 ps-1">hoje</span>
-
+                      <h6>
+                        <?php
+                        $sth = $DB_con->prepare("SELECT count(*) as total from posts");
+                        $sth->execute();
+                        print_r($sth->fetchColumn());
+                        ?>
+                      </h6>
+                      <!-- <span class="text-success small pt-1 fw-bold">+12 posts</span> <span class="text-muted small pt-2 ps-1">hoje</span> -->
                     </div>
                   </div>
                 </div>
@@ -99,8 +104,20 @@ endif;
                       <i class="text-black bi bi-bar-chart"></i>
                     </div>
                     <div class="ps-3 card-text-ranking">
-                      <p>1º Cairo</p>
-                      <p>2º Felipe</p>
+                      <?php
+                      $i = 1;
+                      $stmt = $DB_con->prepare("SELECT * FROM users where type='2' ORDER BY points DESC limit 2");
+                      $stmt->execute();
+                      if ($stmt->rowCount() > 0) {
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                          extract($row);
+                      ?>
+                          <p><?php echo $i++ . "º" . " " . $name; ?></p>
+                      <?php
+                        }
+                      }
+                      ?>
+
                     </div>
                   </div>
                 </div>
@@ -133,7 +150,13 @@ endif;
                       <i class="text-black bi bi-people"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>12</h6>
+                      <h6>
+                        <?php
+                        $sth = $DB_con->prepare("SELECT count(*) as total from users");
+                        $sth->execute();
+                        print_r($sth->fetchColumn());
+                        ?>
+                      </h6>
                     </div>
                   </div>
 
@@ -141,62 +164,132 @@ endif;
               </div>
 
             </div><!-- End Customers Card -->
-
-
-
-            <!-- Top Selling -->
             <div class="col-12">
-
-
-              <!-- News & Updates Traffic -->
-              <div class="card">
+              <!-- Postagens -->
+              <div class="card pb-4">
                 <div class="filter">
                   <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                   <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                     <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
+                      <h6>Filtro</h6>
                     </li>
 
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                    <li><a class="dropdown-item" href="#">Todas</a></li>
+                    <li><a class="dropdown-item" href="#">Da semana</a></li>
+                    <li><a class="dropdown-item" href="#">Do mês</a></li>
                   </ul>
                 </div>
 
                 <div class="card-body pb-0">
-                  <h5 class="card-title">News &amp; Updates <span>| Today</span></h5>
+                  <h5 class="card-title">Postagens<span>| Todas</span></h5>
 
                   <div class="news">
-                    <div class="post-item clearfix">
-                      <img src="assets/img/news-1.jpg" alt="">
-                      <h4><a href="#">Nihil blanditiis at in nihil autem</a></h4>
-                      <p>Sit recusandae non aspernatur laboriosam. Quia enim eligendi sed ut harum...</p>
-                    </div>
+                    <?php
+                    $stmt = $DB_con->prepare("SELECT * FROM posts ORDER BY id DESC");
+                    $stmt->execute();
+                    if ($stmt->rowCount() > 0) {
+                      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        extract($row);
+                    ?>
+                        <div class="post-item">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <img src="./uploads/posts/<?php echo $_SESSION['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" class="rounded">
 
-                    <div class="post-item clearfix">
-                      <img src="assets/img/news-2.jpg" alt="">
-                      <h4><a href="#">Quidem autem et impedit</a></h4>
-                      <p>Illo nemo neque maiores vitae officiis cum eum turos elan dries werona nande...</p>
-                    </div>
-
-                    <div class="post-item clearfix">
-                      <img src="assets/img/news-3.jpg" alt="">
-                      <h4><a href="#">Id quia et et ut maxime similique occaecati ut</a></h4>
-                      <p>Fugiat voluptas vero eaque accusantium eos. Consequuntur sed ipsam et totam...</p>
-                    </div>
-
-                    <div class="post-item clearfix">
-                      <img src="assets/img/news-4.jpg" alt="">
-                      <h4><a href="#">Laborum corporis quo dara net para</a></h4>
-                      <p>Qui enim quia optio. Eligendi aut asperiores enim repellendusvel rerum cuder...</p>
-                    </div>
-
-                    <div class="post-item clearfix">
-                      <img src="assets/img/news-5.jpg" alt="">
-                      <h4><a href="#">Et dolores corrupti quae illo quod dolor</a></h4>
-                      <p>Odit ut eveniet modi reiciendis. Atque cupiditate libero beatae dignissimos eius...</p>
-                    </div>
-
+                              <h4><a href="#"> <?php echo $title ?></a></h4>
+                              <p><?php echo $description ?></p>
+                            </div>
+                            <div class="col-md-4">
+                              <h4><a href="#"> <i class="bi bi-person"></i> <?php echo $user_create; ?></a></h4>
+                              <h4>
+                                <i class="bi bi-clock"></i>
+                                <?php
+                                $date = new DateTime($data_create);
+                                $date2 = $date->format('m');
+                                $date3 = $date->format('d');
+                                $date4 = $date->format('Y');
+                                echo $date3;
+                                if ($date2 == 01) {
+                                  echo " Jan. ";
+                                }
+                                if ($date2 == 02) {
+                                  echo " Fev. ";
+                                }
+                                if ($date2 == "03") {
+                                  echo " Mar. ";
+                                }
+                                if ($date2 == 04) {
+                                  echo " Abr. ";
+                                }
+                                if ($date2 == 05) {
+                                  echo " Mai. ";
+                                }
+                                if ($date2 == 06) {
+                                  echo " Jun. ";
+                                }
+                                if ($date2 == 07) {
+                                  echo " Jul. ";
+                                }
+                                if ($date2 == "08") {
+                                  echo " Ago. ";
+                                }
+                                if ($date2 == "09") {
+                                  echo " Set. ";
+                                }
+                                if ($date2 == "10") {
+                                  echo " Out. ";
+                                }
+                                if ($date2 == "11") {
+                                  echo " Nov. ";
+                                }
+                                if ($date2 == "09") {
+                                  echo " Dez. ";
+                                }
+                                echo $date4;
+                                ?>
+                              </h4>
+                              <h4>
+                                <?php
+                                if ($network == "insta") {
+                                  echo "<i class='bi bi-instagram'></i> ";
+                                }
+                                if ($network == "face") {
+                                  echo "<i class='bi bi-facebook'></i> ";
+                                }
+                                if ($network == "whats") {
+                                  echo "<i class='bi bi-whatsapp'></i> ";
+                                }
+                                echo $type;
+                                ?>
+                              </h4>
+                              <h4>Status:  
+                                <?php 
+                                if ($status == "1") {
+                                  echo "<span class='text-success'>APROVADO</span>";
+                                }
+                                if ($status == "2") {
+                                  echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                }
+                                if ($status == "3") {
+                                  echo "<span class='text-warning'>EM ANALISE</span>";
+                                }
+                                ?>
+                                </h4>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="d-grid gap-2">
+                                <button class="btn btn-success" type="button">Editar</button>
+                                <button class="btn btn-danger" type="button">Excluir</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <h4><a href="#"><?php echo $link; ?></a></h4>
+                        <hr>
+                    <?php
+                      }
+                    }
+                    ?>
                   </div><!-- End sidebar recent posts-->
 
                 </div>
@@ -239,22 +332,31 @@ endif;
                 </thead>
                 <tbody>
                   <?php
-                  $stmt = $DB_con->prepare("SELECT * FROM users where type='2' ORDER BY points ASC");
+                  $i = 1;
+                  $stmt = $DB_con->prepare("SELECT * FROM users where type='2' ORDER BY points DESC");
                   $stmt->execute();
                   if ($stmt->rowCount() > 0) {
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                       extract($row);
                   ?>
                       <tr>
-                        <td class="fw-bold">
-
+                        <td class="fw-bold text-center">
+                          <?php
+                          echo $i++ . "º";
+                          ?>
                         </td>
-                        <th scope="row"><a href="#"><img src="assets/img/product-1.jpg" alt=""></a></th>
-
+                        <th scope="row">
+                          <img src="./uploads/usuarios/<?php echo $_SESSION['img']; ?>" onerror="this.src='./assets/img/semperfil.png'" alt="Profile" class="rounded">
+                        </th>
                         <td><a href="#" class="text-primary fw-bold"><?php echo $name ?></a></td>
-                        <td>64</td>
-
-                        <td><?php echo $points ?></td>
+                        <td class="text-center">
+                          <?php echo $points ?>
+                        </td>
+                        <td>
+                          <a href="#">
+                            <button type="button" class="btn btn-success">Editar</button>
+                          </a>
+                        </td>
                       </tr>
                   <?php
                     }
@@ -276,14 +378,10 @@ endif;
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+      &copy; <strong><span>SG ADMIN</span></strong>.
     </div>
     <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      Developer <a href="https://instagram.com/cairofelipedev">Cairo Felipe</a>
     </div>
   </footer><!-- End Footer -->
 
