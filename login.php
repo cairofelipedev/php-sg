@@ -2,8 +2,8 @@
 session_start();
 require_once 'config/classes/Conexao.php';
 require_once 'config/classes/Logar.php';
-include 'AddLog.php';
-require_once 'DatabaseConfig.php';
+include 'config/AddLog.php';
+require_once 'config/DatabaseConfig.php';
 
 if (isset($_POST['ok'])) :
   $login = filter_input(INPUT_POST, "login");

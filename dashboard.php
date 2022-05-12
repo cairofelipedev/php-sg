@@ -1,7 +1,7 @@
 <?php
 session_start();
 date_default_timezone_set('America/Sao_Paulo');
-require_once 'DatabaseConfig.php';
+require_once 'config/DatabaseConfig.php';
 ini_set('default_charset', 'utf-8');
 if (isset($_SESSION['logado'])) :
 else :

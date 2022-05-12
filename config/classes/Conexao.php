@@ -4,7 +4,7 @@ abstract class Conexao{
 
     /*nesta classe só utilizo o meu user e a senha do do DB*/
     const USER = "root";
-    const PASS = "";
+    const PASS = "root";
 
     private static $instance = null;
 
