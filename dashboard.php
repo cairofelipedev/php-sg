@@ -195,7 +195,6 @@ endif;
                           <div class="row">
                             <div class="col-md-6">
                               <img src="./uploads/posts/<?php echo $_SESSION['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" class="rounded">
-
                               <h4><a href="#"> <?php echo $title ?></a></h4>
                               <p><?php echo $description ?></p>
                             </div>
@@ -262,8 +261,9 @@ endif;
                                 echo $type;
                                 ?>
                               </h4>
-                              <h4>Status:  
-                                <?php 
+                              <h4>
+                                Status:
+                                <?php
                                 if ($status == "1") {
                                   echo "<span class='text-success'>APROVADO</span>";
                                 }
@@ -274,7 +274,7 @@ endif;
                                   echo "<span class='text-warning'>EM ANALISE</span>";
                                 }
                                 ?>
-                                </h4>
+                              </h4>
                             </div>
                             <div class="col-md-2">
                               <div class="d-grid gap-2">
@@ -375,15 +375,7 @@ endif;
 
   </main><!-- End #main -->
 
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; <strong><span>SG ADMIN</span></strong>.
-    </div>
-    <div class="credits">
-      Developer <a href="https://instagram.com/cairofelipedev">Cairo Felipe</a>
-    </div>
-  </footer><!-- End Footer -->
+  <?php include "components/Footer.php"; ?>
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

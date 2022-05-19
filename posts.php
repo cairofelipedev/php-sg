@@ -26,38 +26,9 @@ if ($_SESSION['type'] != 1) {
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title>Usuários / Painel Administrativo</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-
-  <!-- Favicons -->
-  <link href="../assets/img/icon-semfundo.png" rel="icon">
-  <link href="../assets/img/icon-semfundo.png" rel="apple-touch-icon">
-
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
-
-  <!-- Template Main CSS File -->
-  <link href="assets/css/style.css" rel="stylesheet">
+  <?php include "components/Head.php"; ?>
 </head>
-
 <body>
   <?php include "components/header.php" ?>
   <?php include "components/sidebar.php" ?>
@@ -70,7 +41,7 @@ if ($_SESSION['type'] != 1) {
         <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="dashboard">Home</a></li>
-            <li class="breadcrumb-item active">Posts</li>
+            <li class="breadcrumb-item active">Postagens</li>
           </ol>
         </nav>
         <a href="add-post">
@@ -88,11 +59,57 @@ if ($_SESSION['type'] != 1) {
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
         ?>
-
             <div class="col-lg-2">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title text-center"><?php echo $name; ?></h5>
+                  <h5 class="card-title2 text-center">
+                    <i class="bi bi-clock"></i>
+                    <?php
+                    $date = new DateTime($data_create);
+                    $date2 = $date->format('m');
+                    $date3 = $date->format('d');
+                    $date4 = $date->format('Y');
+                    echo $date3;
+                    if ($date2 == 01) {
+                      echo " Jan. ";
+                    }
+                    if ($date2 == 02) {
+                      echo " Fev. ";
+                    }
+                    if ($date2 == "03") {
+                      echo " Mar. ";
+                    }
+                    if ($date2 == 04) {
+                      echo " Abr. ";
+                    }
+                    if ($date2 == 05) {
+                      echo " Mai. ";
+                    }
+                    if ($date2 == 06) {
+                      echo " Jun. ";
+                    }
+                    if ($date2 == 07) {
+                      echo " Jul. ";
+                    }
+                    if ($date2 == "08") {
+                      echo " Ago. ";
+                    }
+                    if ($date2 == "09") {
+                      echo " Set. ";
+                    }
+                    if ($date2 == "10") {
+                      echo " Out. ";
+                    }
+                    if ($date2 == "11") {
+                      echo " Nov. ";
+                    }
+                    if ($date2 == "09") {
+                      echo " Dez. ";
+                    }
+                    echo $date4;
+                    ?>
+                  </h5>
+                  <h5 class="card-title2 text-center"><?php echo $title; ?></h5>
                   <?php
                   if ($type == 1) {
                     echo "<h5 class='card-title-2 text-center'>Administrador</h5>";
@@ -104,7 +121,35 @@ if ($_SESSION['type'] != 1) {
                     echo "<h5 class='card-title-2 text-center'>Cliente</h5>";
                   }
                   ?>
-                  <img class="img-fluid" src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/semperfil.png'">
+                  <img class="img-fluid" src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'">
+                  <h4 class="card-title2"><i class="bi bi-person"></i> <?php echo $user_create; ?></h4>
+                  <h4 class="card-title2">
+                    <?php
+                    if ($network == "insta") {
+                      echo "<i class='bi bi-instagram'></i> ";
+                    }
+                    if ($network == "face") {
+                      echo "<i class='bi bi-facebook'></i> ";
+                    }
+                    if ($network == "whats") {
+                      echo "<i class='bi bi-whatsapp'></i> ";
+                    }
+                    echo $type;
+                    ?>
+                  </h4>
+                  <h5 class="card-title2">
+                    <?php
+                    if ($status == "1") {
+                      echo "<span class='text-success'>APROVADO</span>";
+                    }
+                    if ($status == "2") {
+                      echo "<span class='text-danger'>NÃO APROVADO</span>";
+                    }
+                    if ($status == "3") {
+                      echo "<span class='text-warning'>EM ANALISE</span>";
+                    }
+                    ?>
+                  </h5>
                   <div class="d-flex justify-content-between pt-2">
                     <a href="perfil.php?edit_id=<?php echo $row['id']; ?>">
                       <button type="button" class="btn btn-success">Editar</button>
