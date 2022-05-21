@@ -36,7 +36,7 @@ endif;
       <div class="row">
 
         <!-- Left side columns -->
-        <div class="col-lg-8">
+        <div class="col-lg-7">
           <div class="row">
 
             <!-- Posts Card -->
@@ -300,7 +300,7 @@ endif;
         </div><!-- End Left side columns -->
 
         <!-- Right side columns -->
-        <div class="col-lg-4">
+        <div class="col-lg-5">
           <div class="card top-selling overflow-auto">
 
             <div class="filter">

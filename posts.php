@@ -59,10 +59,23 @@ if ($_SESSION['type'] != 1) {
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
         ?>
-            <div class="col-lg-2">
+            <div class="col-lg-4">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title2 text-center">
+                  <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+                  <?php
+                  if ($type == 1) {
+                    echo "<h5 class='card-title-2 text-center'>Administrador</h5>";
+                  }
+                  if ($type == 2) {
+                    echo "<h5 class='card-title-2 text-center'>Afiliado</h5>";
+                  }
+                  if ($type == 4) {
+                    echo "<h5 class='card-title-2 text-center'>Cliente</h5>";
+                  }
+                  ?>
+                  <img class="img-fluid" src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'">
+                    <h5 class="card-title2 text-center pt-2">
                     <i class="bi bi-clock"></i>
                     <?php
                     $date = new DateTime($data_create);
@@ -109,34 +122,20 @@ if ($_SESSION['type'] != 1) {
                     echo $date4;
                     ?>
                   </h5>
-                  <h5 class="card-title2 text-center"><?php echo $title; ?></h5>
-                  <?php
-                  if ($type == 1) {
-                    echo "<h5 class='card-title-2 text-center'>Administrador</h5>";
-                  }
-                  if ($type == 2) {
-                    echo "<h5 class='card-title-2 text-center'>Afiliado</h5>";
-                  }
-                  if ($type == 4) {
-                    echo "<h5 class='card-title-2 text-center'>Cliente</h5>";
-                  }
-                  ?>
-                  <img class="img-fluid" src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'">
-                  <h4 class="card-title2"><i class="bi bi-person"></i> <?php echo $user_create; ?></h4>
-                  <h4 class="card-title2">
-                    <?php
-                    if ($network == "insta") {
-                      echo "<i class='bi bi-instagram'></i> ";
-                    }
-                    if ($network == "face") {
-                      echo "<i class='bi bi-facebook'></i> ";
-                    }
-                    if ($network == "whats") {
-                      echo "<i class='bi bi-whatsapp'></i> ";
-                    }
-                    echo $type;
-                    ?>
-                  </h4>
+				  <h4 class="card-title2"><i class="bi bi-person"></i> <?php echo $user_create; ?></h4>
+				  <h4 class="card-title2">
+					<?php
+					if ($network == "insta") {
+					  echo "<i class='bi bi-instagram'></i> ";
+					}
+					if ($network == "face") {
+					  echo "<i class='bi bi-facebook'></i> ";
+					}
+					if ($network == "whats") {
+					  echo "<i class='bi bi-whatsapp'></i> ";
+					}
+					echo $network." - ".$type;
+					?>
                   <h5 class="card-title2">
                     <?php
                     if ($status == "1") {
