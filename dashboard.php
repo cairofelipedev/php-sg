@@ -1,5 +1,8 @@
 <?php
 session_start();
+require_once 'config/classes/Url.class.php';
+require_once 'config/classes/Helper.php';
+$URI = new URI();
 date_default_timezone_set('America/Sao_Paulo');
 require_once 'config/DatabaseConfig.php';
 ini_set('default_charset', 'utf-8');
@@ -272,6 +275,9 @@ endif;
                                 }
                                 if ($status == "3") {
                                   echo "<span class='text-warning'>EM ANALISE</span>";
+                                }
+                                if ($status == "4") {
+                                  echo "<span style='color:gray;'>AGUARDANDO ANALISE</span>";
                                 }
                                 ?>
                               </h4>

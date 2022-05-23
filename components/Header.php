@@ -2,7 +2,7 @@
   <header id="header" class="header fixed-top bg-black d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="#" class="logo d-flex align-items-center">
+      <a href="dashboard" class="logo d-flex align-items-center">
         <img src="img/SG.png" alt="">
         <!-- <span class="d-none d-lg-block">NiceAdmin</span> -->
       </a>

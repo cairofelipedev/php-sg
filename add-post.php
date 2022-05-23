@@ -1,5 +1,8 @@
 <?php
 session_start();
+require_once 'config/classes/Url.class.php';
+require_once 'config/classes/Helper.php';
+$URI = new URI();
 date_default_timezone_set('America/Sao_Paulo');
 require_once 'config/DatabaseConfig.php';
 ini_set('default_charset', 'utf-8');

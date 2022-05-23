@@ -1,11 +1,14 @@
 <?php
 session_start();
+require_once 'config/classes/Url.class.php';
+require_once 'config/classes/Helper.php';
+$URI = new URI();
 date_default_timezone_set('America/Sao_Paulo');
-require_once 'dbconfig.php';
+require_once 'config/DatabaseConfig.php';
 ini_set('default_charset', 'utf-8');
 if (isset($_SESSION['logado'])) :
 else :
-  header("Location: login.php");
+  header("Location:login.php");
 endif;
 error_reporting(~E_ALL);
 
@@ -15,7 +18,7 @@ if (isset($_GET['delete_id'])) {
   $stmt_delete->bindParam(':uid', $_GET['delete_id']);
   $stmt_delete->execute();
 
-  header("Location: painel-usuarios.php");
+  header("Location: usuarios");
 }
 
 if ($_SESSION['type'] != 1) {
@@ -28,34 +31,7 @@ if ($_SESSION['type'] != 1) {
 <html lang="pt-br">
 
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title>Usuários / Painel Administrativo</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-
-  <!-- Favicons -->
-  <link href="../assets/img/icon-semfundo.png" rel="icon">
-  <link href="../assets/img/icon-semfundo.png" rel="apple-touch-icon">
-
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
-
-  <!-- Template Main CSS File -->
-  <link href="assets/css/style.css" rel="stylesheet">
+  <?php include "components/Head.php"; ?>
 </head>
 
 <body>
@@ -69,11 +45,11 @@ if ($_SESSION['type'] != 1) {
       <div class="d-flex justify-content-between">
         <nav>
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="painel-controle.php">Home</a></li>
+            <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
             <li class="breadcrumb-item active">Usuários</li>
           </ol>
         </nav>
-        <a href="add-usuario.php">
+        <a href="add-usuario">
           <button class="btn btn-primary"><i class="bi bi-plus-circle-fill"></i> Adicionar Usuário</button>
         </a>
       </div>
@@ -89,7 +65,7 @@ if ($_SESSION['type'] != 1) {
             extract($row);
         ?>
 
-            <div class="col-lg-3">
+            <div class="col-lg-4">
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title text-center"><?php echo $name; ?></h5>
@@ -98,18 +74,16 @@ if ($_SESSION['type'] != 1) {
                     echo "<h5 class='card-title-2 text-center'>Administrador</h5>";
                   }
                   if ($type == 2) {
-                    echo "<h5 class='card-title-2 text-center'>Afiliado</h5>";
-                  }
-                  if ($type == 4) {
-                    echo "<h5 class='card-title-2 text-center'>Cliente</h5>";
+                    echo "<h5 class='card-title-2 text-center'>Stremear</h5>";
                   }
                   ?>
-                  <img class="img-fluid" src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/semperfil.png'">
+                  <img class="img-fluid rounded" src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/semperfil.png'">
+                  <h5 class="card-title text-center">Pontos: <?php echo $points; ?></h5>
                   <div class="d-flex justify-content-between pt-2">
                     <a href="perfil.php?edit_id=<?php echo $row['id']; ?>">
                       <button type="button" class="btn btn-success">Editar</button>
                     </a>
-                    <a href="?delete_id=<?php echo $row['id']; ?>">
+                    <a href="usuarios.php?delete_id=<?php echo $row['id']; ?>">
                       <button type="button" class="btn btn-danger">Excluir</button>
                     </a>
                   </div>

@@ -1,5 +1,8 @@
 <?php
 session_start();
+require_once 'config/classes/Url.class.php';
+require_once 'config/classes/Helper.php';
+$URI = new URI();
 date_default_timezone_set('America/Sao_Paulo');
 require_once 'config/DatabaseConfig.php';
 ini_set('default_charset', 'utf-8');
@@ -7,22 +10,6 @@ if (isset($_SESSION['logado'])) :
 else :
   header("Location:login.php");
 endif;
-error_reporting(~E_ALL);
-
-if (isset($_GET['delete_id'])) {
-  // it will delete an actual record from db
-  $stmt_delete = $DB_con->prepare('DELETE FROM posts WHERE id =:uid');
-  $stmt_delete->bindParam(':uid', $_GET['delete_id']);
-  $stmt_delete->execute();
-
-  header("Location: posts.php");
-}
-
-if ($_SESSION['type'] != 1) {
-  echo ("
-    <script type= 'text/javascript'>alert('Acesso Restrito!');</script>
-    <script>window.location = 'painel-controle.php';</script>");
-}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -32,33 +19,101 @@ if ($_SESSION['type'] != 1) {
 </head>
 
 <body>
-  <?php include "components/header.php" ?>
-  <?php include "components/sidebar.php" ?>
+
+  <?php include "components/Header.php"; ?>
+  <?php include "components/SideBar.php"; ?>
 
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Ranking</h1>
-      <div class="d-flex justify-content-between">
-        <nav>
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="dashboard">Home</a></li>
-            <li class="breadcrumb-item active">Ranking</li>
-          </ol>
-        </nav>
-        <!-- <a href="add-post">
-          <button class="btn btn-primary"><i class="bi bi-plus-circle-fill"></i> Adicionar Post</button>
-        </a> -->
-      </div>
+      <h1 class="text-black">Ranking</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
+          <li class="breadcrumb-item active">Ranking</li>
+        </ol>
+      </nav>
     </div><!-- End Page Title -->
 
-    <section class="section">
+    <section class="section dashboard">
+      <div class="row">
+        <!-- Right side columns -->
+        <div class="col-lg-5">
+          <div class="card top-selling overflow-auto">
 
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">Today</a></li>
+                <li><a class="dropdown-item" href="#">This Month</a></li>
+                <li><a class="dropdown-item" href="#">This Year</a></li>
+              </ul>
+            </div>
+
+            <div class="card-body pb-0">
+              <h5 class="card-title">Ranking <span>| Todos</span></h5>
+
+              <table class="table table-borderless">
+                <thead>
+                  <tr>
+                    <th scope="col">Ranking</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col">Pontos</th>
+
+                    <th scope="col">Opções</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  $i = 1;
+                  $stmt = $DB_con->prepare("SELECT * FROM users where type='2' ORDER BY points DESC");
+                  $stmt->execute();
+                  if ($stmt->rowCount() > 0) {
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                      extract($row);
+                  ?>
+                      <tr>
+                        <td class="fw-bold text-center">
+                          <?php
+                          echo $i++ . "º";
+                          ?>
+                        </td>
+                        <th scope="row">
+                          <img src="./uploads/usuarios/<?php echo $_SESSION['img']; ?>" onerror="this.src='./assets/img/semperfil.png'" alt="Profile" class="rounded">
+                        </th>
+                        <td><a href="#" class="text-primary fw-bold"><?php echo $name ?></a></td>
+                        <td class="text-center">
+                          <?php echo $points ?>
+                        </td>
+                        <td>
+                          <a href="#">
+                            <button type="button" class="btn btn-success">Editar</button>
+                          </a>
+                        </td>
+                      </tr>
+                  <?php
+                    }
+                  }
+                  ?>
+                </tbody>
+              </table>
+
+            </div>
+
+          </div>
+        </div><!-- End Right side columns -->
+
+      </div>
     </section>
 
   </main><!-- End #main -->
 
-  <?php include "components/footer.php"; ?>
+  <?php include "components/Footer.php"; ?>
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

@@ -1,19 +1,22 @@
 <?php
 session_start();
+require_once 'config/classes/Url.class.php';
+require_once 'config/classes/Helper.php';
+$URI = new URI();
 date_default_timezone_set('America/Sao_Paulo');
-require_once 'dbconfig.php';
+require_once 'config/DatabaseConfig.php';
 ini_set('default_charset', 'utf-8');
 if (isset($_SESSION['logado'])) :
 else :
-  header("Location: login.php");
+  header("Location:login.php");
 endif;
-error_reporting(~E_ALL); // avoid notice
+error_reporting(~E_ALL);
 
 if (isset($_POST['btnsave'])) {
   $name = $_POST['name'];
   $login = $_POST['login'];
   $email = $_POST['email'];
-  $pass = $_POST['pass'];
+  $password = $_POST['password'];
   $type = $_POST['type'];
   $whats = $_POST['whats'];
   $address = $_POST['address'];
@@ -21,6 +24,7 @@ if (isset($_POST['btnsave'])) {
   $city = $_POST['city'];
   $state = $_POST['state'];
   $status = $_POST['status'];
+  $points = $_POST['points'];
 
   $imgFile = $_FILES['user_image']['name'];
   $tmp_dir = $_FILES['user_image']['tmp_name'];
@@ -49,22 +53,23 @@ if (isset($_POST['btnsave'])) {
     }
   }
   if (!isset($errMSG)) {
-    $stmt = $DB_con->prepare('INSERT INTO users (name,login,email,pass,type,whats,address,district,city,state,img,status) VALUES(:uname,:ulogin,:uemail,:upass,:utype,:uwhats,:uaddress,:udistrict,:ucity,:ustate,:upic,:ustatus)');
+    $stmt = $DB_con->prepare('INSERT INTO users (name,login,email,password,type,whats,address,district,city,state,img,status,points) VALUES(:uname,:ulogin,:uemail,:upassword,:utype,:uwhats,:uaddress,:udistrict,:ucity,:ustate,:upic,:ustatus,:upoints)');
     $stmt->bindParam(':uname', $name);
     $stmt->bindParam(':ulogin', $login);
     $stmt->bindParam(':uemail', $email);
-    $stmt->bindParam(':upass', $pass);
+    $stmt->bindParam(':upassword', $password);
     $stmt->bindParam(':utype', $type);
     $stmt->bindParam(':upic', $userpic);
     $stmt->bindParam(':uwhats', $whats);
     $stmt->bindParam(':uaddress', $address);
     $stmt->bindParam(':udistrict', $district);
     $stmt->bindParam(':ucity', $city);
+    $stmt->bindParam(':upoints', $points);
     $stmt->bindParam(':ustate', $state);
     $stmt->bindParam(':ustatus', $status);
 
     if ($stmt->execute()) {
-      echo ("<script>window.location = 'painel-usuarios.php';</script>");
+      echo ("<script>window.location = 'usuarios';</script>");
     } else {
       $errMSG = "Erro..";
     }
@@ -198,7 +203,7 @@ if (isset($_POST['btnsave'])) {
                     </div>
                     <div class="col-md-6">
                       <div class="form-floating">
-                        <input type="password" class="form-control" value="<?php echo $pass; ?>" name="pass" placeholder="Senha do Usuário">
+                        <input type="password" class="form-control" value="<?php echo $password; ?>" name="password" placeholder="Senha do Usuário">
                         <label for="">Senha do Usuário</label>
                       </div>
                     </div>
@@ -239,6 +244,7 @@ if (isset($_POST['btnsave'])) {
                     </div>
                   </div>
                 </div>
+                <input type="hidden" name="points" value="0">
                 <div class="text-center pt-2">
                   <button type="submit" name="btnsave" class="btn btn-primary">Adicionar</button>
                   <button type="reset" class="btn btn-secondary">Resetar</button>
