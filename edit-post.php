@@ -8,74 +8,19 @@ else :
   header("Location:login.php");
 endif;
 
-if (isset($_POST['btnsave'])) {
-  $title = $_POST['title'];
-  $description = $_POST['description'];
-  $link = $_POST['link'];
-  $status = $_POST['status'];
-  $network = $_POST['network'];
-  $type = $_POST['type'];
-  $user_create = $_POST['user_create'];
+require_once 'config/classes/Url.class.php';
+require_once 'config/classes/Helper.php';
 
-  $imgFile = $_FILES['user_image']['name'];
-  $tmp_dir = $_FILES['user_image']['tmp_name'];
-  $imgSize = $_FILES['user_image']['size'];
+$URI = new URI();
 
-  $imgFile2 = $_FILES['user_image2']['name'];
-  $tmp_dir2 = $_FILES['user_image2']['tmp_name'];
-  $imgSize2 = $_FILES['user_image2']['size'];
+$url = explode("/", $_SERVER['REQUEST_URI']);
+$idPost = $url[3];
 
-  if (empty($title)) {
-    $errMSG = "Por favor, insira um titulo para o post";
-  } else {
-    $upload_dir = 'uploads/posts/'; // upload directory
-    $imgExt =  strtolower(pathinfo($imgFile, PATHINFO_EXTENSION));
-    $imgExt2 =  strtolower(pathinfo($imgFile2, PATHINFO_EXTENSION));
-
-    $valid_extensions = array('jpeg', 'jpg', 'png'); // valid extensions
-    // rename uploading image
-    $title2 = preg_replace("/\s+/", "", $title);
-    $title3 = substr($title2, 0, -1);
-
-    $userpic  = $title3 . "image01" . "." . $imgExt;
-    $userpic2  = $title3 . "image02" . "." . $imgExt2;
-    // allow valid image file formats
-    if (in_array($imgExt, $valid_extensions)) {
-      // Check file size '5MB'
-      if ($imgSize < 5000000) {
-        move_uploaded_file($tmp_dir, $upload_dir . $userpic);
-      } else {
-        $errMSG = "Imagem muito grande.";
-      }
-    }
-    if (in_array($imgExt2, $valid_extensions)) {
-      // Check file size '5MB'
-      if ($imgSize2 < 5000000) {
-        move_uploaded_file($tmp_dir2, $upload_dir . $userpic2);
-      } else {
-        $errMSG = "Imagem muito grande.";
-      }
-    }
-  }
-  if (!isset($errMSG)) {
-    $stmt = $DB_con->prepare('INSERT INTO posts (title,description,link,status,img,img2,user_create,type,network) VALUES(:utitle,:udescription,:ulink,:ustatus,:upic,:upic2,:uuser_create,:utype,:unetwork)');
-
-    $stmt->bindParam(':utitle', $title);
-    $stmt->bindParam(':udescription', $description);
-	$stmt->bindParam(':ulink', $link);
-	$stmt->bindParam(':ustatus', $status);
-    $stmt->bindParam(':upic', $userpic);
-    $stmt->bindParam(':upic2', $userpic2);
-	$stmt->bindParam(':uuser_create', $user_create);
-	$stmt->bindParam(':utype', $type);
-	$stmt->bindParam(':unetwork', $network);
-
-    if ($stmt->execute()) {
-      echo ("<script>window.location = 'posts';</script>");
-    } else {
-      $errMSG = "Erro, solicite suporte";
-    }
-  }
+$stmt = $DB_con->prepare("SELECT id FROM posts where id='$idPost'");
+$stmt->execute();
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+  extract($row);
+  $post = $id;
 }
 ?>
 <!DOCTYPE html>
@@ -86,6 +31,7 @@ if (isset($_POST['btnsave'])) {
 </head>
 
 <body>
+<?php echo $post; ?>
   <?php include "components/header.php" ?>
   <?php include "components/sidebar.php" ?>
   <main id="main" class="main">
@@ -196,17 +142,16 @@ if (isset($_POST['btnsave'])) {
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- Vendor JS Files -->
-  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/chart.js/chart.min.js"></script>
-  <script src="assets/vendor/echarts/echarts.min.js"></script>
-  <script src="assets/vendor/quill/quill.min.js"></script>
-  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
-  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/apexcharts/apexcharts.min.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/chart.js/chart.min.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/echarts/echarts.min.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/quill/quill.min.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/simple-datatables/simple-datatables.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/tinymce/tinymce.min.js') ?>"></script>
 
   <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
+  <script src="<?php echo $URI->base('/assets/js/main.js') ?>"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.2/js/fileinput.min.js" integrity="sha512-OgkQrY08KbdmZRLKrsBkVCv105YJz+HdwKACjXqwL+r3mVZBwl20vsQqpWPdRnfoxJZePgaahK9G62SrY9hR7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 

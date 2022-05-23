@@ -1,5 +1,8 @@
 <?php
 session_start();
+require_once 'config/classes/Url.class.php';
+require_once 'config/classes/Helper.php';
+$URI = new URI();
 date_default_timezone_set('America/Sao_Paulo');
 require_once 'config/DatabaseConfig.php';
 ini_set('default_charset', 'utf-8');
@@ -15,7 +18,7 @@ if (isset($_GET['delete_id'])) {
   $stmt_delete->bindParam(':uid', $_GET['delete_id']);
   $stmt_delete->execute();
 
-  header("Location: posts.php");
+  header("Location: posts");
 }
 
 if ($_SESSION['type'] != 1) {
@@ -147,13 +150,17 @@ if ($_SESSION['type'] != 1) {
                     if ($status == "3") {
                       echo "<span class='text-warning'>EM ANALISE</span>";
                     }
+					 if ($status == "4") {
+                      echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                    }
                     ?>
                   </h5>
+				  <h4 class="card-title2"><?php echo $links; ?></h4>
                   <div class="d-flex justify-content-between pt-2">
-                    <a href="perfil.php?edit_id=<?php echo $row['id']; ?>">
+                    <a href="<?php echo $URI->base('/edit-post/' . slugify($id)); ?>">
                       <button type="button" class="btn btn-success">Editar</button>
                     </a>
-                    <a href="?delete_id=<?php echo $row['id']; ?>">
+                    <a href="<?php echo $URI->base('/posts.php?delete_id=' . slugify($id)); ?>">
                       <button type="button" class="btn btn-danger">Excluir</button>
                     </a>
                   </div>
@@ -164,10 +171,8 @@ if ($_SESSION['type'] != 1) {
           }
         } else {
           ?>
-          <div class="bg-yellow-500 px-4 py-4 rounded">
-            <div>
-              <p class="text-blueGray-600 font-bold">Sem Usuários Cadastrado ...</p>
-            </div>
+          <div class="alert alert-warning col-md-3">
+              <span class="fw-bolder">Sem post cadastrado...</span>
           </div>
         <?php
         }
