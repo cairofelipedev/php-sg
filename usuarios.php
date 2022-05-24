@@ -35,8 +35,8 @@ if ($_SESSION['type'] != 1) {
 </head>
 
 <body>
-  <?php include "components/header.php" ?>
-  <?php include "components/sidebar.php" ?>
+  <?php include "components/Header.php" ?>
+  <?php include "components/SideBar.php" ?>
 
   <main id="main" class="main">
 

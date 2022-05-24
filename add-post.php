@@ -8,7 +8,7 @@ require_once 'config/DatabaseConfig.php';
 ini_set('default_charset', 'utf-8');
 if (isset($_SESSION['logado'])) :
 else :
-  header("Location:login.php");
+  header("Location:login");
 endif;
 
 if (isset($_POST['btnsave'])) {
@@ -65,13 +65,13 @@ if (isset($_POST['btnsave'])) {
 
     $stmt->bindParam(':utitle', $title);
     $stmt->bindParam(':udescription', $description);
-	$stmt->bindParam(':ulink', $link);
-	$stmt->bindParam(':ustatus', $status);
+    $stmt->bindParam(':ulink', $link);
+    $stmt->bindParam(':ustatus', $status);
     $stmt->bindParam(':upic', $userpic);
     $stmt->bindParam(':upic2', $userpic2);
-	$stmt->bindParam(':uuser_create', $user_create);
-	$stmt->bindParam(':utype', $type);
-	$stmt->bindParam(':unetwork', $network);
+    $stmt->bindParam(':uuser_create', $user_create);
+    $stmt->bindParam(':utype', $type);
+    $stmt->bindParam(':unetwork', $network);
 
     if ($stmt->execute()) {
       echo ("<script>window.location = 'posts';</script>");
@@ -89,8 +89,8 @@ if (isset($_POST['btnsave'])) {
 </head>
 
 <body>
-  <?php include "components/header.php" ?>
-  <?php include "components/sidebar.php" ?>
+  <?php include "components/Header.php"; ?>
+  <?php include "components/SideBar.php"; ?>
   <main id="main" class="main">
 
     <div class="pagetitle">
@@ -178,9 +178,9 @@ if (isset($_POST['btnsave'])) {
                     </div>
                   </div>
                 </div>
-				
-				<input type="hidden" value="4" name="status">
-				<input type="hidden" value="<?php echo $_SESSION['name']; ?>" name="user_create">
+
+                <input type="hidden" value="4" name="status">
+                <input type="hidden" value="<?php echo $_SESSION['name']; ?>" name="user_create">
                 <div class="text-center pt-2">
                   <button type="submit" name="btnsave" class="btn btn-primary">Adicionar</button>
                   <button type="reset" class="btn btn-secondary">Resetar</button>

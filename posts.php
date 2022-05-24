@@ -8,7 +8,7 @@ require_once 'config/DatabaseConfig.php';
 ini_set('default_charset', 'utf-8');
 if (isset($_SESSION['logado'])) :
 else :
-  header("Location:login.php");
+  header("Location:login");
 endif;
 error_reporting(~E_ALL);
 
@@ -29,12 +29,14 @@ if ($_SESSION['type'] != 1) {
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <?php include "components/Head.php"; ?>
 </head>
+
 <body>
-  <?php include "components/header.php" ?>
-  <?php include "components/sidebar.php" ?>
+  <?php include "components/Header.php"; ?>
+  <?php include "components/SideBar.php"; ?>
 
   <main id="main" class="main">
 
@@ -77,8 +79,8 @@ if ($_SESSION['type'] != 1) {
                     echo "<h5 class='card-title-2 text-center'>Cliente</h5>";
                   }
                   ?>
-                  <img class="img-fluid" src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'">
-                    <h5 class="card-title2 text-center pt-2">
+                  <img class="img-fluid" src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'">
+                  <h5 class="card-title2 text-center pt-2">
                     <i class="bi bi-clock"></i>
                     <?php
                     $date = new DateTime($data_create);
@@ -125,45 +127,45 @@ if ($_SESSION['type'] != 1) {
                     echo $date4;
                     ?>
                   </h5>
-				  <h4 class="card-title2"><i class="bi bi-person"></i> <?php echo $user_create; ?></h4>
-				  <h4 class="card-title2">
-					<?php
-					if ($network == "insta") {
-					  echo "<i class='bi bi-instagram'></i> ";
-					}
-					if ($network == "face") {
-					  echo "<i class='bi bi-facebook'></i> ";
-					}
-					if ($network == "whats") {
-					  echo "<i class='bi bi-whatsapp'></i> ";
-					}
-					echo $network." - ".$type;
-					?>
-                  <h5 class="card-title2">
+                  <h4 class="card-title2"><i class="bi bi-person"></i> <?php echo $user_create; ?></h4>
+                  <h4 class="card-title2">
                     <?php
-                    if ($status == "1") {
-                      echo "<span class='text-success'>APROVADO</span>";
+                    if ($network == "insta") {
+                      echo "<i class='bi bi-instagram'></i> ";
                     }
-                    if ($status == "2") {
-                      echo "<span class='text-danger'>NÃO APROVADO</span>";
+                    if ($network == "face") {
+                      echo "<i class='bi bi-facebook'></i> ";
                     }
-                    if ($status == "3") {
-                      echo "<span class='text-warning'>EM ANALISE</span>";
+                    if ($network == "whats") {
+                      echo "<i class='bi bi-whatsapp'></i> ";
                     }
-					 if ($status == "4") {
-                      echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
-                    }
+                    echo $network . " - " . $type;
                     ?>
-                  </h5>
-				  <h4 class="card-title2"><?php echo $links; ?></h4>
-                  <div class="d-flex justify-content-between pt-2">
-                    <a href="<?php echo $URI->base('/edit-post/' . slugify($id)); ?>">
-                      <button type="button" class="btn btn-success">Editar</button>
-                    </a>
-                    <a href="<?php echo $URI->base('/posts.php?delete_id=' . slugify($id)); ?>">
-                      <button type="button" class="btn btn-danger">Excluir</button>
-                    </a>
-                  </div>
+                    <h5 class="card-title2">
+                      <?php
+                      if ($status == "1") {
+                        echo "<span class='text-success'>APROVADO</span>";
+                      }
+                      if ($status == "2") {
+                        echo "<span class='text-danger'>NÃO APROVADO</span>";
+                      }
+                      if ($status == "3") {
+                        echo "<span class='text-warning'>EM ANALISE</span>";
+                      }
+                      if ($status == "4") {
+                        echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                      }
+                      ?>
+                    </h5>
+                    <h4 class="card-title2"><?php echo $links; ?></h4>
+                    <div class="d-flex justify-content-between pt-2">
+                      <a href="<?php echo $URI->base('/edit-post/' . slugify($id)); ?>">
+                        <button type="button" class="btn btn-success">Editar</button>
+                      </a>
+                      <a href="<?php echo $URI->base('/posts.php?delete_id=' . slugify($id)); ?>">
+                        <button type="button" class="btn btn-danger">Excluir</button>
+                      </a>
+                    </div>
                 </div>
               </div>
             </div>
@@ -172,7 +174,7 @@ if ($_SESSION['type'] != 1) {
         } else {
           ?>
           <div class="alert alert-warning col-md-3">
-              <span class="fw-bolder">Sem post cadastrado...</span>
+            <span class="fw-bolder">Sem post cadastrado...</span>
           </div>
         <?php
         }

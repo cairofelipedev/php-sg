@@ -8,7 +8,7 @@ require_once 'config/DatabaseConfig.php';
 ini_set('default_charset', 'utf-8');
 if (isset($_SESSION['logado'])) :
 else :
-  header("Location:login.php");
+  header("Location:login");
 endif;
 ?>
 <!DOCTYPE html>
