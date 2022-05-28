@@ -159,10 +159,10 @@ if ($_SESSION['type'] != 1) {
                     </h5>
                     <h4 class="card-title2"><?php echo $links; ?></h4>
                     <div class="d-flex justify-content-between pt-2">
-                      <a href="<?php echo $URI->base('/edit-post/' . slugify($id)); ?>">
+                      <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
                         <button type="button" class="btn btn-success">Editar</button>
                       </a>
-                      <a href="<?php echo $URI->base('/posts.php?delete_id=' . slugify($id)); ?>">
+                      <a href="<?php echo $URI->base('/delete-post/' . slugify($id)); ?>">
                         <button type="button" class="btn btn-danger">Excluir</button>
                       </a>
                     </div>

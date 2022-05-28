@@ -16,11 +16,71 @@ $URI = new URI();
 $url = explode("/", $_SERVER['REQUEST_URI']);
 $idPost = $url[3];
 
-$stmt = $DB_con->prepare("SELECT id FROM posts where id='$idPost'");
-$stmt->execute();
-while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+if (empty($idPost)) {
+  header("Location: ../posts");
+}
+
+$stmt2 = $DB_con->prepare("SELECT id FROM posts where id='$idPost'");
+$stmt2->execute();
+while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
   extract($row);
   $post = $id;
+}
+
+$id = $idPost;
+$stmt_edit = $DB_con->prepare('SELECT * FROM posts WHERE id =:uid');
+$stmt_edit->execute(array(':uid' => $id));
+$edit_row = $stmt_edit->fetch(PDO::FETCH_ASSOC);
+extract($edit_row);
+
+if ($_SESSION['name'] != $user_create) {
+  echo ("<script type= 'text/javascript'>alert('Acesso Restrito!');</script><script>window.location = '../dashboard';</script>");
+}
+
+if (isset($_POST['btnsave'])) {
+  $title = $_POST['title'];
+
+  $imgFile = $_FILES['user_image']['name'];
+  $tmp_dir = $_FILES['user_image']['tmp_name'];
+  $imgSize = $_FILES['user_image']['size'];
+
+  if ($imgFile) {
+    $upload_dir = 'uploads/parceiros/'; // upload directory	
+    $imgExt = strtolower(pathinfo($imgFile, PATHINFO_EXTENSION)); // get image extension
+    $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // valid extensions
+    $name2 = preg_replace("/\s+/", "", $name);
+    $name3 = substr($name2, 0, -1);
+    $userpic = $name3 . "edit" . "." . $imgExt;
+    if (in_array($imgExt, $valid_extensions)) {
+      if ($imgSize < 5000000) {
+        unlink($upload_dir . $edit_row['img']);
+        move_uploaded_file($tmp_dir, $upload_dir . $userpic);
+      } else {
+        $errMSG = "Imagem grande demais, max 5MB";
+      }
+    } else {
+      $errMSG = "Imagens apenas nos formatos JPG, JPEG, PNG & GIF files are allowed.";
+    }
+  } else {
+    // if no image selected the old image remain as it is.
+    $userpic = $edit_row['img']; // old image from database
+  }
+
+  if (!isset($errMSG)) {
+    $stmt = $DB_con->prepare('UPDATE posts
+    SET 
+    title=:utitle,
+    img=:upic
+    WHERE id=:uid');
+    $stmt->bindParam(':utitle', $title);
+    $stmt->bindParam(':uid', $id);
+
+    if ($stmt->execute()) {
+      echo ("<script>window.location = 'painel-parceiros.php';</script>");
+    } else {
+      $errMSG = "Erro..";
+    }
+  }
 }
 ?>
 <!DOCTYPE html>
@@ -31,18 +91,17 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 </head>
 
 <body>
-<?php echo $post; ?>
   <?php include "components/header.php" ?>
   <?php include "components/sidebar.php" ?>
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Adicionar Post</h1>
+      <h1>Editar Post</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
           <li class="breadcrumb-item"><a href="posts">Postagens</a></li>
-          <li class="breadcrumb-item active">Adicionar Post</li>
+          <li class="breadcrumb-item active">Editar Post</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -68,7 +127,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                   <div class="row">
                     <div class="col-md-6 pb-3">
                       <div class="form-floating">
-                        <textarea type="text" class="form-control" value="<?php echo $title; ?>" name="title" placeholder="Titulo do post" style="height: 100px;"></textarea>
+                        <textarea type="text" class="form-control" value="<?php echo $title; ?>" name="title" placeholder="Titulo do post" style="height: 100px;"><?php echo $title; ?></textarea>
                         <label for="">Título do Post</label>
                       </div>
                     </div>
@@ -121,9 +180,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     </div>
                   </div>
                 </div>
-				
-				<input type="hidden" value="4" name="status">
-				<input type="hidden" value="<?php echo $_SESSION['name']; ?>" name="user_create">
+
+                <input type="hidden" value="4" name="status">
+                <input type="hidden" value="<?php echo $_SESSION['name']; ?>" name="user_create">
                 <div class="text-center pt-2">
                   <button type="submit" name="btnsave" class="btn btn-primary">Adicionar</button>
                   <button type="reset" class="btn btn-secondary">Resetar</button>
