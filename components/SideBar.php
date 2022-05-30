@@ -29,9 +29,9 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-black border" href="material">
+        <a class="nav-link text-black border" href="docs">
           <i class="text-black bi bi-journal-text"></i>
-          <span>Material</span>
+          <span>Docs</span>
         </a>
       </li>
       <li class="nav-item">

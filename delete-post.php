@@ -23,5 +23,5 @@ if (empty($idPost)) {
 $stmt_delete = $DB_con->prepare('DELETE FROM posts WHERE id =:uid');
 $stmt_delete->bindParam(':uid', $_GET[$idPost]);
 $stmt_delete->execute();
-header("Location: posts");
+header("Location: ../posts");
 ?>

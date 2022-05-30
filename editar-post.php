@@ -33,24 +33,34 @@ $stmt_edit->execute(array(':uid' => $id));
 $edit_row = $stmt_edit->fetch(PDO::FETCH_ASSOC);
 extract($edit_row);
 
-if ($_SESSION['name'] != $user_create) {
+if (($_SESSION['name'] != $user_create) and ($_SESSION['type'] != "1")) {
   echo ("<script type= 'text/javascript'>alert('Acesso Restrito!');</script><script>window.location = '../dashboard';</script>");
 }
 
 if (isset($_POST['btnsave'])) {
   $title = $_POST['title'];
+  $description = $_POST['description'];
+  $link = $_POST['link'];
+  $status = $_POST['status'];
+  $network = $_POST['network'];
+  $type = $_POST['type'];
+  $user_create = $_POST['user_create'];
 
   $imgFile = $_FILES['user_image']['name'];
   $tmp_dir = $_FILES['user_image']['tmp_name'];
   $imgSize = $_FILES['user_image']['size'];
 
+  $imgFile2 = $_FILES['user_image2']['name'];
+  $tmp_dir2 = $_FILES['user_image2']['tmp_name'];
+  $imgSize2 = $_FILES['user_image2']['size'];
+
   if ($imgFile) {
-    $upload_dir = 'uploads/parceiros/'; // upload directory	
+    $upload_dir = 'uploads/posts/'; // upload directory	
     $imgExt = strtolower(pathinfo($imgFile, PATHINFO_EXTENSION)); // get image extension
     $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // valid extensions
-    $name2 = preg_replace("/\s+/", "", $name);
-    $name3 = substr($name2, 0, -1);
-    $userpic = $name3 . "edit" . "." . $imgExt;
+    $title2 = preg_replace("/\s+/", "", $title);
+    $title3 = substr($title2, 0, -1);
+    $userpic = $title3 . "edit" . "." . $imgExt;
     if (in_array($imgExt, $valid_extensions)) {
       if ($imgSize < 5000000) {
         unlink($upload_dir . $edit_row['img']);
@@ -66,17 +76,51 @@ if (isset($_POST['btnsave'])) {
     $userpic = $edit_row['img']; // old image from database
   }
 
+  if ($imgFile2) {
+    $upload_dir = 'uploads/posts/'; // upload directory	
+    $imgExt2 = strtolower(pathinfo($imgFile2, PATHINFO_EXTENSION)); // get image extension
+    $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // valid extensions
+    $title2 = preg_replace("/\s+/", "", $title);
+    $title3 = substr($title2, 0, -1);
+    $userpic2 = $title3 . "edit" . "." . $imgExt2;
+    if (in_array($imgExt2, $valid_extensions)) {
+      if ($imgSize2 < 5000000) {
+        unlink($upload_dir . $edit_row['img2']);
+        move_uploaded_file($tmp_dir2, $upload_dir . $userpic2);
+      } else {
+        $errMSG = "Imagem grande demais, max 5MB";
+      }
+    } else {
+      $errMSG = "Imagens apenas nos formatos JPG, JPEG, PNG & GIF files are allowed.";
+    }
+  } else {
+    // if no image selected the old image remain as it is.
+    $userpic2 = $edit_row['img2']; // old image from database
+  }
+
   if (!isset($errMSG)) {
     $stmt = $DB_con->prepare('UPDATE posts
     SET 
     title=:utitle,
+    description=:udescription,
+    link=:ulink,
+    status=:ustatus
+    network=:unetwork,
+    type=:utype,
+    user_create=:uuser_create,
     img=:upic
     WHERE id=:uid');
     $stmt->bindParam(':utitle', $title);
+    $stmt->bindParam(':udescription', $description);
+    $stmt->bindParam(':ulink', $link);
+    $stmt->bindParam(':ustatus', $status);
+    $stmt->bindParam(':unetwork', $network);
+    $stmt->bindParam(':utype', $type);
+    $stmt->bindParam(':uuser_creacte', $user_create);
     $stmt->bindParam(':uid', $id);
 
     if ($stmt->execute()) {
-      echo ("<script>window.location = 'painel-parceiros.php';</script>");
+      echo ("<script>window.location = 'posts';</script>");
     } else {
       $errMSG = "Erro..";
     }
@@ -133,13 +177,26 @@ if (isset($_POST['btnsave'])) {
                     </div>
                     <div class="col-md-6 pb-3">
                       <div class="form-floating">
-                        <textarea type="text" class="form-control" value="<?php echo $description; ?>" name="description" placeholder="Subtitulo do post" style="height: 100px;"></textarea>
+                        <textarea type="text" class="form-control" value="<?php echo $description; ?>" name="description" placeholder="Subtitulo do post" style="height: 100px;"><?php echo $description; ?></textarea>
                         <label for="">Descrição do post</label>
                       </div>
                     </div>
                     <div class="col-md-6 pb-3">
                       <div class="form-floating mb-3">
                         <select name="network" class="form-select" id="floatingSelect" aria-label="Rede Social do post">
+                          <option value="<?php echo $network; ?>">
+                            <?php
+                            if ($network == "insta") {
+                              echo "INSTAGRAM";
+                            }
+                            if ($network == "face") {
+                              echo "FACEBOOK";
+                            }
+                            if ($network == "whats") {
+                              echo "WHATS";
+                            }
+                            ?> (selecionado)
+                          </option>
                           <option value="insta">INSTAGRAM</option>
                           <option value="face">FACEBOOK</option>
                           <option value="whats">WHATS-APP</option>
@@ -150,6 +207,8 @@ if (isset($_POST['btnsave'])) {
                     <div class="col-md-6 pb-3">
                       <div class="form-floating mb-3">
                         <select name="type" class="form-select" id="floatingSelect" aria-label="Tipo de post">
+                          <option value="<?php echo $type; ?>"><?php echo $type; ?> (selecionado)
+                          </option>
                           <option value="story">STORY</option>
                           <option value="feed">FEED</option>
                           <option value="status">STATUS</option>
@@ -159,7 +218,7 @@ if (isset($_POST['btnsave'])) {
                     </div>
                     <div class="col-md-12 pb-3">
                       <div class="form-floating">
-                        <input type="text" class="form-control" value="" name="link" placeholder="Link do post">
+                        <input type="link" class="form-control" value="<?php echo $title; ?>" name="link" placeholder="Link do post">
                         <label for="">Link do post</label>
                       </div>
                     </div>
