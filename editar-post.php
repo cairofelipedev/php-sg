@@ -40,63 +40,10 @@ if (($_SESSION['name'] != $user_create) and ($_SESSION['type'] != "1")) {
 if (isset($_POST['btnsave'])) {
   $title = $_POST['title'];
   $description = $_POST['description'];
-  $link = $_POST['link'];
   $status = $_POST['status'];
-  $network = $_POST['network'];
   $type = $_POST['type'];
-  $user_create = $_POST['user_create'];
-
-  $imgFile = $_FILES['user_image']['name'];
-  $tmp_dir = $_FILES['user_image']['tmp_name'];
-  $imgSize = $_FILES['user_image']['size'];
-
-  $imgFile2 = $_FILES['user_image2']['name'];
-  $tmp_dir2 = $_FILES['user_image2']['tmp_name'];
-  $imgSize2 = $_FILES['user_image2']['size'];
-
-  if ($imgFile) {
-    $upload_dir = 'uploads/posts/'; // upload directory	
-    $imgExt = strtolower(pathinfo($imgFile, PATHINFO_EXTENSION)); // get image extension
-    $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // valid extensions
-    $title2 = preg_replace("/\s+/", "", $title);
-    $title3 = substr($title2, 0, -1);
-    $userpic = $title3 . "edit" . "." . $imgExt;
-    if (in_array($imgExt, $valid_extensions)) {
-      if ($imgSize < 5000000) {
-        unlink($upload_dir . $edit_row['img']);
-        move_uploaded_file($tmp_dir, $upload_dir . $userpic);
-      } else {
-        $errMSG = "Imagem grande demais, max 5MB";
-      }
-    } else {
-      $errMSG = "Imagens apenas nos formatos JPG, JPEG, PNG & GIF files are allowed.";
-    }
-  } else {
-    // if no image selected the old image remain as it is.
-    $userpic = $edit_row['img']; // old image from database
-  }
-
-  if ($imgFile2) {
-    $upload_dir = 'uploads/posts/'; // upload directory	
-    $imgExt2 = strtolower(pathinfo($imgFile2, PATHINFO_EXTENSION)); // get image extension
-    $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // valid extensions
-    $title2 = preg_replace("/\s+/", "", $title);
-    $title3 = substr($title2, 0, -1);
-    $userpic2 = $title3 . "edit" . "." . $imgExt2;
-    if (in_array($imgExt2, $valid_extensions)) {
-      if ($imgSize2 < 5000000) {
-        unlink($upload_dir . $edit_row['img2']);
-        move_uploaded_file($tmp_dir2, $upload_dir . $userpic2);
-      } else {
-        $errMSG = "Imagem grande demais, max 5MB";
-      }
-    } else {
-      $errMSG = "Imagens apenas nos formatos JPG, JPEG, PNG & GIF files are allowed.";
-    }
-  } else {
-    // if no image selected the old image remain as it is.
-    $userpic2 = $edit_row['img2']; // old image from database
-  }
+  $network = $_POST['network'];
+  $link = $_POST['link'];
 
   if (!isset($errMSG)) {
     $stmt = $DB_con->prepare('UPDATE posts
@@ -104,23 +51,20 @@ if (isset($_POST['btnsave'])) {
     title=:utitle,
     description=:udescription,
     link=:ulink,
-    status=:ustatus
-    network=:unetwork,
+    status=:ustatus,
     type=:utype,
-    user_create=:uuser_create,
-    img=:upic
+    network=:unetwork
     WHERE id=:uid');
     $stmt->bindParam(':utitle', $title);
     $stmt->bindParam(':udescription', $description);
-    $stmt->bindParam(':ulink', $link);
     $stmt->bindParam(':ustatus', $status);
-    $stmt->bindParam(':unetwork', $network);
     $stmt->bindParam(':utype', $type);
-    $stmt->bindParam(':uuser_creacte', $user_create);
+    $stmt->bindParam(':unetwork', $network);
+    $stmt->bindParam(':ulink', $link);
     $stmt->bindParam(':uid', $id);
 
     if ($stmt->execute()) {
-      echo ("<script>window.location = 'posts';</script>");
+      echo ("<script>window.location = '../posts';</script>");
     } else {
       $errMSG = "Erro..";
     }
@@ -218,8 +162,36 @@ if (isset($_POST['btnsave'])) {
                     </div>
                     <div class="col-md-12 pb-3">
                       <div class="form-floating">
-                        <input type="link" class="form-control" value="<?php echo $title; ?>" name="link" placeholder="Link do post">
+                        <input type="text" class="form-control" value="<?php echo $link; ?>" name="link" placeholder="Link do post">
                         <label for="">Link do post</label>
+                      </div>
+                    </div>
+                    <div class="col-md-12 pb-3">
+                      <div class="form-floating mb-3">
+                        <select name="status" class="form-select" id="floatingSelect" aria-label="Tipo de Status">
+                          <option value="<?php echo $status; ?>">
+                            <?php
+                            if ($status == "1") {
+                              echo "APROVADO";
+                            }
+                            if ($status == "2") {
+                              echo "NÃO APROVADO";
+                            }
+                            if ($status == "3") {
+                              echo "EM ANALISE";
+                            }
+                            if ($status == "4") {
+                              echo "AGUARDANDO ANALISE";
+                            }
+                            ?>
+                            (selecionado)
+                          </option>
+                          <option value="1">APROVADO</option>
+                          <option value="2">NÃO APROVADO</option>
+                          <option value="3">EM ANALISE</option>
+                          <option value="4">AGUARDANDO ANALISE</option>
+                        </select>
+                        <label for="floatingSelect">TIPO</label>
                       </div>
                     </div>
                   </div>
@@ -233,17 +205,30 @@ if (isset($_POST['btnsave'])) {
                       </div>
                     </div>
                     <div class="col-md-6">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <img src="<?php echo $URI->base("/uploads/posts/$img") ?>" onerror="this.src='./assets/img/semperfil.png'" class="img-fluid">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
                       <div class="file-loading">
                         <input id="curriculo" class="file" data-theme="fas" type="file" name="user_image2" accept="image/*">
                       </div>
                     </div>
+                    <div class="col-md-6">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <img src="<?php echo $URI->base("/uploads/posts/$img2") ?>" onerror="this.src='./assets/img/semperfil.png'" class="img-fluid">
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                <input type="hidden" value="4" name="status">
-                <input type="hidden" value="<?php echo $_SESSION['name']; ?>" name="user_create">
                 <div class="text-center pt-2">
-                  <button type="submit" name="btnsave" class="btn btn-primary">Adicionar</button>
+                  <button type="submit" name="btnsave" class="btn btn-primary">Editar</button>
                   <button type="reset" class="btn btn-secondary">Resetar</button>
                 </div>
               </form><!-- Vertical Form -->
