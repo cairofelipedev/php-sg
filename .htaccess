@@ -3,4 +3,4 @@ RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?url=$1
 RewriteRule ^editar-post\/([0-9A-z_-]+)$ editar-post.php?slug=$1 [QSA,L,NC] 
-RewriteRule ^delete-post\/([0-9A-z_-]+)$ delete-post.php?slug=$1 [QSA,L,NC] 
+RewriteRule ^perfil\/([0-9A-z_-]+)$ perfil.php?slug=$1 [QSA,L,NC] 

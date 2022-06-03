@@ -45,6 +45,34 @@ if (isset($_POST['btnsave'])) {
   $network = $_POST['network'];
   $link = $_POST['link'];
 
+  $imgFile = $_FILES['user_image']['name'];
+  $tmp_dir = $_FILES['user_image']['tmp_name'];
+  $imgSize = $_FILES['user_image']['size'];
+
+
+
+  if ($imgFile) {
+    $upload_dir = 'uploads/posts/'; // upload directory	
+    $imgExt = strtolower(pathinfo($imgFile, PATHINFO_EXTENSION)); // get image extension
+    $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // valid extensions
+    $title2 = preg_replace("/\s+/", "", $title);
+    $title3 = substr($title2, 0, -1);
+    $userpic = $title3 . "edit" . "." . $imgExt;
+    if (in_array($imgExt, $valid_extensions)) {
+      if ($imgSize < 5000000) {
+        unlink($upload_dir . $edit_row['img']);
+        move_uploaded_file($tmp_dir, $upload_dir . $userpic);
+      } else {
+        $errMSG = "Imagem grande demais, max 5MB";
+      }
+    } else {
+      $errMSG = "Imagens apenas nos formatos JPG, JPEG, PNG & GIF files are allowed.";
+    }
+  } else {
+    // if no image selected the old image remain as it is.
+    $userpic = $edit_row['img']; // old image from database
+  }
+
   if (!isset($errMSG)) {
     $stmt = $DB_con->prepare('UPDATE posts
     SET 
@@ -53,7 +81,8 @@ if (isset($_POST['btnsave'])) {
     link=:ulink,
     status=:ustatus,
     type=:utype,
-    network=:unetwork
+    network=:unetwork,
+    img=:upic
     WHERE id=:uid');
     $stmt->bindParam(':utitle', $title);
     $stmt->bindParam(':udescription', $description);
@@ -61,6 +90,7 @@ if (isset($_POST['btnsave'])) {
     $stmt->bindParam(':utype', $type);
     $stmt->bindParam(':unetwork', $network);
     $stmt->bindParam(':ulink', $link);
+    $stmt->bindParam(':upic', $userpic);
     $stmt->bindParam(':uid', $id);
 
     if ($stmt->execute()) {
@@ -79,15 +109,15 @@ if (isset($_POST['btnsave'])) {
 </head>
 
 <body>
-  <?php include "components/header.php" ?>
-  <?php include "components/sidebar.php" ?>
+  <?php include "components/Header.php" ?>
+  <?php include "components/SideBar.php" ?>
   <main id="main" class="main">
 
     <div class="pagetitle">
       <h1>Editar Post</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
+          <li class="breadcrumb-item"><a href="dashboard">Home</a></li>
           <li class="breadcrumb-item"><a href="posts">Postagens</a></li>
           <li class="breadcrumb-item active">Editar Post</li>
         </ol>
@@ -197,7 +227,7 @@ if (isset($_POST['btnsave'])) {
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <h5 class="card-title">Imagens</h5>
+                  <h5 class="card-title">Imagem</h5>
                   <div class="row">
                     <div class="col-md-6">
                       <div class="file-loading">
@@ -206,22 +236,8 @@ if (isset($_POST['btnsave'])) {
                     </div>
                     <div class="col-md-6">
                       <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-10">
                           <img src="<?php echo $URI->base("/uploads/posts/$img") ?>" onerror="this.src='./assets/img/semperfil.png'" class="img-fluid">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="file-loading">
-                        <input id="curriculo" class="file" data-theme="fas" type="file" name="user_image2" accept="image/*">
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="row">
-                        <div class="col-md-4">
-                          <img src="<?php echo $URI->base("/uploads/posts/$img2") ?>" onerror="this.src='./assets/img/semperfil.png'" class="img-fluid">
                         </div>
                       </div>
                     </div>

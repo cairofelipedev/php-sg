@@ -22,6 +22,9 @@
           <span>Ranking</span>
         </a>
       </li>
+      <?php
+                          if ($_SESSION['type'] == 1) {
+                          ?>
       <li class="nav-item">
         <a class="nav-link text-black border" href="usuarios">
           <i class="text-black bi bi-person"></i>
@@ -34,6 +37,7 @@
           <span>Docs</span>
         </a>
       </li>
+      <?php } ?>
       <li class="nav-item">
         <a class="nav-link text-black" href="logout">
           <i class="text-black bi bi-box-arrow-in-right"></i>

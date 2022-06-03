@@ -159,7 +159,7 @@ if (isset($_GET['delete_id'])) {
                         <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
                           <button type="button" class="btn btn-success">Editar</button>
                         </a>
-                        <a href="<?php echo $URI->base('/delete-post/' . slugify($id)); ?>">
+                        <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
                           <button type="button" class="btn btn-danger">Excluir</button>
                         </a>
                       </div>
