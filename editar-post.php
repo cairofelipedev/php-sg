@@ -117,8 +117,8 @@ if (isset($_POST['btnsave'])) {
       <h1>Editar Post</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="dashboard">Home</a></li>
-          <li class="breadcrumb-item"><a href="posts">Postagens</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo $URI->base('/dashboard') ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo $URI->base('/posts') ?>">Postagens</a></li>
           <li class="breadcrumb-item active">Editar Post</li>
         </ol>
       </nav>

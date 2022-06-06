@@ -45,7 +45,7 @@ if ($_SESSION['type'] != 1) {
       <div class="d-flex justify-content-between">
         <nav>
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo $URI->base('/dashboard') ?>">Dashboard</a></li>
             <li class="breadcrumb-item active">Usuários</li>
           </ol>
         </nav>

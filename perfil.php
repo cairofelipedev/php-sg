@@ -141,7 +141,7 @@ if (isset($_POST['btnsave'])) {
       <h1>Profile</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="dashboard">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo $URI->base('/dashboard') ?>">Home</a></li>
           <li class="breadcrumb-item active">Usuário</li>
         </ol>
       </nav>
@@ -344,7 +344,7 @@ if (isset($_POST['btnsave'])) {
                         </div>
                       </div>
                       <div class="row mb-3">
-                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Link</label>
+                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Pontos</label>
                       <div class="col-md-8 col-lg-9">
                         <input name="points" type="text" class="form-control" id="points" value="<?php echo $points; ?>">
                       </div>

@@ -6,8 +6,8 @@
 <meta content="SG Sports, Sistema de Streamers, Influenciadores" name="keywords">
 
 <!-- Favicons -->
-<link href="img/SG.png" rel="icon">
-<link href="img/SG.png" rel="apple-touch-icon">
+<link href="<?php echo $URI->base('/img/SG.png') ?>" rel="icon">
+<link href="<?php echo $URI->base('/img/SG.png') ?>" rel="apple-touch-icon">
 
 
 <!-- Google Fonts -->

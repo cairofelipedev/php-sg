@@ -289,8 +289,12 @@ endif;
                               </div>
                               <div class="col-md-2">
                                 <div class="d-grid gap-2">
-                                  <button class="btn btn-success" type="button">Editar</button>
-                                  <button class="btn btn-danger" type="button">Excluir</button>
+                                  <a class="btn btn-success" href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                    Editar
+                                  </a>
+                                  <a class="btn btn-danger" href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                    Excluir
+                                  </a>
                                 </div>
                               </div>
                             </div>
@@ -308,7 +312,7 @@ endif;
                       }
                     }
                     ?>
-                     <?php
+                    <?php
                     if ($_SESSION['type'] == 2) {
                       $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[name]' ORDER BY id DESC");
                       $stmt->execute();

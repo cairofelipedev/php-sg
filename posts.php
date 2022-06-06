@@ -39,7 +39,7 @@ if (isset($_GET['delete_id'])) {
       <div class="d-flex justify-content-between">
         <nav>
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="dashboard">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo $URI->base('/dashboard') ?>">Home</a></li>
             <li class="breadcrumb-item active">Postagens</li>
           </ol>
         </nav>
@@ -65,104 +65,103 @@ if (isset($_GET['delete_id'])) {
                 <div class="card">
                   <div class="card-body">
                     <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
-                    <?php
-                    if ($type == 1) {
-                      echo "<h5 class='card-title-2 text-center'>Administrador</h5>";
-                    }
-                    if ($type == 2) {
-                      echo "<h5 class='card-title-2 text-center'>Afiliado</h5>";
-                    }
-                    if ($type == 4) {
-                      echo "<h5 class='card-title-2 text-center'>Cliente</h5>";
-                    }
-                    ?>
                     <img class="img-fluid" src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'">
-                    <h5 class="card-title2 text-center pt-2">
-                      <i class="bi bi-clock"></i>
-                      <?php
-                      $date = new DateTime($data_create);
-                      $date2 = $date->format('m');
-                      $date3 = $date->format('d');
-                      $date4 = $date->format('Y');
-                      echo $date3;
-                      if ($date2 == 01) {
-                        echo " Jan. ";
-                      }
-                      if ($date2 == 02) {
-                        echo " Fev. ";
-                      }
-                      if ($date2 == "03") {
-                        echo " Mar. ";
-                      }
-                      if ($date2 == 04) {
-                        echo " Abr. ";
-                      }
-                      if ($date2 == 05) {
-                        echo " Mai. ";
-                      }
-                      if ($date2 == 06) {
-                        echo " Jun. ";
-                      }
-                      if ($date2 == 07) {
-                        echo " Jul. ";
-                      }
-                      if ($date2 == "08") {
-                        echo " Ago. ";
-                      }
-                      if ($date2 == "09") {
-                        echo " Set. ";
-                      }
-                      if ($date2 == "10") {
-                        echo " Out. ";
-                      }
-                      if ($date2 == "11") {
-                        echo " Nov. ";
-                      }
-                      if ($date2 == "09") {
-                        echo " Dez. ";
-                      }
-                      echo $date4;
-                      ?>
-                    </h5>
-                    <h4 class="card-title2"><i class="bi bi-person"></i> <?php echo $user_create; ?></h4>
-                    <h4 class="card-title2">
-                      <?php
-                      if ($network == "insta") {
-                        echo "<i class='bi bi-instagram'></i> ";
-                      }
-                      if ($network == "face") {
-                        echo "<i class='bi bi-facebook'></i> ";
-                      }
-                      if ($network == "whats") {
-                        echo "<i class='bi bi-whatsapp'></i> ";
-                      }
-                      echo $network . " - " . $type;
-                      ?>
-                      <h5 class="card-title2">
-                        <?php
-                        if ($status == "1") {
-                          echo "<span class='text-success'>APROVADO</span>";
-                        }
-                        if ($status == "2") {
-                          echo "<span class='text-danger'>NÃO APROVADO</span>";
-                        }
-                        if ($status == "3") {
-                          echo "<span class='text-warning'>EM ANALISE</span>";
-                        }
-                        if ($status == "4") {
-                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
-                        }
-                        ?>
-                      </h5>
-                      <h4 class="card-title2"><?php echo $links; ?></h4>
-                      <div class="d-flex justify-content-between pt-2">
-                        <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
-                          <button type="button" class="btn btn-success">Editar</button>
-                        </a>
-                        <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
-                          <button type="button" class="btn btn-danger">Excluir</button>
-                        </a>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <h5 class="card-title2 pt-2">
+                        <i class="bi bi-clock-fill"></i>
+                          <?php
+                          $date = new DateTime($data_create);
+                          $date2 = $date->format('m');
+                          $date3 = $date->format('d');
+                          $date4 = $date->format('Y');
+                          echo $date3;
+                          if ($date2 == 01) {
+                            echo " Jan. ";
+                          }
+                          if ($date2 == 02) {
+                            echo " Fev. ";
+                          }
+                          if ($date2 == "03") {
+                            echo " Mar. ";
+                          }
+                          if ($date2 == 04) {
+                            echo " Abr. ";
+                          }
+                          if ($date2 == 05) {
+                            echo " Mai. ";
+                          }
+                          if ($date2 == 06) {
+                            echo " Jun. ";
+                          }
+                          if ($date2 == 07) {
+                            echo " Jul. ";
+                          }
+                          if ($date2 == "08") {
+                            echo " Ago. ";
+                          }
+                          if ($date2 == "09") {
+                            echo " Set. ";
+                          }
+                          if ($date2 == "10") {
+                            echo " Out. ";
+                          }
+                          if ($date2 == "11") {
+                            echo " Nov. ";
+                          }
+                          if ($date2 == "09") {
+                            echo " Dez. ";
+                          }
+                          echo $date4;
+                          ?>
+                        </h5>
+                        <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                        <h4 class="card-title2">
+                          <?php
+                          if ($network == "insta") {
+                            echo "<i class='bi bi-instagram'></i> ";
+                          }
+                          if ($network == "face") {
+                            echo "<i class='bi bi-facebook'></i> ";
+                          }
+                          if ($network == "whats") {
+                            echo "<i class='bi bi-whatsapp'></i> ";
+                          }
+                          echo $network . " - " . $type;
+                          ?>
+                          <h5 class="card-title2">
+                            <?php
+                            if ($status == "1") {
+                              echo "<span class='text-success'>APROVADO</span>";
+                            }
+                            if ($status == "2") {
+                              echo "<span class='text-danger'>NÃO APROVADO</span>";
+                            }
+                            if ($status == "3") {
+                              echo "<span class='text-warning'>EM ANALISE</span>";
+                            }
+                            if ($status == "4") {
+                              echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                            }
+                            ?>
+                          </h5>
+                          <h4 class="card-title2"><?php echo $links; ?></h4>
                       </div>
+                      <div class="col-md-6">
+                      <h4 class="card-title2 text-center pt-2">Enganjamento</h4>
+                        <h4 class="card-title2"><i class="bi bi-eye-fill"></i> Visualizações</h4>
+                        <h4 class="card-title2"><i class="bi bi-heart-fill"></i> Curtidas</h4>
+                        <h4 class="card-title2"><i class="bi bi-chat-fill"></i> Comentarios</h4>
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-between pt-2">
+                      <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                        <button type="button" class="btn btn-success">Editar</button>
+                      </a>
+                      <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                        <button type="button" class="btn btn-danger">Excluir</button>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
