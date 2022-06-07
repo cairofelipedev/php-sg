@@ -19,17 +19,24 @@ if (isset($_POST['btnsave'])) {
   $network = $_POST['network'];
   $type = $_POST['type'];
   $user_create = $_POST['user_create'];
+  $views = $_POST['views'];
+  $comments = $_POST['comments'];
+  $likes = $_POST['likes'];
 
   $imgFile = $_FILES['user_image']['name'];
   $tmp_dir = $_FILES['user_image']['tmp_name'];
   $imgSize = $_FILES['user_image']['size'];
 
+  $imgFile2 = $_FILES['user_image2']['name'];
+  $tmp_dir2 = $_FILES['user_image2']['tmp_name'];
+  $imgSize2 = $_FILES['user_image2']['size'];
 
   if (empty($title)) {
     $errMSG = "Por favor, insira um titulo para o post";
   } else {
     $upload_dir = 'uploads/posts/'; // upload directory
     $imgExt =  strtolower(pathinfo($imgFile, PATHINFO_EXTENSION));
+    $imgExt2 =  strtolower(pathinfo($imgFile2, PATHINFO_EXTENSION));
 
     $valid_extensions = array('jpeg', 'jpg', 'png'); // valid extensions
     // rename uploading image
@@ -37,6 +44,7 @@ if (isset($_POST['btnsave'])) {
     $title3 = substr($title2, 0, -1);
 
     $userpic  = $title3 . "image01" . "." . $imgExt;
+    $userpic2  = $title3 . "image02" . "." . $imgExt2;
 
     // allow valid image file formats
     if (in_array($imgExt, $valid_extensions)) {
@@ -47,18 +55,30 @@ if (isset($_POST['btnsave'])) {
         $errMSG = "Imagem muito grande.";
       }
     }
+    if (in_array($imgExt2, $valid_extensions)) {
+      // Check file size '5MB'
+      if ($imgSize2 < 5000000) {
+        move_uploaded_file($tmp_dir2, $upload_dir . $userpic2);
+      } else {
+        $errMSG = "Imagem muito grande.";
+      }
+    }
   }
   if (!isset($errMSG)) {
-    $stmt = $DB_con->prepare('INSERT INTO posts (title,description,link,status,img,user_create,type,network) VALUES(:utitle,:udescription,:ulink,:ustatus,:upic,:uuser_create,:utype,:unetwork)');
+    $stmt = $DB_con->prepare('INSERT INTO posts (title,description,link,status,img,img2,user_create,type,network,comments,likes,views) VALUES(:utitle,:udescription,:ulink,:ustatus,:upic,:upic2,:uuser_create,:utype,:unetwork,:ucomments,:ulikes,:uviews)');
 
     $stmt->bindParam(':utitle', $title);
     $stmt->bindParam(':udescription', $description);
     $stmt->bindParam(':ulink', $link);
     $stmt->bindParam(':ustatus', $status);
     $stmt->bindParam(':upic', $userpic);
+    $stmt->bindParam(':upic2', $userpic2);
     $stmt->bindParam(':uuser_create', $user_create);
     $stmt->bindParam(':utype', $type);
     $stmt->bindParam(':unetwork', $network);
+    $stmt->bindParam(':ucomments', $comments);
+    $stmt->bindParam(':ulikes', $likes);
+    $stmt->bindParam(':uviews', $views);
 
     if ($stmt->execute()) {
       echo ("<script>window.location = 'posts';</script>");
@@ -122,18 +142,18 @@ if (isset($_POST['btnsave'])) {
                         <label for="">Descrição do post</label>
                       </div>
                     </div>
-                    <div class="col-md-6 pb-3">
+                    <div class="col-md-6">
                       <div class="form-floating mb-3">
                         <select name="network" class="form-select" id="floatingSelect" aria-label="Rede Social do post">
                           <option value="insta">INSTAGRAM</option>
                           <option value="face">FACEBOOK</option>
-                          <option value="whats">WHATS-APP</option>
+                          <option value="twitter">TWITTER</option>
                         </select>
                         <label for="floatingSelect">REDE SOCIAL</label>
                       </div>
                     </div>
-                    <div class="col-md-6 pb-3">
-                      <div class="form-floating mb-3">
+                    <div class="col-md-6 pb-2">
+                      <div class="form-floating mb-2">
                         <select name="type" class="form-select" id="floatingSelect" aria-label="Tipo de post">
                           <option value="story">STORY</option>
                           <option value="feed">FEED</option>
@@ -149,13 +169,39 @@ if (isset($_POST['btnsave'])) {
                       </div>
                     </div>
                   </div>
+                  <h5 class="card-title">Engajamento</h5>
+                  <div class="row">
+                    <div class="col-md-4 pb-3">
+                      <div class="form-floating">
+                        <input type="text" class="form-control" value="" name="views" placeholder="Visualização do post">
+                        <label for="">Visualizações</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4 pb-3">
+                      <div class="form-floating">
+                        <input type="text" class="form-control" value="" name="comments" placeholder="Comentarios do post">
+                        <label for="">Comentarios</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4 pb-3">
+                      <div class="form-floating">
+                        <input type="text" class="form-control" value="" name="likes" placeholder="Curtidas do post">
+                        <label for="">Curtidas</label>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="col-md-6">
-                  <h5 class="card-title">Imagem</h5>
+                  <h5 class="card-title">Imagens</h5>
                   <div class="row">
                     <div class="col-md-6">
                       <div class="file-loading">
                         <input id="curriculo" class="file" data-theme="fas" type="file" name="user_image" accept="image/*">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="file-loading">
+                        <input id="curriculo" class="file" data-theme="fas" type="file" name="user_image2" accept="image/*">
                       </div>
                     </div>
                   </div>

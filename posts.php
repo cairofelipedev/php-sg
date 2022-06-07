@@ -68,8 +68,24 @@ if (isset($_GET['delete_id'])) {
                     <img class="img-fluid" src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'">
                     <div class="row">
                       <div class="col-md-6">
-                        <h5 class="card-title2 pt-2">
-                        <i class="bi bi-clock-fill"></i>
+                        <h5 class="card-title2 pt-2 text-center">
+                          <?php
+                          if ($status == "1") {
+                            echo "<span class='text-success'>APROVADO</span>";
+                          }
+                          if ($status == "2") {
+                            echo "<span class='text-danger'>NÃO APROVADO</span>";
+                          }
+                          if ($status == "3") {
+                            echo "<span class='text-warning'>EM ANALISE</span>";
+                          }
+                          if ($status == "4") {
+                            echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                          }
+                          ?>
+                        </h5>
+                        <h5 class="card-title2">
+                          <i class="bi bi-clock-fill"></i>
                           <?php
                           $date = new DateTime($data_create);
                           $date2 = $date->format('m');
@@ -124,34 +140,18 @@ if (isset($_GET['delete_id'])) {
                           if ($network == "face") {
                             echo "<i class='bi bi-facebook'></i> ";
                           }
-                          if ($network == "whats") {
-                            echo "<i class='bi bi-whatsapp'></i> ";
+                          if ($network == "twitter") {
+                            echo "<i class='bi bi-twitter'></i> ";
                           }
-                          echo $network . " - " . $type;
+                          echo $type;
                           ?>
-                          <h5 class="card-title2">
-                            <?php
-                            if ($status == "1") {
-                              echo "<span class='text-success'>APROVADO</span>";
-                            }
-                            if ($status == "2") {
-                              echo "<span class='text-danger'>NÃO APROVADO</span>";
-                            }
-                            if ($status == "3") {
-                              echo "<span class='text-warning'>EM ANALISE</span>";
-                            }
-                            if ($status == "4") {
-                              echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
-                            }
-                            ?>
-                          </h5>
                           <h4 class="card-title2"><?php echo $links; ?></h4>
                       </div>
                       <div class="col-md-6">
-                      <h4 class="card-title2 text-center pt-2">Enganjamento</h4>
-                        <h4 class="card-title2"><i class="bi bi-eye-fill"></i> Visualizações</h4>
-                        <h4 class="card-title2"><i class="bi bi-heart-fill"></i> Curtidas</h4>
-                        <h4 class="card-title2"><i class="bi bi-chat-fill"></i> Comentarios</h4>
+                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+                        <h4 class="card-title2"><i class="bi bi-eye-fill"></i> <?php echo $views; ?></h4>
+                        <h4 class="card-title2"><i class="bi bi-heart-fill"></i> <?php echo $likes; ?></h4>
+                        <h4 class="card-title2"><i class="bi bi-chat-fill"></i> <?php echo $comments; ?></h4>
                       </div>
                     </div>
                     <div class="d-flex justify-content-between pt-2">

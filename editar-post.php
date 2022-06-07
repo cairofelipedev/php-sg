@@ -7,6 +7,7 @@ if (isset($_SESSION['logado'])) :
 else :
   header("Location:login");
 endif;
+error_reporting(~E_ALL);
 
 require_once 'config/classes/Url.class.php';
 require_once 'config/classes/Helper.php';
@@ -49,7 +50,9 @@ if (isset($_POST['btnsave'])) {
   $tmp_dir = $_FILES['user_image']['tmp_name'];
   $imgSize = $_FILES['user_image']['size'];
 
-
+  $imgFile2 = $_FILES['user_image2']['name'];
+  $tmp_dir2 = $_FILES['user_image2']['tmp_name'];
+  $imgSize2 = $_FILES['user_image2']['size'];
 
   if ($imgFile) {
     $upload_dir = 'uploads/posts/'; // upload directory	
@@ -73,6 +76,28 @@ if (isset($_POST['btnsave'])) {
     $userpic = $edit_row['img']; // old image from database
   }
 
+   if ($imgFile2) {
+    $upload_dir = 'uploads/posts/'; // upload directory	
+    $imgExt2 = strtolower(pathinfo($imgFile2, PATHINFO_EXTENSION)); // get image extension
+    $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // valid extensions
+    $title2 = preg_replace("/\s+/", "", $title);
+    $title3 = substr($title2, 0, -1);
+    $userpic2 = $title3 . "edit2" . "." . $imgExt2;
+    if (in_array($imgExt2, $valid_extensions)) {
+      if ($imgSize2 < 5000000) {
+        unlink($upload_dir . $edit_row['img2']);
+        move_uploaded_file($tmp_dir2, $upload_dir . $userpic2);
+      } else {
+        $errMSG = "Imagem grande demais, max 5MB";
+      }
+    } else {
+      $errMSG = "Imagens apenas nos formatos JPG, JPEG, PNG & GIF files are allowed.";
+    }
+  } else {
+    // if no image selected the old image remain as it is.
+    $userpic2 = $edit_row['img2']; // old image from database
+  }
+
   if (!isset($errMSG)) {
     $stmt = $DB_con->prepare('UPDATE posts
     SET 
@@ -82,7 +107,8 @@ if (isset($_POST['btnsave'])) {
     status=:ustatus,
     type=:utype,
     network=:unetwork,
-    img=:upic
+    img=:upic,
+    img2=:upic2
     WHERE id=:uid');
     $stmt->bindParam(':utitle', $title);
     $stmt->bindParam(':udescription', $description);
@@ -91,6 +117,7 @@ if (isset($_POST['btnsave'])) {
     $stmt->bindParam(':unetwork', $network);
     $stmt->bindParam(':ulink', $link);
     $stmt->bindParam(':upic', $userpic);
+    $stmt->bindParam(':upic2', $userpic2);
     $stmt->bindParam(':uid', $id);
 
     if ($stmt->execute()) {
@@ -155,7 +182,7 @@ if (isset($_POST['btnsave'])) {
                         <label for="">Descrição do post</label>
                       </div>
                     </div>
-                    <div class="col-md-6 pb-3">
+                    <div class="col-md-6">
                       <div class="form-floating mb-3">
                         <select name="network" class="form-select" id="floatingSelect" aria-label="Rede Social do post">
                           <option value="<?php echo $network; ?>">
@@ -178,7 +205,7 @@ if (isset($_POST['btnsave'])) {
                         <label for="floatingSelect">REDE SOCIAL</label>
                       </div>
                     </div>
-                    <div class="col-md-6 pb-3">
+                    <div class="col-md-6">
                       <div class="form-floating mb-3">
                         <select name="type" class="form-select" id="floatingSelect" aria-label="Tipo de post">
                           <option value="<?php echo $type; ?>"><?php echo $type; ?> (selecionado)
@@ -227,7 +254,7 @@ if (isset($_POST['btnsave'])) {
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <h5 class="card-title">Imagem</h5>
+                  <h5 class="card-title">Imagens</h5>
                   <div class="row">
                     <div class="col-md-6">
                       <div class="file-loading">
@@ -238,6 +265,20 @@ if (isset($_POST['btnsave'])) {
                       <div class="row">
                         <div class="col-md-10">
                           <img src="<?php echo $URI->base("/uploads/posts/$img") ?>" onerror="this.src='./assets/img/semperfil.png'" class="img-fluid">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row pt-2">
+                    <div class="col-md-6">
+                      <div class="file-loading">
+                        <input id="curriculo" class="file" data-theme="fas" type="file" name="user_image2" accept="image/*">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="row">
+                        <div class="col-md-10">
+                          <img src="<?php echo $URI->base("/uploads/posts/$img2") ?>" onerror="this.src='./assets/img/semperfil.png'" class="img-fluid">
                         </div>
                       </div>
                     </div>
