@@ -96,6 +96,9 @@ if (isset($_POST['btnsave'])) {
 </head>
 
 <body>
+<style>
+  .Div1,.Div2,.Div3{display:none;}
+</style>
   <?php include "components/Header.php"; ?>
   <?php include "components/SideBar.php"; ?>
   <main id="main" class="main">
@@ -190,34 +193,55 @@ if (isset($_POST['btnsave'])) {
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="col-md-6">
-                  <h5 class="card-title">Imagens</h5>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="file-loading">
-                        <input id="curriculo" class="file" data-theme="fas" type="file" name="user_image" accept="image/*">
-                      </div>
+                  <div class="Container">
+                  <form action="#">
+                    <select name="SelectOptions" id="SelectOptions" required>
+                      <option value="">Selecione</option>
+                      <option value="Div1">Div 1</option>
+                      <option value="Div2">Div 2</option>
+                      <option value="Div3">Div 3</option>
+                    </select>
+                  </form>
+                  <div class="DivPai">
+                    <div class="Div1">
+                      Qualquer Texto
                     </div>
-                    <div class="col-md-6">
-                      <div class="file-loading">
-                        <input id="curriculo" class="file" data-theme="fas" type="file" name="user_image2" accept="image/*">
-                      </div>
+                    <div class="Div2">
+                      <img src="Images/Farol.jpg" alt="Foto">
+                    </div>
+                    <div class="Div3">
+                      Outro texto
                     </div>
                   </div>
                 </div>
-
-                <input type="hidden" value="4" name="status">
-                <input type="hidden" value="<?php echo $_SESSION['name']; ?>" name="user_create">
-                <div class="text-center pt-2">
-                  <button type="submit" name="btnsave" class="btn btn-primary">Adicionar</button>
-                  <button type="reset" class="btn btn-secondary">Resetar</button>
-                </div>
-              </form><!-- Vertical Form -->
-
             </div>
+            <div class="col-md-6">
+              <h5 class="card-title">Imagens</h5>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="file-loading">
+                    <input id="curriculo" class="file" data-theme="fas" type="file" name="user_image" accept="image/*">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="file-loading">
+                    <input id="curriculo" class="file" data-theme="fas" type="file" name="user_image2" accept="image/*">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <input type="hidden" value="4" name="status">
+            <input type="hidden" value="<?php echo $_SESSION['name']; ?>" name="user_create">
+            <div class="text-center pt-2">
+              <button type="submit" name="btnsave" class="btn btn-primary">Adicionar</button>
+              <button type="reset" class="btn btn-secondary">Resetar</button>
+            </div>
+            </form><!-- Vertical Form -->
+
           </div>
         </div>
+      </div>
     </section>
 
   </main><!-- End #main -->
@@ -239,6 +263,16 @@ if (isset($_POST['btnsave'])) {
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.2/js/fileinput.min.js" integrity="sha512-OgkQrY08KbdmZRLKrsBkVCv105YJz+HdwKACjXqwL+r3mVZBwl20vsQqpWPdRnfoxJZePgaahK9G62SrY9hR7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    $(document).ready(function() {
+      //Select para mostrar e esconder divs
+      $('#SelectOptions').on('change', function() {
+        var SelectValue = '.' + $(this).val();
+        $('.DivPai div').hide();
+        $(SelectValue).toggle();
+      });
+    });
+  </script>
 </body>
 
 </html>
