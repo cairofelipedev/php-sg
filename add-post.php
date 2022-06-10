@@ -19,9 +19,26 @@ if (isset($_POST['btnsave'])) {
   $network = $_POST['network'];
   $type = $_POST['type'];
   $user_create = $_POST['user_create'];
-  $views = $_POST['views'];
+  $views_insta = $_POST['views_insta'];
+  $views_tt = $_POST['views_tt'];
+  $views_fb = $_POST['views_fb'];
   $comments = $_POST['comments'];
-  $likes = $_POST['likes'];
+  $likes_fb = $_POST['likes_fb'];
+  $likes_tiktok = $_POST['likes_tiktok'];
+  $impressions = $_POST['impressions'];
+  $mentions = $_POST['mentions'];
+  $followers_tt = $_POST['followers_tt'];
+  $followers_insta = $_POST['followers_insta'];
+  $reach_fb = $_POST['reach_fb'];
+  $reach_insta = $_POST['reach_insta'];
+  $views_video = $_POST['views_video'];
+  $views_profile = $_POST['views_profile'];
+  $shares = $_POST['shares'];
+  $number_videos = $_POST['number_videos'];
+  $number_lives = $_POST['number_lives'];
+  $media = $_POST['media'];
+  $minutes = $_POST['minutes'];
+  $unique_participants = $_POST['unique_participants'];
 
   $imgFile = $_FILES['user_image']['name'];
   $tmp_dir = $_FILES['user_image']['tmp_name'];
@@ -64,8 +81,9 @@ if (isset($_POST['btnsave'])) {
       }
     }
   }
+
   if (!isset($errMSG)) {
-    $stmt = $DB_con->prepare('INSERT INTO posts (title,description,link,status,img,img2,user_create,type,network,comments,likes,views) VALUES(:utitle,:udescription,:ulink,:ustatus,:upic,:upic2,:uuser_create,:utype,:unetwork,:ucomments,:ulikes,:uviews)');
+    $stmt = $DB_con->prepare('INSERT INTO posts (title,description,link,status,img,img2,user_create,type,network,comments,likes_fb,likes_tiktok,views_insta,views_tt,views_fb,impressions,mentions,followers_tt,followers_insta,reach_insta,reach_fb,views_video,shares,number_videos,number_lives,media,minutes,unique_participants) VALUES(:utitle,:udescription,:ulink,:ustatus,:upic,:upic2,:uuser_create,:utype,:unetwork,:ucomments,:ulikes_fb,:uviews_insta,:uviews_tt,:uviews_fb,:uimpressions,:umentions,:ufollowers_tt,:ufollowers_insta,:ureach_fb,:ureach_insta,:uviews_video,:ushares,:unumber_videos,:unumber_lives,:umedia,:uminutes,:uunique_participants)');
 
     $stmt->bindParam(':utitle', $title);
     $stmt->bindParam(':udescription', $description);
@@ -77,8 +95,23 @@ if (isset($_POST['btnsave'])) {
     $stmt->bindParam(':utype', $type);
     $stmt->bindParam(':unetwork', $network);
     $stmt->bindParam(':ucomments', $comments);
-    $stmt->bindParam(':ulikes', $likes);
-    $stmt->bindParam(':uviews', $views);
+    $stmt->bindParam(':ulikes_fb', $likes_fb);
+    $stmt->bindParam(':uviews_insta', $views_insta);
+    $stmt->bindParam(':uviews_tt', $views_tt);
+    $stmt->bindParam(':uviews_fb', $views_fb);
+    $stmt->bindParam(':uimpressions', $impressions);
+    $stmt->bindParam(':umentions', $mentions);
+    $stmt->bindParam(':ufollowers_tt', $followers_tt);
+    $stmt->bindParam(':ufollowers_insta', $followers_insta);
+    $stmt->bindParam(':ureach_fb', $reach_fb);
+    $stmt->bindParam(':ureach_insta', $reach_insta);
+    $stmt->bindParam(':ushares', $shares);
+    $stmt->bindParam(':uviews_video', $views_video);
+    $stmt->bindParam(':unumber_videos', $number_videos);
+    $stmt->bindParam(':unumber_lives', $number_lives);
+    $stmt->bindParam(':umedia', $media);
+    $stmt->bindParam(':uminutes', $minutes);
+    $stmt->bindParam(':uunique_participants', $unique_participants);
 
     if ($stmt->execute()) {
       echo ("<script>window.location = 'posts';</script>");
@@ -96,9 +129,15 @@ if (isset($_POST['btnsave'])) {
 </head>
 
 <body>
-<style>
-  .Div1,.Div2,.Div3{display:none;}
-</style>
+  <style>
+    .twitter,
+    .facebook,
+    .instagram,
+    .tiktok,
+    .twitch {
+      display: none;
+    }
+  </style>
   <?php include "components/Header.php"; ?>
   <?php include "components/SideBar.php"; ?>
   <main id="main" class="main">
@@ -129,119 +168,238 @@ if (isset($_POST['btnsave'])) {
               }
               ?>
               <!-- Vertical Form -->
-              <form method="POST" enctype="multipart/form-data" class="row">
-                <div class="col-md-6">
-                  <h5 class="card-title">Informações</h5>
-                  <div class="row">
-                    <div class="col-md-6 pb-3">
-                      <div class="form-floating">
-                        <textarea type="text" class="form-control" value="<?php echo $title; ?>" name="title" placeholder="Titulo do post" style="height: 100px;"></textarea>
-                        <label for="">Título do Post</label>
+              <form method="POST" enctype="multipart/form-data">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h5 class="card-title">Informações</h5>
+                    <div class="row">
+                      <div class="col-md-6 pb-3">
+                        <div class="form-floating">
+                          <textarea type="text" class="form-control" value="<?php echo $title; ?>" name="title" placeholder="Titulo do post" style="height: 100px;"></textarea>
+                          <label for="">Título do Post</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6 pb-3">
+                        <div class="form-floating">
+                          <textarea type="text" class="form-control" value="<?php echo $description; ?>" name="description" placeholder="Subtitulo do post" style="height: 100px;"></textarea>
+                          <label for="">Descrição do post</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                          <select name="network" class="form-select" id="SelectOptions" required>
+                            <option value="">SELECIONE A REDE SOCIAL</option>
+                            <option value="twitter">TWITTER</option>
+                            <option value="facebook">FACEBOOK</option>
+                            <option value="instagram">INSTAGRAM</option>
+                            <option value="tiktok">TIKTOK</option>
+                            <option value="twitch">TWITCH</option>
+                          </select>
+                          <label for="floatingSelect">REDE SOCIAL</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6 pb-2">
+                        <div class="form-floating mb-2">
+                          <select name="type" class="form-select" id="floatingSelect" aria-label="Tipo de post">
+                            <option value="story">STORY</option>
+                            <option value="feed">FEED</option>
+                            <option value="status">STATUS</option>
+                          </select>
+                          <label for="floatingSelect">TIPO</label>
+                        </div>
+                      </div>
+                      <div class="col-md-12 pb-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" value="" name="link" placeholder="Link do post">
+                          <label for="">Link do post</label>
+                        </div>
                       </div>
                     </div>
-                    <div class="col-md-6 pb-3">
-                      <div class="form-floating">
-                        <textarea type="text" class="form-control" value="<?php echo $description; ?>" name="description" placeholder="Subtitulo do post" style="height: 100px;"></textarea>
-                        <label for="">Descrição do post</label>
+                    <h5 class="card-title">Engajamento</h5>
+                    <div class="DivPai">
+                      <div class="twitter">
+                        <div class="row">
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="impressions" placeholder="Visualização do post">
+                              <label for="">Impressões</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="views_tt" placeholder="Visitas do perfil">
+                              <label for="">Visitas ao perfil</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="mentions" placeholder="Menções do post">
+                              <label for="">Menções</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="followers_tt" placeholder="Seguidores">
+                              <label for="">Seguidores</label>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-floating mb-3">
-                        <select name="network" class="form-select" id="floatingSelect" aria-label="Rede Social do post">
-                          <option value="insta">INSTAGRAM</option>
-                          <option value="face">FACEBOOK</option>
-                          <option value="twitter">TWITTER</option>
-                        </select>
-                        <label for="floatingSelect">REDE SOCIAL</label>
-                      </div>
-                    </div>
-                    <div class="col-md-6 pb-2">
-                      <div class="form-floating mb-2">
-                        <select name="type" class="form-select" id="floatingSelect" aria-label="Tipo de post">
-                          <option value="story">STORY</option>
-                          <option value="feed">FEED</option>
-                          <option value="status">STATUS</option>
-                        </select>
-                        <label for="floatingSelect">TIPO</label>
-                      </div>
-                    </div>
-                    <div class="col-md-12 pb-3">
-                      <div class="form-floating">
-                        <input type="text" class="form-control" value="" name="link" placeholder="Link do post">
-                        <label for="">Link do post</label>
-                      </div>
-                    </div>
-                  </div>
-                  <h5 class="card-title">Engajamento</h5>
-                  <div class="row">
-                    <div class="col-md-4 pb-3">
-                      <div class="form-floating">
-                        <input type="text" class="form-control" value="" name="views" placeholder="Visualização do post">
-                        <label for="">Visualizações</label>
-                      </div>
-                    </div>
-                    <div class="col-md-4 pb-3">
-                      <div class="form-floating">
-                        <input type="text" class="form-control" value="" name="comments" placeholder="Comentarios do post">
-                        <label for="">Comentarios</label>
-                      </div>
-                    </div>
-                    <div class="col-md-4 pb-3">
-                      <div class="form-floating">
-                        <input type="text" class="form-control" value="" name="likes" placeholder="Curtidas do post">
-                        <label for="">Curtidas</label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="Container">
-                  <form action="#">
-                    <select name="SelectOptions" id="SelectOptions" required>
-                      <option value="">Selecione</option>
-                      <option value="Div1">Div 1</option>
-                      <option value="Div2">Div 2</option>
-                      <option value="Div3">Div 3</option>
-                    </select>
-                  </form>
-                  <div class="DivPai">
-                    <div class="Div1">
-                      Qualquer Texto
-                    </div>
-                    <div class="Div2">
-                      <img src="Images/Farol.jpg" alt="Foto">
-                    </div>
-                    <div class="Div3">
-                      Outro texto
-                    </div>
-                  </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-              <h5 class="card-title">Imagens</h5>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="file-loading">
-                    <input id="curriculo" class="file" data-theme="fas" type="file" name="user_image" accept="image/*">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="file-loading">
-                    <input id="curriculo" class="file" data-theme="fas" type="file" name="user_image2" accept="image/*">
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            <input type="hidden" value="4" name="status">
-            <input type="hidden" value="<?php echo $_SESSION['name']; ?>" name="user_create">
-            <div class="text-center pt-2">
-              <button type="submit" name="btnsave" class="btn btn-primary">Adicionar</button>
-              <button type="reset" class="btn btn-secondary">Resetar</button>
-            </div>
-            </form><!-- Vertical Form -->
+                      <div class="facebook">
+                        <div class="row">
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="reach_fb" placeholder="Visualização do post">
+                              <label for="">Alcance na página</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="views_fb" placeholder="Visitas do perfil">
+                              <label for="">Visitas ao perfil</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="likes_fb" placeholder="Novas curtidas">
+                              <label for="">Curtidas</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="instagram">
+                        <div class="row">
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="reach_insta" placeholder="Visualização do post">
+                              <label for="">Alcance</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="views_insta" placeholder="Visitas do perfil">
+                              <label for="">Visitas ao perfil</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="followers_insta" placeholder="Novos seguidores">
+                              <label for="">Novos seguidores</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
+                      <div class="tiktok">
+                        <div class="row">
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="views_video" placeholder="Visualização do post">
+                              <label for="">Visualizações de vídeo</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="views_profile" placeholder="Visitas do perfil">
+                              <label for="">Visualizações de perfil</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="likes_tiktok" placeholder="Novos seguidores">
+                              <label for="">Curtidas</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="comments" placeholder="Novos seguidores">
+                              <label for="">Comentários</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="shares" placeholder="Novos seguidores">
+                              <label for="">Compartilhamentos</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="followers_tiktok" placeholder="Novos seguidores">
+                              <label for="">Seguidores</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="number_videos" placeholder="Número de vídeos">
+                              <label for="">Número de vídeos publicados</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="number_lives" placeholder="Número de lives">
+                              <label for="">Número de lives realizadas</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="twitch">
+                        <div class="row">
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="media" placeholder="Média de espectadores">
+                              <label for="">Média de espectadores</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="minutes" placeholder="Minutos Gerados">
+                              <label for="">Minutos gerados</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="followers_twitch" placeholder="Novos seguidores">
+                              <label for="">Novos seguidores</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="unique_participants" placeholder="Participantes Unicos">
+                              <label for="">Paticipantes únicos do chat</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <h5 class="card-title">Imagens</h5>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="file-loading">
+                          <input id="curriculo" class="file" data-theme="fas" type="file" name="user_image" accept="image/*">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="file-loading">
+                          <input id="curriculo" class="file" data-theme="fas" type="file" name="user_image2" accept="image/*">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <input type="hidden" value="4" name="status">
+                <input type="hidden" value="<?php echo $_SESSION['name']; ?>" name="user_create">
+                <div class="text-center pt-2">
+                  <button type="submit" name="btnsave" class="btn btn-primary">Adicionar</button>
+                  <button type="reset" class="btn btn-secondary">Resetar</button>
+                </div>
+              </form><!-- Vertical Form -->
+
+            </div>
           </div>
         </div>
-      </div>
     </section>
 
   </main><!-- End #main -->
@@ -268,7 +426,11 @@ if (isset($_POST['btnsave'])) {
       //Select para mostrar e esconder divs
       $('#SelectOptions').on('change', function() {
         var SelectValue = '.' + $(this).val();
-        $('.DivPai div').hide();
+        $('.DivPai .twitter').hide();
+        $('.DivPai .facebook').hide();
+        $('.DivPai .instagram').hide();
+        $('.DivPai .tiktok').hide();
+        $('.DivPai .twitch').hide();
         $(SelectValue).toggle();
       });
     });
