@@ -65,7 +65,7 @@ if (isset($_GET['delete_id'])) {
                 <div class="card">
                   <div class="card-body">
                     <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
-                    <img class="img-fluid" src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'">
+                    <img  src="./uploads/posts/<?php echo $row['img']; ?>" height="300px" width="100%" onerror="this.src='./assets/img/sem-imagem-10.jpg'">
                     <div class="row">
                       <div class="col-md-6">
                         <h5 class="card-title2 pt-2 text-center">
@@ -134,14 +134,17 @@ if (isset($_GET['delete_id'])) {
                         <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
                         <h4 class="card-title2">
                           <?php
-                          if ($network == "insta") {
+                          if ($network == "instagram") {
                             echo "<i class='bi bi-instagram'></i> ";
                           }
-                          if ($network == "face") {
+                          if ($network == "facebook") {
                             echo "<i class='bi bi-facebook'></i> ";
                           }
                           if ($network == "twitter") {
                             echo "<i class='bi bi-twitter'></i> ";
+                          }
+                          if ($network == "tiktok") {
+                            echo "<i class='bi bi-tiktok'></i>";
                           }
                           echo $type;
                           ?>
@@ -149,9 +152,37 @@ if (isset($_GET['delete_id'])) {
                       </div>
                       <div class="col-md-6">
                         <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
-                        <h4 class="card-title2"><i class="bi bi-eye-fill"></i> <?php echo $views; ?></h4>
-                        <h4 class="card-title2"><i class="bi bi-heart-fill"></i> <?php echo $likes; ?></h4>
-                        <h4 class="card-title2"><i class="bi bi-chat-fill"></i> <?php echo $comments; ?></h4>
+                        <?php if ($network == "twitter") { ?>
+                          <h4 class="card-title2">Impressões: <?php echo $impressions; ?></h4>
+                          <h4 class="card-title2">Menções: <?php echo $mentions; ?></h4>
+                          <h4 class="card-title2">Visualizações: <?php echo $views_tt; ?></h4>
+                          <h4 class="card-title2">Seguidores: <?php echo $followers_tt; ?></h4>
+                        <?php } ?>
+                        <?php if ($network == "facebook") { ?>
+                          <h4 class="card-title2">Alcance: <?php echo $reach_fb; ?></h4>
+                          <h4 class="card-title2">Visita à pagina: <?php echo $views_fb; ?></h4>
+                          <h4 class="card-title2">Novas Curtidas: <?php echo $likes_fb; ?></h4>
+                        <?php } ?>
+                        <?php if ($network == "instagram") { ?>
+                          <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
+                          <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
+                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
+                        <?php } ?>
+                        <?php if ($network == "tiktok") { ?>
+                          <h4 class="card-title2">Visualizações de vídeo : <?php echo $views_video; ?></h4>
+                          <h4 class="card-title2">Visualizações de perfil: <?php echo $views_profile; ?></h4>
+                          <h4 class="card-title2">Curtidas: <?php echo $comments; ?></h4>
+                          <h4 class="card-title2">Compartilhamentos: <?php echo $shares ?></h4>
+                          <h4 class="card-title2">Seguidores: <?php echo $followers_tiktok ?></h4>
+                          <h4 class="card-title2">Número de vídeos publicados: <?php echo $number_videos; ?></h4>
+                          <h4 class="card-title2">Número de lives realizadas: <?php echo $number_lives; ?></h4>
+                        <?php } ?>
+                        <?php if ($network == "twitch") { ?>
+                          <h4 class="card-title2">Média de espectadores : <?php echo $media; ?></h4>
+                          <h4 class="card-title2">Minutos assistidos gerados: <?php echo $minutes; ?></h4>
+                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_twitch; ?></h4>
+                          <h4 class="card-title2">Participantes únicos do chat: <?php echo $unique_participants ?></h4>
+                        <?php } ?>
                       </div>
                     </div>
                     <div class="d-flex justify-content-between pt-2">

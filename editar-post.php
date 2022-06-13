@@ -264,7 +264,7 @@ if (isset($_POST['btnsave'])) {
                     <div class="col-md-6">
                       <div class="row">
                         <div class="col-md-10">
-                          <img src="<?php echo $URI->base("/uploads/posts/$img") ?>" onerror="this.src='./assets/img/semperfil.png'" class="img-fluid">
+                          <img src="<?php echo $URI->base("/uploads/posts/$img") ?>" onerror="this.src='<?php echo $URI->base('/assets/img/sem-imagem-10.jpg') ?>'" class="img-fluid">
                         </div>
                       </div>
                     </div>
@@ -278,7 +278,7 @@ if (isset($_POST['btnsave'])) {
                     <div class="col-md-6">
                       <div class="row">
                         <div class="col-md-10">
-                          <img src="<?php echo $URI->base("/uploads/posts/$img2") ?>" onerror="this.src='./assets/img/semperfil.png'" class="img-fluid">
+                          <img src="<?php echo $URI->base("/uploads/posts/$img2") ?>" onerror="this.src='<?php echo $URI->base('/assets/img/sem-imagem-10.jpg') ?>'" class="img-fluid">
                         </div>
                       </div>
                     </div>

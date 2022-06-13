@@ -202,7 +202,7 @@ endif;
                           <div class="post-item">
                             <div class="row">
                               <div class="col-md-7">
-                                <img src="./uploads/posts/<?php echo $_SESSION['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" class="rounded">
+                                <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" class="rounded">
                                 <h4><a href="#"> <?php echo $title ?></a></h4>
                                 <h4><a href="#"> <i class="bi bi-person"></i> <?php echo $user_create; ?></a></h4>
                                 <h4>
@@ -285,9 +285,7 @@ endif;
                                 </h4>
                               </div>
                               <div class="col-md-2">
-                                <h4 class="card-title2"><i class="bi bi-eye-fill"></i> <?php echo $views; ?></h4>
-                                <h4 class="card-title2"><i class="bi bi-heart-fill"></i> <?php echo $likes; ?></h4>
-                                <h4 class="card-title2"><i class="bi bi-chat-fill"></i> <?php echo $comments; ?></h4>
+                                
                               </div>
                               <div class="col-md-2">
                                 <div class="d-grid gap-2">

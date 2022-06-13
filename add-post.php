@@ -19,26 +19,33 @@ if (isset($_POST['btnsave'])) {
   $network = $_POST['network'];
   $type = $_POST['type'];
   $user_create = $_POST['user_create'];
-  $views_insta = $_POST['views_insta'];
-  $views_tt = $_POST['views_tt'];
-  $views_fb = $_POST['views_fb'];
-  $comments = $_POST['comments'];
-  $likes_fb = $_POST['likes_fb'];
-  $likes_tiktok = $_POST['likes_tiktok'];
+  /* twitter */
   $impressions = $_POST['impressions'];
   $mentions = $_POST['mentions'];
   $followers_tt = $_POST['followers_tt'];
-  $followers_insta = $_POST['followers_insta'];
+  $views_tt = $_POST['views_tt'];
+  /* facebook */
   $reach_fb = $_POST['reach_fb'];
+  $views_fb = $_POST['views_fb'];
+  $likes_fb = $_POST['likes_fb'];
+  /* instagram */
+  $views_insta = $_POST['views_insta'];
+  $followers_insta = $_POST['followers_insta'];
   $reach_insta = $_POST['reach_insta'];
+  /* tiktok */
+  $number_videos = $_POST['number_videos'];
+  $number_lives = $_POST['number_lives'];
+  $followers_tiktok = $_POST['followers_tiktok'];
+  $likes_tiktok = $_POST['likes_tiktok'];
   $views_video = $_POST['views_video'];
   $views_profile = $_POST['views_profile'];
   $shares = $_POST['shares'];
-  $number_videos = $_POST['number_videos'];
-  $number_lives = $_POST['number_lives'];
+  $comments = $_POST['comments'];
+  /* twitch */
   $media = $_POST['media'];
   $minutes = $_POST['minutes'];
   $unique_participants = $_POST['unique_participants'];
+  $followers_twitch = $_POST['followers_twitch'];
 
   $imgFile = $_FILES['user_image']['name'];
   $tmp_dir = $_FILES['user_image']['tmp_name'];
@@ -83,7 +90,7 @@ if (isset($_POST['btnsave'])) {
   }
 
   if (!isset($errMSG)) {
-    $stmt = $DB_con->prepare('INSERT INTO posts (title,description,link,status,img,img2,user_create,type,network,comments,likes_fb,likes_tiktok,views_insta,views_tt,views_fb,impressions,mentions,followers_tt,followers_insta,reach_insta,reach_fb,views_video,shares,number_videos,number_lives,media,minutes,unique_participants) VALUES(:utitle,:udescription,:ulink,:ustatus,:upic,:upic2,:uuser_create,:utype,:unetwork,:ucomments,:ulikes_fb,:uviews_insta,:uviews_tt,:uviews_fb,:uimpressions,:umentions,:ufollowers_tt,:ufollowers_insta,:ureach_fb,:ureach_insta,:uviews_video,:ushares,:unumber_videos,:unumber_lives,:umedia,:uminutes,:uunique_participants)');
+    $stmt = $DB_con->prepare('INSERT INTO posts (title,description,link,status,img,img2,user_create,type,network,comments,likes_fb,likes_tiktok,views_insta,views_tt,views_fb,impressions,mentions,followers_tt,followers_insta,followers_tiktok,followers_twitch,reach_insta,reach_fb,views_video,views_profile,shares,number_videos,number_lives,media,minutes,unique_participants) VALUES(:utitle,:udescription,:ulink,:ustatus,:upic,:upic2,:uuser_create,:utype,:unetwork,:ucomments,:ulikes_fb,:ulikes_tiktok,:uviews_insta,:uviews_tt,:uviews_fb,:uimpressions,:umentions,:ufollowers_tt,:ufollowers_insta,:ufollowers_tiktok,:ufollowers_twitch,:ureach_insta,   :ureach_fb,:uviews_video,:uviews_profile,:ushares,:unumber_videos, :unumber_lives,:umedia,:uminutes,:uunique_participants)');
 
     $stmt->bindParam(':utitle', $title);
     $stmt->bindParam(':udescription', $description);
@@ -94,21 +101,30 @@ if (isset($_POST['btnsave'])) {
     $stmt->bindParam(':uuser_create', $user_create);
     $stmt->bindParam(':utype', $type);
     $stmt->bindParam(':unetwork', $network);
-    $stmt->bindParam(':ucomments', $comments);
-    $stmt->bindParam(':ulikes_fb', $likes_fb);
-    $stmt->bindParam(':uviews_insta', $views_insta);
-    $stmt->bindParam(':uviews_tt', $views_tt);
-    $stmt->bindParam(':uviews_fb', $views_fb);
+    /* twitter */
     $stmt->bindParam(':uimpressions', $impressions);
     $stmt->bindParam(':umentions', $mentions);
+    $stmt->bindParam(':uviews_tt', $views_tt);
     $stmt->bindParam(':ufollowers_tt', $followers_tt);
-    $stmt->bindParam(':ufollowers_insta', $followers_insta);
+    /* facebook */
+    $stmt->bindParam(':uviews_fb', $views_fb);
     $stmt->bindParam(':ureach_fb', $reach_fb);
+    $stmt->bindParam(':ulikes_fb', $likes_fb);
+    /* instagram */
+    $stmt->bindParam(':uviews_insta', $views_insta);
+    $stmt->bindParam(':ufollowers_insta', $followers_insta);
     $stmt->bindParam(':ureach_insta', $reach_insta);
-    $stmt->bindParam(':ushares', $shares);
-    $stmt->bindParam(':uviews_video', $views_video);
+    /* tiktok */
     $stmt->bindParam(':unumber_videos', $number_videos);
     $stmt->bindParam(':unumber_lives', $number_lives);
+    $stmt->bindParam(':ufollowers_tiktok', $followers_tiktok);
+    $stmt->bindParam(':ulikes_tiktok', $likes_tiktok);
+    $stmt->bindParam(':ucomments', $comments);
+    $stmt->bindParam(':ushares', $shares);
+    $stmt->bindParam(':uviews_video', $views_video);
+    $stmt->bindParam(':uviews_profile', $views_profile);
+    /* twitch */
+    $stmt->bindParam(':ufollowers_twitch', $followers_twitch);
     $stmt->bindParam(':umedia', $media);
     $stmt->bindParam(':uminutes', $minutes);
     $stmt->bindParam(':uunique_participants', $unique_participants);
