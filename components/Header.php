@@ -2,7 +2,7 @@
   <header id="header" class="header fixed-top bg-black d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="dashboard" class="logo d-flex align-items-center">
+      <a href="<?php echo $URI->base('/dashboard') ?>" class="logo d-flex align-items-center">
         <img src="<?php echo $URI->base('/img/SG.png') ?>" alt="">
         <!-- <span class="d-none d-lg-block">NiceAdmin</span> -->
       </a>
@@ -44,7 +44,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="logout">
+              <a class="dropdown-item d-flex align-items-center" href="<?php echo $URI->base('/logout') ?>">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sair</span>
               </a>

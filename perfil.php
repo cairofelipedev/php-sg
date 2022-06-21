@@ -21,23 +21,18 @@ if (empty($idUser)) {
   header("Location: ./dashboard");
 }
 
-$stmt2 = $DB_con->prepare("SELECT id FROM users where id='$idUser'");
+$stmt2 = $DB_con->prepare("SELECT name FROM users where name='$idUser'");
 $stmt2->execute();
 while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
   extract($row);
-  $user = $id;
+  $user = $name;
 }
 
-$id = $idUser;
-$stmt_edit = $DB_con->prepare('SELECT * FROM users WHERE id =:uid');
-$stmt_edit->execute(array(':uid' => $id));
+$name = $idUser;
+$stmt_edit = $DB_con->prepare('SELECT * FROM users WHERE name =:uname');
+$stmt_edit->execute(array(':uname' => $name));
 $edit_row = $stmt_edit->fetch(PDO::FETCH_ASSOC);
 extract($edit_row);
-
-if ($_SESSION['type'] != "1") {
-  echo ("<script type= 'text/javascript'>alert('Acesso Restrito!');</script><script>window.location = '../dashboard';</script>");
-}
-
 
 if (isset($_POST['btnsave'])) {
   $name = $_POST['name'];
@@ -138,7 +133,7 @@ if (isset($_POST['btnsave'])) {
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Profile</h1>
+      <h1>Perfil</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="<?php echo $URI->base('/dashboard') ?>">Home</a></li>
@@ -154,7 +149,7 @@ if (isset($_POST['btnsave'])) {
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-            <img src="./uploads/usuarios/<?php echo $_SESSION['img']; ?>" onerror="this.src='<?php echo $URI->base('/assets/img/semperfil.png') ?>'" alt="Profile" class="rounded">
+              <img src="./uploads/usuarios/<?php echo $_SESSION['img']; ?>" onerror="this.src='<?php echo $URI->base('/assets/img/semperfil.png') ?>'" alt="Profile" class="rounded">
               <h2><?php echo $name; ?></h2>
               <h3>
                 <?php
@@ -163,7 +158,7 @@ if (isset($_POST['btnsave'])) {
                 }
                 if ($type == 2) {
                   echo "Afiliado";
-                }?>
+                } ?>
               </h3>
               <div class="social-links mt-2">
                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
@@ -186,10 +181,13 @@ if (isset($_POST['btnsave'])) {
                 <li class="nav-item">
                   <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Geral</button>
                 </li>
-
-                <li class="nav-item">
-                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Editar Perfil</button>
-                </li>
+                <?php
+                if ($_SESSION['type'] == 1) {
+                ?>
+                  <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Editar Perfil</button>
+                  </li>
+                <?php } ?>
               </ul>
               <div class="tab-content pt-2">
 
@@ -234,6 +232,10 @@ if (isset($_POST['btnsave'])) {
                     <div class="col-lg-3 col-md-4 label">Email</div>
                     <div class="col-lg-9 col-md-8"><?php echo $email; ?></div>
                   </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Score</div>
+                    <div class="col-lg-9 col-md-8"><?php echo $points; ?></div>
+                  </div>
 
                 </div>
 
@@ -244,7 +246,7 @@ if (isset($_POST['btnsave'])) {
                     <div class="row mb-3">
                       <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Imagem do perfil</label>
                       <div class="col-md-8 col-lg-9">
-                      <img src="./uploads/usuarios/<?php echo $_SESSION['img']; ?>" onerror="this.src='<?php echo $URI->base('/assets/img/semperfil.png') ?>'" alt="Profile" class="rounded">
+                        <img src="./uploads/usuarios/<?php echo $_SESSION['img']; ?>" onerror="this.src='<?php echo $URI->base('/assets/img/semperfil.png') ?>'" alt="Profile" class="rounded">
                         <div class="pt-2">
                           <input id="curriculo" class="file" data-theme="fas" type="file" name="user_image" accept="image/*">
                           <!-- <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
@@ -318,7 +320,7 @@ if (isset($_POST['btnsave'])) {
                               }
                               if ($type == 2) {
                                 echo "Afiliado";
-                              }?> (selecionado)
+                              } ?> (selecionado)
                             </option>
                             <option value="1">Administrador</option>
                             <option value="2">Afiliado</option>
@@ -344,11 +346,11 @@ if (isset($_POST['btnsave'])) {
                         </div>
                       </div>
                       <div class="row mb-3">
-                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Pontos</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="points" type="text" class="form-control" id="points" value="<?php echo $points; ?>">
+                        <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Pontos</label>
+                        <div class="col-md-8 col-lg-9">
+                          <input name="points" type="text" class="form-control" id="points" value="<?php echo $points; ?>">
+                        </div>
                       </div>
-                    </div>
                     <?php } ?>
                     <div class="text-center">
                       <button type="submit" name="btnsave" class="btn btn-primary">Salvar</button>
@@ -369,20 +371,20 @@ if (isset($_POST['btnsave'])) {
 
   <?php include "components/Footer.php"; ?>
 
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!-- Vendor JS Files -->
-<script src="<?php echo $URI->base('/assets/vendor/apexcharts/apexcharts.min.js') ?>"></script>
-<script src="<?php echo $URI->base('/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
-<script src="<?php echo $URI->base('/assets/vendor/chart.js/chart.min.js') ?>"></script>
-<script src="<?php echo $URI->base('/assets/vendor/echarts/echarts.min.js') ?>"></script>
-<script src="<?php echo $URI->base('/assets/vendor/quill/quill.min.js') ?>"></script>
-<script src="<?php echo $URI->base('/assets/vendor/simple-datatables/simple-datatables.js') ?>"></script>
-<script src="<?php echo $URI->base('/assets/vendor/tinymce/tinymce.min.js') ?>"></script>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Vendor JS Files -->
+  <script src="<?php echo $URI->base('/assets/vendor/apexcharts/apexcharts.min.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/chart.js/chart.min.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/echarts/echarts.min.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/quill/quill.min.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/simple-datatables/simple-datatables.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/tinymce/tinymce.min.js') ?>"></script>
 
-<!-- Template Main JS File -->
-<script src="<?php echo $URI->base('/assets/js/main.js') ?>"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.2/js/fileinput.min.js" integrity="sha512-OgkQrY08KbdmZRLKrsBkVCv105YJz+HdwKACjXqwL+r3mVZBwl20vsQqpWPdRnfoxJZePgaahK9G62SrY9hR7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- Template Main JS File -->
+  <script src="<?php echo $URI->base('/assets/js/main.js') ?>"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.2/js/fileinput.min.js" integrity="sha512-OgkQrY08KbdmZRLKrsBkVCv105YJz+HdwKACjXqwL+r3mVZBwl20vsQqpWPdRnfoxJZePgaahK9G62SrY9hR7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 
 </html>

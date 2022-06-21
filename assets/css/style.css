@@ -774,7 +774,7 @@ h6 {
 /* Filter dropdown */
 .dashboard .filter {
   position: absolute;
-  right: 0px;
+  right: 15px;
   top: 15px;
 }
 
@@ -898,12 +898,7 @@ h6 {
   margin-top: 15px;
 }
 
-.dashboard .news img {
-  width: 80px;
-  float: left;
-  border-radius: 5px;
-  margin: 10px;
-}
+
 
 .dashboard .news h4 {
   font-size: 15px;

@@ -63,7 +63,11 @@ endif;
                     <th scope="col">Ranking</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
-                    <th scope="col">Pontos</th>
+                    <?php
+                    if ($_SESSION['type'] == 1) {
+                    ?>
+                      <th scope="col">Pontos</th>
+                    <?php } ?>
 
                     <th scope="col">Opções</th>
                   </tr>
@@ -90,11 +94,15 @@ endif;
                         <td class="text-center">
                           <?php echo $points ?>
                         </td>
-                        <td>
-                          <a href="#">
-                            <button type="button" class="btn btn-success">Editar</button>
-                          </a>
-                        </td>
+                        <?php
+                        if ($_SESSION['type'] == 1) {
+                        ?>
+                          <td>
+                            <a href="#">
+                              <button type="button" class="btn btn-success">Editar</button>
+                            </a>
+                          </td>
+                        <?php } ?>
                       </tr>
                   <?php
                     }

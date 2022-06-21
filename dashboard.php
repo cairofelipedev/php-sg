@@ -56,20 +56,6 @@ endif;
               <!-- Posts Card -->
               <div class="col-xxl-4 col-md-6">
                 <div class="card info-card posts-card">
-
-                  <div class="filter">
-                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                      <li class="dropdown-header text-start">
-                        <h6>Filtro</h6>
-                      </li>
-
-                      <li><a class="dropdown-item" href="#">Todos</a></li>
-                      <li><a class="dropdown-item" href="#">Do mês</a></li>
-                      <li><a class="dropdown-item" href="#">Do ano</a></li>
-                    </ul>
-                  </div>
-
                   <div class="card-body">
                     <h5 class="card-title">Posts <span>| Todos</span></h5>
 
@@ -80,10 +66,23 @@ endif;
                       <div class="ps-3">
                         <h6>
                           <?php
-                          $sth = $DB_con->prepare("SELECT count(*) as total from posts");
-                          $sth->execute();
-                          print_r($sth->fetchColumn());
+                          if ($_SESSION['type'] == 1) {
                           ?>
+                            <?php
+                            $sth = $DB_con->prepare("SELECT count(*) as total from posts");
+                            $sth->execute();
+                            print_r($sth->fetchColumn());
+                            ?>
+                          <?php } ?>
+                          <?php
+                          if ($_SESSION['type'] == 2) {
+                          ?>
+                            <?php
+                            $sth = $DB_con->prepare("SELECT count(*) as total from posts where user_create='$_SESSION[name]'");
+                            $sth->execute();
+                            print_r($sth->fetchColumn());
+                            ?>
+                          <?php } ?>
                         </h6>
                       </div>
                     </div>
@@ -95,20 +94,6 @@ endif;
               <!-- Ranking Card -->
               <div class="col-xxl-4 col-md-6">
                 <div class="card info-card posts-card">
-
-                  <div class="filter">
-                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                      <li class="dropdown-header text-start">
-                        <h6>Filtro</h6>
-                      </li>
-
-                      <li><a class="dropdown-item" href="#">Todos</a></li>
-                      <li><a class="dropdown-item" href="#">do mês</a></li>
-                      <li><a class="dropdown-item" href="#">da semana</a></li>
-                    </ul>
-                  </div>
-
                   <div class="card-body">
                     <h5 class="card-title">Ranking <span>| do mês</span></h5>
 
@@ -145,19 +130,6 @@ endif;
               <div class="col-xxl-4 col-xl-12">
 
                 <div class="card info-card posts-card">
-
-                  <div class="filter">
-                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                      <li class="dropdown-header text-start">
-                        <h6>Filtro</h6>
-                      </li>
-
-                      <li><a class="dropdown-item" href="#">Todos</a></li>
-                      <li><a class="dropdown-item" href="#">Streamear / Afiliado</a></li>
-                    </ul>
-                  </div>
-
                   <div class="card-body">
                     <h5 class="card-title">Usuários <span>| Todos</span></h5>
 
@@ -185,20 +157,14 @@ endif;
               <!-- Postagens -->
               <div class="card pb-4">
                 <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="width: 300px;">
-                    <li class="dropdown-header text-start">
-                      <h6>Filtro</h6>
-                    </li>
-                    <select name="network" class="form-select" id="SelectOptions" required>
-                      <option value="">SELECIONE A REDE SOCIAL</option>
-                      <option value="twitter">TWITTER</option>
-                      <option value="facebook">FACEBOOK</option>
-                      <option value="instagram">INSTAGRAM</option>
-                      <option value="tiktok">TIKTOK</option>
-                      <option value="twitch">TWITCH</option>
-                    </select>
-                  </ul>
+                  <select name="network" class="form-select" id="SelectOptions" required>
+                    <option value="all">TODAS</option>
+                    <option value="twitter">TWITTER</option>
+                    <option value="facebook">FACEBOOK</option>
+                    <option value="instagram">INSTAGRAM</option>
+                    <option value="tiktok">TIKTOK</option>
+                    <option value="twitch">TWITCH</option>
+                  </select>
                 </div>
 
                 <div class="card-body pb-0">
@@ -206,342 +172,110 @@ endif;
                   <div class="news">
                     <?php
                     if ($_SESSION['type'] == 1) {
-                      $stmt = $DB_con->prepare("SELECT * FROM posts ORDER BY id DESC");
-                      $stmt->execute();
-                      if ($stmt->rowCount() > 0) {
-                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                          extract($row);
                     ?>
-                          <div class="post-item">
-                            <div class="row">
-                              <div class="col-md-7">
-                                <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" class="rounded">
-                                <h4><a href="#"> <?php echo $title ?></a></h4>
-                                <h4><a href="#"> <i class="bi bi-person"></i> <?php echo $user_create; ?></a></h4>
-                                <h4>
-                                  <i class="bi bi-clock"></i>
-                                  <?php
-                                  $date = new DateTime($data_create);
-                                  $date2 = $date->format('m');
-                                  $date3 = $date->format('d');
-                                  $date4 = $date->format('Y');
-                                  echo $date3;
-                                  if ($date2 == 01) {
-                                    echo " Jan. ";
-                                  }
-                                  if ($date2 == 02) {
-                                    echo " Fev. ";
-                                  }
-                                  if ($date2 == "03") {
-                                    echo " Mar. ";
-                                  }
-                                  if ($date2 == 04) {
-                                    echo " Abr. ";
-                                  }
-                                  if ($date2 == 05) {
-                                    echo " Mai. ";
-                                  }
-                                  if ($date2 == 06) {
-                                    echo " Jun. ";
-                                  }
-                                  if ($date2 == 07) {
-                                    echo " Jul. ";
-                                  }
-                                  if ($date2 == "08") {
-                                    echo " Ago. ";
-                                  }
-                                  if ($date2 == "09") {
-                                    echo " Set. ";
-                                  }
-                                  if ($date2 == "10") {
-                                    echo " Out. ";
-                                  }
-                                  if ($date2 == "11") {
-                                    echo " Nov. ";
-                                  }
-                                  if ($date2 == "09") {
-                                    echo " Dez. ";
-                                  }
-                                  echo $date4;
-                                  ?>
-                                </h4>
-                                <h4>
-                                  <?php
-                                  if ($network == "insta") {
-                                    echo "<i class='bi bi-instagram'></i> ";
-                                  }
-                                  if ($network == "face") {
-                                    echo "<i class='bi bi-facebook'></i> ";
-                                  }
-                                  if ($network == "whats") {
-                                    echo "<i class='bi bi-whatsapp'></i> ";
-                                  }
-                                  echo $type;
-                                  ?>
-                                </h4>
-                                <h4>
-                                  Status:
-                                  <?php
-                                  if ($status == "1") {
-                                    echo "<span class='text-success'>APROVADO</span>";
-                                  }
-                                  if ($status == "2") {
-                                    echo "<span class='text-danger'>NÃO APROVADO</span>";
-                                  }
-                                  if ($status == "3") {
-                                    echo "<span class='text-warning'>EM ANALISE</span>";
-                                  }
-                                  if ($status == "4") {
-                                    echo "<span style='color:gray;'>AGUARDANDO ANALISE</span>";
-                                  }
-                                  ?>
-                                </h4>
-                              </div>
-                              <div class="col-md-2">
+                      <div class="DivPai">
+                        <div class="all">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
 
-                              </div>
-                              <div class="col-md-2">
-                                <div class="d-grid gap-2">
-                                  <a class="btn btn-success" href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
-                                    Editar
-                                  </a>
-                                  <a class="btn btn-danger" href="posts.php?delete_id=<?php echo $row['id']; ?>">
-                                    Excluir
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <h4><a href="#"><?php echo $link; ?></a></h4>
-                          <hr>
-                        <?php
-                        }
-                      } else {
-                        ?>
-                        <div class="alert alert-warning col-md-10">
-                          <span class="fw-bolder">Sem post cadastrado...</span>
-                        </div>
-                    <?php
-                      }
-                    }
-                    ?>
-                    <?php
-                    if ($_SESSION['type'] == 2) {
-                      $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[name]' ORDER BY id DESC");
-                      $stmt->execute();
-                      if ($stmt->rowCount() > 0) {
-                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                          extract($row);
-                    ?>
-                          <div class="post-item">
-                            <div class="row">
-                              <div class="col-md-6">
-                                <img src="./uploads/posts/<?php echo $_SESSION['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" class="rounded">
-                                <h4><a href="#"> <?php echo $title ?></a></h4>
-                                <p><?php echo $description ?></p>
-                              </div>
-                              <div class="col-md-4">
-                                <h4><a href="#"> <i class="bi bi-person"></i> <?php echo $user_create; ?></a></h4>
-                                <h4>
-                                  <i class="bi bi-clock"></i>
-                                  <?php
-                                  $date = new DateTime($data_create);
-                                  $date2 = $date->format('m');
-                                  $date3 = $date->format('d');
-                                  $date4 = $date->format('Y');
-                                  echo $date3;
-                                  if ($date2 == 01) {
-                                    echo " Jan. ";
-                                  }
-                                  if ($date2 == 02) {
-                                    echo " Fev. ";
-                                  }
-                                  if ($date2 == "03") {
-                                    echo " Mar. ";
-                                  }
-                                  if ($date2 == 04) {
-                                    echo " Abr. ";
-                                  }
-                                  if ($date2 == 05) {
-                                    echo " Mai. ";
-                                  }
-                                  if ($date2 == 06) {
-                                    echo " Jun. ";
-                                  }
-                                  if ($date2 == 07) {
-                                    echo " Jul. ";
-                                  }
-                                  if ($date2 == "08") {
-                                    echo " Ago. ";
-                                  }
-                                  if ($date2 == "09") {
-                                    echo " Set. ";
-                                  }
-                                  if ($date2 == "10") {
-                                    echo " Out. ";
-                                  }
-                                  if ($date2 == "11") {
-                                    echo " Nov. ";
-                                  }
-                                  if ($date2 == "09") {
-                                    echo " Dez. ";
-                                  }
-                                  echo $date4;
-                                  ?>
-                                </h4>
-                                <h4>
-                                  <?php
-                                  if ($network == "insta") {
-                                    echo "<i class='bi bi-instagram'></i> ";
-                                  }
-                                  if ($network == "face") {
-                                    echo "<i class='bi bi-facebook'></i> ";
-                                  }
-                                  if ($network == "whats") {
-                                    echo "<i class='bi bi-whatsapp'></i> ";
-                                  }
-                                  echo $type;
-                                  ?>
-                                </h4>
-                                <h4>
-                                  Status:
-                                  <?php
-                                  if ($status == "1") {
-                                    echo "<span class='text-success'>APROVADO</span>";
-                                  }
-                                  if ($status == "2") {
-                                    echo "<span class='text-danger'>NÃO APROVADO</span>";
-                                  }
-                                  if ($status == "3") {
-                                    echo "<span class='text-warning'>EM ANALISE</span>";
-                                  }
-                                  if ($status == "4") {
-                                    echo "<span style='color:gray;'>AGUARDANDO ANALISE</span>";
-                                  }
-                                  ?>
-                                </h4>
-                              </div>
-                              <div class="col-md-2">
-                                <div class="d-grid gap-2">
-                                  <button class="btn btn-success" type="button">Editar</button>
-                                  <button class="btn btn-danger" type="button">Excluir</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <h4><a href="#"><?php echo $link; ?></a></h4>
-                          <hr>
-                        <?php
-                        }
-                      } else {
-                        ?>
-                        <div class="alert alert-warning col-md-10">
-                          <span class="fw-bolder">Sem post cadastrado...</span>
-                        </div>
-                    <?php
-                      }
-                    }
-                    ?>
-                    <div class="DivPai">
-                      <div class="all">
-                        <div class="row">
-                          <?php
-                          $stmt = $DB_con->prepare('SELECT * FROM posts ORDER BY id DESC');
-                          $stmt->execute();
-                          if ($stmt->rowCount() > 0) {
-                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                              extract($row);
-                          ?>
-                              <div class="col-lg-4">
-                                <div class="card">
-                                  <div class="card-body">
-                                    <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
-                                    <img src="./uploads/posts/<?php echo $row['img']; ?>" height="300px" width="100%" onerror="this.src='./assets/img/sem-imagem-10.jpg'">
-                                    <div class="row">
-                                      <div class="col-md-6">
-                                        <h5 class="card-title2 pt-2 text-center">
-                                          <?php
-                                          if ($status == "1") {
-                                            echo "<span class='text-success'>APROVADO</span>";
-                                          }
-                                          if ($status == "2") {
-                                            echo "<span class='text-danger'>NÃO APROVADO</span>";
-                                          }
-                                          if ($status == "3") {
-                                            echo "<span class='text-warning'>EM ANALISE</span>";
-                                          }
-                                          if ($status == "4") {
-                                            echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
-                                          }
-                                          ?>
-                                        </h5>
-                                        <h5 class="card-title2">
-                                          <i class="bi bi-clock-fill"></i>
-                                          <?php
-                                          $date = new DateTime($data_create);
-                                          $date2 = $date->format('m');
-                                          $date3 = $date->format('d');
-                                          $date4 = $date->format('Y');
-                                          echo $date3;
-                                          if ($date2 == 01) {
-                                            echo " Jan. ";
-                                          }
-                                          if ($date2 == 02) {
-                                            echo " Fev. ";
-                                          }
-                                          if ($date2 == "03") {
-                                            echo " Mar. ";
-                                          }
-                                          if ($date2 == 04) {
-                                            echo " Abr. ";
-                                          }
-                                          if ($date2 == 05) {
-                                            echo " Mai. ";
-                                          }
-                                          if ($date2 == 06) {
-                                            echo " Jun. ";
-                                          }
-                                          if ($date2 == 07) {
-                                            echo " Jul. ";
-                                          }
-                                          if ($date2 == "08") {
-                                            echo " Ago. ";
-                                          }
-                                          if ($date2 == "09") {
-                                            echo " Set. ";
-                                          }
-                                          if ($date2 == "10") {
-                                            echo " Out. ";
-                                          }
-                                          if ($date2 == "11") {
-                                            echo " Nov. ";
-                                          }
-                                          if ($date2 == "09") {
-                                            echo " Dez. ";
-                                          }
-                                          echo $date4;
-                                          ?>
-                                        </h5>
-                                        <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
-                                        <h4 class="card-title2">
-                                          <?php
-                                          if ($network == "instagram") {
-                                            echo "<i class='bi bi-instagram'></i> ";
-                                          }
-                                          if ($network == "facebook") {
-                                            echo "<i class='bi bi-facebook'></i> ";
-                                          }
-                                          if ($network == "twitter") {
-                                            echo "<i class='bi bi-twitter'></i> ";
-                                          }
-                                          if ($network == "tiktok") {
-                                            echo "<i class='bi bi-tiktok'></i>";
-                                          }
-                                          echo $type;
-                                          ?>
-                                          <h4 class="card-title2"><?php echo $links; ?></h4>
-                                      </div>
-                                      <div class="col-md-6">
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
+                                        <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      </a>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i> ";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i> ";
+                                        }
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
                                         <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
                                         <?php if ($network == "twitter") { ?>
                                           <h4 class="card-title2">Impressões: <?php echo $impressions; ?></h4>
@@ -574,47 +308,2349 @@ endif;
                                           <h4 class="card-title2">Novos seguidores: <?php echo $followers_twitch; ?></h4>
                                           <h4 class="card-title2">Participantes únicos do chat: <?php echo $unique_participants ?></h4>
                                         <?php } ?>
-                                      </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between pt-2">
-                                      <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
-                                        <button type="button" class="btn btn-success">Editar</button>
-                                      </a>
-                                      <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
-                                        <button type="button" class="btn btn-danger">Excluir</button>
-                                      </a>
+
+                                        <div class="d-flex justify-content-between pt-2">
+                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                            <button type="button" class="btn btn-success">Editar</button>
+                                          </a>
+                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                            <button type="button" class="btn btn-danger">Excluir</button>
+                                          </a>
+                                        </div>
                                     </div>
                                   </div>
                                 </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-3">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
                               </div>
                             <?php
                             }
-                          } else {
                             ?>
-                            <div class="alert alert-warning col-md-3">
-                              <span class="fw-bolder">Sem post cadastrado...</span>
-                            </div>
-                          <?php
-                          }
-                          ?>
+                          </div>
+                        </div>
+                        <div class="twitter">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where network='twitter' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
+                                        <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      </a>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i>";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i>";
+                                        }
+
+
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+                                        <?php if ($network == "twitter") { ?>
+                                          <h4 class="card-title2">Impressões: <?php echo $impressions; ?></h4>
+                                          <h4 class="card-title2">Menções: <?php echo $mentions; ?></h4>
+                                          <h4 class="card-title2">Visualizações: <?php echo $views_tt; ?></h4>
+                                          <h4 class="card-title2">Seguidores: <?php echo $followers_tt; ?></h4>
+                                        <?php } ?>
+
+                                        <div class="d-flex justify-content-between pt-2">
+                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                            <button type="button" class="btn btn-success">Editar</button>
+                                          </a>
+                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                            <button type="button" class="btn btn-danger">Excluir</button>
+                                          </a>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-12">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
+                        </div>
+                        <div class="facebook">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where network='facebook' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
+                                        <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      </a>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i>";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i>";
+                                        }
+
+
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+
+                                        <?php if ($network == "facebook") { ?>
+                                          <h4 class="card-title2">Alcance: <?php echo $reach_fb; ?></h4>
+                                          <h4 class="card-title2">Visita à pagina: <?php echo $views_fb; ?></h4>
+                                          <h4 class="card-title2">Novas Curtidas: <?php echo $likes_fb; ?></h4>
+                                        <?php } ?>
+                                        <?php if ($network == "instagram") { ?>
+                                          <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
+                                          <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
+                                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
+                                        <?php } ?>
+
+
+                                        <div class="d-flex justify-content-between pt-2">
+                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                            <button type="button" class="btn btn-success">Editar</button>
+                                          </a>
+                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                            <button type="button" class="btn btn-danger">Excluir</button>
+                                          </a>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-12">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
+                        </div>
+                        <div class="instagram">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where network='instagram' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
+                                        <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      </a>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i>";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i>";
+                                        }
+
+
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+
+                                        <?php if ($network == "instagram") { ?>
+                                          <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
+                                          <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
+                                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
+                                        <?php } ?>
+
+                                        <div class="d-flex justify-content-between pt-2">
+                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                            <button type="button" class="btn btn-success">Editar</button>
+                                          </a>
+                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                            <button type="button" class="btn btn-danger">Excluir</button>
+                                          </a>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-12">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
+                        </div>
+                        <div class="tiktok">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where network='tiktok' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
+                                        <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      </a>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i>";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i>";
+                                        }
+
+
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+
+
+                                        <?php if ($network == "tiktok") { ?>
+                                          <h4 class="card-title2">Visualizações de vídeo : <?php echo $views_video; ?></h4>
+                                          <h4 class="card-title2">Visualizações de perfil: <?php echo $views_profile; ?></h4>
+                                          <h4 class="card-title2">Curtidas: <?php echo $comments; ?></h4>
+                                          <h4 class="card-title2">Compartilhamentos: <?php echo $shares ?></h4>
+                                          <h4 class="card-title2">Seguidores: <?php echo $followers_tiktok ?></h4>
+                                          <h4 class="card-title2">Número de vídeos publicados: <?php echo $number_videos; ?></h4>
+                                          <h4 class="card-title2">Número de lives realizadas: <?php echo $number_lives; ?></h4>
+                                        <?php } ?>
+
+                                        <div class="d-flex justify-content-between pt-2">
+                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                            <button type="button" class="btn btn-success">Editar</button>
+                                          </a>
+                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                            <button type="button" class="btn btn-danger">Excluir</button>
+                                          </a>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-12">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
+                        </div>
+                        <div class="twitch">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where network='twitch' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
+                                        <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      </a>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i>";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i>";
+                                        }
+
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+
+                                        <?php if ($network == "twitch") { ?>
+                                          <h4 class="card-title2">Média de espectadores : <?php echo $media; ?></h4>
+                                          <h4 class="card-title2">Minutos assistidos gerados: <?php echo $minutes; ?></h4>
+                                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_twitch; ?></h4>
+                                          <h4 class="card-title2">Participantes únicos do chat: <?php echo $unique_participants ?></h4>
+                                        <?php } ?>
+
+                                        <div class="d-flex justify-content-between pt-2">
+                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                            <button type="button" class="btn btn-success">Editar</button>
+                                          </a>
+                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                            <button type="button" class="btn btn-danger">Excluir</button>
+                                          </a>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-12">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
                         </div>
                       </div>
-                      <div class="twitter">
-                        teste twitter
+                    <?php } ?>
+                    <?php
+                    if ($_SESSION['type'] == 2) {
+                    ?>
+                      <div class="DivPai">
+                        <div class="all">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[name]' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i> ";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i> ";
+                                        }
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+                                        <?php if ($network == "twitter") { ?>
+                                          <h4 class="card-title2">Impressões: <?php echo $impressions; ?></h4>
+                                          <h4 class="card-title2">Menções: <?php echo $mentions; ?></h4>
+                                          <h4 class="card-title2">Visualizações: <?php echo $views_tt; ?></h4>
+                                          <h4 class="card-title2">Seguidores: <?php echo $followers_tt; ?></h4>
+                                        <?php } ?>
+                                        <?php if ($network == "facebook") { ?>
+                                          <h4 class="card-title2">Alcance: <?php echo $reach_fb; ?></h4>
+                                          <h4 class="card-title2">Visita à pagina: <?php echo $views_fb; ?></h4>
+                                          <h4 class="card-title2">Novas Curtidas: <?php echo $likes_fb; ?></h4>
+                                        <?php } ?>
+                                        <?php if ($network == "instagram") { ?>
+                                          <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
+                                          <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
+                                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
+                                        <?php } ?>
+                                        <?php if ($network == "tiktok") { ?>
+                                          <h4 class="card-title2">Visualizações de vídeo : <?php echo $views_video; ?></h4>
+                                          <h4 class="card-title2">Visualizações de perfil: <?php echo $views_profile; ?></h4>
+                                          <h4 class="card-title2">Curtidas: <?php echo $comments; ?></h4>
+                                          <h4 class="card-title2">Compartilhamentos: <?php echo $shares ?></h4>
+                                          <h4 class="card-title2">Seguidores: <?php echo $followers_tiktok ?></h4>
+                                          <h4 class="card-title2">Número de vídeos publicados: <?php echo $number_videos; ?></h4>
+                                          <h4 class="card-title2">Número de lives realizadas: <?php echo $number_lives; ?></h4>
+                                        <?php } ?>
+                                        <?php if ($network == "twitch") { ?>
+                                          <h4 class="card-title2">Média de espectadores : <?php echo $media; ?></h4>
+                                          <h4 class="card-title2">Minutos assistidos gerados: <?php echo $minutes; ?></h4>
+                                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_twitch; ?></h4>
+                                          <h4 class="card-title2">Participantes únicos do chat: <?php echo $unique_participants ?></h4>
+                                        <?php } ?>
+
+                                        <div class="d-flex justify-content-between pt-2">
+                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                            <button type="button" class="btn btn-success">Editar</button>
+                                          </a>
+                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                            <button type="button" class="btn btn-danger">Excluir</button>
+                                          </a>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-3">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
+                        </div>
+                        <div class="twitter">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[name]' and network='twitter' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i>";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i>";
+                                        }
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+                                        <?php if ($network == "twitter") { ?>
+                                          <h4 class="card-title2">Impressões: <?php echo $impressions; ?></h4>
+                                          <h4 class="card-title2">Menções: <?php echo $mentions; ?></h4>
+                                          <h4 class="card-title2">Visualizações: <?php echo $views_tt; ?></h4>
+                                          <h4 class="card-title2">Seguidores: <?php echo $followers_tt; ?></h4>
+                                        <?php } ?>
+
+                                        <div class="d-flex justify-content-between pt-2">
+                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                            <button type="button" class="btn btn-success">Editar</button>
+                                          </a>
+                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                            <button type="button" class="btn btn-danger">Excluir</button>
+                                          </a>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-12">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
+                        </div>
+                        <div class="facebook">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[name]' and network='facebook' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i>";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i>";
+                                        }
+
+
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+
+                                        <?php if ($network == "facebook") { ?>
+                                          <h4 class="card-title2">Alcance: <?php echo $reach_fb; ?></h4>
+                                          <h4 class="card-title2">Visita à pagina: <?php echo $views_fb; ?></h4>
+                                          <h4 class="card-title2">Novas Curtidas: <?php echo $likes_fb; ?></h4>
+                                        <?php } ?>
+                                        <?php if ($network == "instagram") { ?>
+                                          <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
+                                          <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
+                                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
+                                        <?php } ?>
+
+
+                                        <div class="d-flex justify-content-between pt-2">
+                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                            <button type="button" class="btn btn-success">Editar</button>
+                                          </a>
+                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                            <button type="button" class="btn btn-danger">Excluir</button>
+                                          </a>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-12">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
+                        </div>
+                        <div class="instagram">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[name]' and network='instagram' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i>";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i>";
+                                        }
+
+
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+
+                                        <?php if ($network == "instagram") { ?>
+                                          <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
+                                          <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
+                                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
+                                        <?php } ?>
+
+                                        <div class="d-flex justify-content-between pt-2">
+                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                            <button type="button" class="btn btn-success">Editar</button>
+                                          </a>
+                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                            <button type="button" class="btn btn-danger">Excluir</button>
+                                          </a>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-12">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
+                        </div>
+                        <div class="tiktok">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[name]' and network='tiktok' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i>";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i>";
+                                        }
+
+
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+
+
+                                        <?php if ($network == "tiktok") { ?>
+                                          <h4 class="card-title2">Visualizações de vídeo : <?php echo $views_video; ?></h4>
+                                          <h4 class="card-title2">Visualizações de perfil: <?php echo $views_profile; ?></h4>
+                                          <h4 class="card-title2">Curtidas: <?php echo $comments; ?></h4>
+                                          <h4 class="card-title2">Compartilhamentos: <?php echo $shares ?></h4>
+                                          <h4 class="card-title2">Seguidores: <?php echo $followers_tiktok ?></h4>
+                                          <h4 class="card-title2">Número de vídeos publicados: <?php echo $number_videos; ?></h4>
+                                          <h4 class="card-title2">Número de lives realizadas: <?php echo $number_lives; ?></h4>
+                                        <?php } ?>
+
+                                        <div class="d-flex justify-content-between pt-2">
+                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                            <button type="button" class="btn btn-success">Editar</button>
+                                          </a>
+                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                            <button type="button" class="btn btn-danger">Excluir</button>
+                                          </a>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-12">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
+                        </div>
+                        <div class="twitch">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[name]' and network='twitch' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i>";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i>";
+                                        }
+
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+
+                                        <?php if ($network == "twitch") { ?>
+                                          <h4 class="card-title2">Média de espectadores : <?php echo $media; ?></h4>
+                                          <h4 class="card-title2">Minutos assistidos gerados: <?php echo $minutes; ?></h4>
+                                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_twitch; ?></h4>
+                                          <h4 class="card-title2">Participantes únicos do chat: <?php echo $unique_participants ?></h4>
+                                        <?php } ?>
+
+                                        <div class="d-flex justify-content-between pt-2">
+                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                            <button type="button" class="btn btn-success">Editar</button>
+                                          </a>
+                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                            <button type="button" class="btn btn-danger">Excluir</button>
+                                          </a>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-12">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
+                        </div>
                       </div>
-                      <div class="facebook">
-                        teste facebook
+                    <?php
+                    }
+                    ?>
+                    <?php if ($_SESSION['type'] == 3) { ?>
+                      <div class="DivPai">
+                        <div class="all">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where status='1' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
+                                        <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      </a>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i> ";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i> ";
+                                        }
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+                                        <?php if ($network == "twitter") { ?>
+                                          <h4 class="card-title2">Impressões: <?php echo $impressions; ?></h4>
+                                          <h4 class="card-title2">Menções: <?php echo $mentions; ?></h4>
+                                          <h4 class="card-title2">Visualizações: <?php echo $views_tt; ?></h4>
+                                          <h4 class="card-title2">Seguidores: <?php echo $followers_tt; ?></h4>
+                                        <?php } ?>
+                                        <?php if ($network == "facebook") { ?>
+                                          <h4 class="card-title2">Alcance: <?php echo $reach_fb; ?></h4>
+                                          <h4 class="card-title2">Visita à pagina: <?php echo $views_fb; ?></h4>
+                                          <h4 class="card-title2">Novas Curtidas: <?php echo $likes_fb; ?></h4>
+                                        <?php } ?>
+                                        <?php if ($network == "instagram") { ?>
+                                          <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
+                                          <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
+                                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
+                                        <?php } ?>
+                                        <?php if ($network == "tiktok") { ?>
+                                          <h4 class="card-title2">Visualizações de vídeo : <?php echo $views_video; ?></h4>
+                                          <h4 class="card-title2">Visualizações de perfil: <?php echo $views_profile; ?></h4>
+                                          <h4 class="card-title2">Curtidas: <?php echo $comments; ?></h4>
+                                          <h4 class="card-title2">Compartilhamentos: <?php echo $shares ?></h4>
+                                          <h4 class="card-title2">Seguidores: <?php echo $followers_tiktok ?></h4>
+                                          <h4 class="card-title2">Número de vídeos publicados: <?php echo $number_videos; ?></h4>
+                                          <h4 class="card-title2">Número de lives realizadas: <?php echo $number_lives; ?></h4>
+                                        <?php } ?>
+                                        <?php if ($network == "twitch") { ?>
+                                          <h4 class="card-title2">Média de espectadores : <?php echo $media; ?></h4>
+                                          <h4 class="card-title2">Minutos assistidos gerados: <?php echo $minutes; ?></h4>
+                                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_twitch; ?></h4>
+                                          <h4 class="card-title2">Participantes únicos do chat: <?php echo $unique_participants ?></h4>
+                                        <?php } ?>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-3">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
+                        </div>
+                        <div class="twitter">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where status='1' and network='twitter' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
+                                        <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      </a>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i>";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i>";
+                                        }
+
+
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+                                        <?php if ($network == "twitter") { ?>
+                                          <h4 class="card-title2">Impressões: <?php echo $impressions; ?></h4>
+                                          <h4 class="card-title2">Menções: <?php echo $mentions; ?></h4>
+                                          <h4 class="card-title2">Visualizações: <?php echo $views_tt; ?></h4>
+                                          <h4 class="card-title2">Seguidores: <?php echo $followers_tt; ?></h4>
+                                        <?php } ?>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-12">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
+                        </div>
+                        <div class="facebook">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where status='1' and network='facebook' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
+                                        <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      </a>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i>";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i>";
+                                        }
+
+
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+
+                                        <?php if ($network == "facebook") { ?>
+                                          <h4 class="card-title2">Alcance: <?php echo $reach_fb; ?></h4>
+                                          <h4 class="card-title2">Visita à pagina: <?php echo $views_fb; ?></h4>
+                                          <h4 class="card-title2">Novas Curtidas: <?php echo $likes_fb; ?></h4>
+                                        <?php } ?>
+                                        <?php if ($network == "instagram") { ?>
+                                          <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
+                                          <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
+                                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
+                                        <?php } ?>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-12">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
+                        </div>
+                        <div class="instagram">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where status='1' and network='instagram' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
+                                        <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      </a>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i>";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i>";
+                                        }
+
+
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+
+                                        <?php if ($network == "instagram") { ?>
+                                          <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
+                                          <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
+                                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
+                                        <?php } ?>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-12">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
+                        </div>
+                        <div class="tiktok">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where status='1' and network='tiktok' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
+                                        <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      </a>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i>";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i>";
+                                        }
+
+
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+
+
+                                        <?php if ($network == "tiktok") { ?>
+                                          <h4 class="card-title2">Visualizações de vídeo : <?php echo $views_video; ?></h4>
+                                          <h4 class="card-title2">Visualizações de perfil: <?php echo $views_profile; ?></h4>
+                                          <h4 class="card-title2">Curtidas: <?php echo $comments; ?></h4>
+                                          <h4 class="card-title2">Compartilhamentos: <?php echo $shares ?></h4>
+                                          <h4 class="card-title2">Seguidores: <?php echo $followers_tiktok ?></h4>
+                                          <h4 class="card-title2">Número de vídeos publicados: <?php echo $number_videos; ?></h4>
+                                          <h4 class="card-title2">Número de lives realizadas: <?php echo $number_lives; ?></h4>
+                                        <?php } ?>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-12">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
+                        </div>
+                        <div class="twitch">
+                          <div class="row">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT * FROM posts where status='1' and network='twitch' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <div class="col-lg-6">
+                                  <div class="card">
+                                    <div class="card-body pt-4">
+                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
+                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+
+                                      <h5 class="card-title2 pt-2 text-center">
+                                        <?php
+                                        if ($status == "1") {
+                                          echo "<span class='text-success'>APROVADO</span>";
+                                        }
+                                        if ($status == "2") {
+                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
+                                        }
+                                        if ($status == "3") {
+                                          echo "<span class='text-warning'>EM ANALISE</span>";
+                                        }
+                                        if ($status == "4") {
+                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
+                                        }
+                                        ?>
+                                      </h5>
+                                      <h5 class="card-title2">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <?php
+                                        $date = new DateTime($data_create);
+                                        $date2 = $date->format('m');
+                                        $date3 = $date->format('d');
+                                        $date4 = $date->format('Y');
+                                        echo $date3;
+                                        if ($date2 == 01) {
+                                          echo " Jan. ";
+                                        }
+                                        if ($date2 == 02) {
+                                          echo " Fev. ";
+                                        }
+                                        if ($date2 == "03") {
+                                          echo " Mar. ";
+                                        }
+                                        if ($date2 == 04) {
+                                          echo " Abr. ";
+                                        }
+                                        if ($date2 == 05) {
+                                          echo " Mai. ";
+                                        }
+                                        if ($date2 == 06) {
+                                          echo " Jun. ";
+                                        }
+                                        if ($date2 == 07) {
+                                          echo " Jul. ";
+                                        }
+                                        if ($date2 == "08") {
+                                          echo " Ago. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Set. ";
+                                        }
+                                        if ($date2 == "10") {
+                                          echo " Out. ";
+                                        }
+                                        if ($date2 == "11") {
+                                          echo " Nov. ";
+                                        }
+                                        if ($date2 == "09") {
+                                          echo " Dez. ";
+                                        }
+                                        echo $date4;
+                                        ?>
+                                      </h5>
+                                      <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
+                                        <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                      </a>
+                                      <h4 class="card-title2">
+                                        <?php
+                                        if ($network == "instagram") {
+                                          echo "<i class='bi bi-instagram'></i> ";
+                                        }
+                                        if ($network == "facebook") {
+                                          echo "<i class='bi bi-facebook'></i> ";
+                                        }
+                                        if ($network == "twitter") {
+                                          echo "<i class='bi bi-twitter'></i> ";
+                                        }
+                                        if ($network == "tiktok") {
+                                          echo "<i class='bi bi-tiktok'></i>";
+                                        }
+                                        if ($network == "twitch") {
+                                          echo "<i class='bi bi-twitch'></i>";
+                                        }
+
+                                        echo $type;
+                                        ?>
+                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+
+                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
+
+                                        <?php if ($network == "twitch") { ?>
+                                          <h4 class="card-title2">Média de espectadores : <?php echo $media; ?></h4>
+                                          <h4 class="card-title2">Minutos assistidos gerados: <?php echo $minutes; ?></h4>
+                                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_twitch; ?></h4>
+                                          <h4 class="card-title2">Participantes únicos do chat: <?php echo $unique_participants ?></h4>
+                                        <?php } ?>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php
+                              }
+                            } else {
+                              ?>
+                              <div class="alert alert-warning col-md-12">
+                                <span class="fw-bolder">Sem post cadastrado...</span>
+                              </div>
+                            <?php
+                            }
+                            ?>
+                          </div>
+                        </div>
                       </div>
-                      <div class="instagram">
-                        teste instagram
-                      </div>
-                      <div class="tiktok">
-                        teste tiktok
-                      </div>
-                      <div class="twitch">
-                        teste twitch
-                      </div>
-                    </div>
+                    <?php } ?>
                   </div><!-- End sidebar recent posts-->
 
                 </div>
@@ -627,20 +2663,6 @@ endif;
         <!-- Right side columns -->
         <div class="col-lg-5">
           <div class="card top-selling overflow-auto">
-
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
-
             <div class="card-body pb-0">
               <h5 class="card-title">Ranking <span>| Todos</span></h5>
 
@@ -651,8 +2673,11 @@ endif;
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col">Pontos</th>
-
-                    <th scope="col">Opções</th>
+                    <?php
+                    if ($_SESSION['type'] == 1) {
+                    ?>
+                      <th scope="col">Opções</th>
+                    <?php } ?>
                   </tr>
                 </thead>
                 <tbody>
@@ -673,7 +2698,7 @@ endif;
                         <th scope="row">
                           <img src="./uploads/usuarios/<?php echo $_SESSION['img']; ?>" onerror="this.src='./assets/img/semperfil.png'" alt="Profile" class="rounded">
                         </th>
-                        <td><a href="#" class="text-primary fw-bold"><?php echo $name ?></a></td>
+                        <td><a href="<?php echo $URI->base('/perfil/' . slugify($name)); ?>" class="text-primary fw-bold"><?php echo $name ?></a></td>
                         <td class="text-center">
                           <?php echo $points ?>
                         </td>
@@ -727,6 +2752,7 @@ endif;
       //Select para mostrar e esconder divs
       $('#SelectOptions').on('change', function() {
         var SelectValue = '.' + $(this).val();
+        $('.DivPai .all').hide();
         $('.DivPai .twitter').hide();
         $('.DivPai .facebook').hide();
         $('.DivPai .instagram').hide();
