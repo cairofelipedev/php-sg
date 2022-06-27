@@ -37,7 +37,7 @@
       </li>
     <?php } ?>
     <li class="nav-item">
-      <a class="nav-link text-black" href="<?php echo $URI->base('/logout') ?>">
+      <a class="nav-link text-black" href="<?php echo $URI->base('/config/logout.php') ?>">
         <i class="text-black bi bi-box-arrow-in-right"></i>
         <span>Sair</span>
       </a>

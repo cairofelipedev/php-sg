@@ -44,7 +44,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="<?php echo $URI->base('/logout') ?>">
+              <a class="dropdown-item d-flex align-items-center" href="<?php echo $URI->base('/config/logout.php') ?>">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sair</span>
               </a>

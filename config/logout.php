@@ -6,5 +6,5 @@ if(session_status()==PHP_SESSION_NONE){
 session_destroy();
 session_unset();
 
-header("location:login");
+header("location:../login");
 ?>

@@ -1861,153 +1861,79 @@ endif;
                     <?php if ($_SESSION['type'] == 3) { ?>
                       <div class="DivPai">
                         <div class="all">
-                          <div class="row">
-                            <?php
-                            $stmt = $DB_con->prepare("SELECT * FROM posts where status='1' ORDER BY id DESC");
-                            $stmt->execute();
-                            if ($stmt->rowCount() > 0) {
-                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                extract($row);
-                            ?>
-                                <div class="col-lg-6">
-                                  <div class="card">
-                                    <div class="card-body pt-4">
-                                      <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
-                                      <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
+                          <!-- Recent Sales -->
+                          <div class="col-12">
+                            <div class="card recent-sales overflow-auto">
 
-                                      <h5 class="card-title2 pt-2 text-center">
-                                        <?php
-                                        if ($status == "1") {
-                                          echo "<span class='text-success'>APROVADO</span>";
-                                        }
-                                        if ($status == "2") {
-                                          echo "<span class='text-danger'>NÃO APROVADO</span>";
-                                        }
-                                        if ($status == "3") {
-                                          echo "<span class='text-warning'>EM ANALISE</span>";
-                                        }
-                                        if ($status == "4") {
-                                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
-                                        }
-                                        ?>
-                                      </h5>
-                                      <h5 class="card-title2">
-                                        <i class="bi bi-clock-fill"></i>
-                                        <?php
-                                        $date = new DateTime($data_create);
-                                        $date2 = $date->format('m');
-                                        $date3 = $date->format('d');
-                                        $date4 = $date->format('Y');
-                                        echo $date3;
-                                        if ($date2 == 01) {
-                                          echo " Jan. ";
-                                        }
-                                        if ($date2 == 02) {
-                                          echo " Fev. ";
-                                        }
-                                        if ($date2 == "03") {
-                                          echo " Mar. ";
-                                        }
-                                        if ($date2 == 04) {
-                                          echo " Abr. ";
-                                        }
-                                        if ($date2 == 05) {
-                                          echo " Mai. ";
-                                        }
-                                        if ($date2 == 06) {
-                                          echo " Jun. ";
-                                        }
-                                        if ($date2 == 07) {
-                                          echo " Jul. ";
-                                        }
-                                        if ($date2 == "08") {
-                                          echo " Ago. ";
-                                        }
-                                        if ($date2 == "09") {
-                                          echo " Set. ";
-                                        }
-                                        if ($date2 == "10") {
-                                          echo " Out. ";
-                                        }
-                                        if ($date2 == "11") {
-                                          echo " Nov. ";
-                                        }
-                                        if ($date2 == "09") {
-                                          echo " Dez. ";
-                                        }
-                                        echo $date4;
-                                        ?>
-                                      </h5>
-                                      <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                        <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
-                                      </a>
-                                      <h4 class="card-title2">
-                                        <?php
-                                        if ($network == "instagram") {
-                                          echo "<i class='bi bi-instagram'></i> ";
-                                        }
-                                        if ($network == "facebook") {
-                                          echo "<i class='bi bi-facebook'></i> ";
-                                        }
-                                        if ($network == "twitter") {
-                                          echo "<i class='bi bi-twitter'></i> ";
-                                        }
-                                        if ($network == "tiktok") {
-                                          echo "<i class='bi bi-tiktok'></i> ";
-                                        }
-                                        if ($network == "twitch") {
-                                          echo "<i class='bi bi-twitch'></i> ";
-                                        }
-                                        echo $type;
-                                        ?>
-                                        <h4 class="card-title2"><?php echo $link; ?></h4>
+                              <div class="filter">
+                                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                  <li class="dropdown-header text-start">
+                                    <h6>Filter</h6>
+                                  </li>
 
-                                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
-                                        <?php if ($network == "twitter") { ?>
-                                          <h4 class="card-title2">Impressões: <?php echo $impressions; ?></h4>
-                                          <h4 class="card-title2">Menções: <?php echo $mentions; ?></h4>
-                                          <h4 class="card-title2">Visualizações: <?php echo $views_tt; ?></h4>
-                                          <h4 class="card-title2">Seguidores: <?php echo $followers_tt; ?></h4>
-                                        <?php } ?>
-                                        <?php if ($network == "facebook") { ?>
-                                          <h4 class="card-title2">Alcance: <?php echo $reach_fb; ?></h4>
-                                          <h4 class="card-title2">Visita à pagina: <?php echo $views_fb; ?></h4>
-                                          <h4 class="card-title2">Novas Curtidas: <?php echo $likes_fb; ?></h4>
-                                        <?php } ?>
-                                        <?php if ($network == "instagram") { ?>
-                                          <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
-                                          <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
-                                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
-                                        <?php } ?>
-                                        <?php if ($network == "tiktok") { ?>
-                                          <h4 class="card-title2">Visualizações de vídeo : <?php echo $views_video; ?></h4>
-                                          <h4 class="card-title2">Visualizações de perfil: <?php echo $views_profile; ?></h4>
-                                          <h4 class="card-title2">Curtidas: <?php echo $comments; ?></h4>
-                                          <h4 class="card-title2">Compartilhamentos: <?php echo $shares ?></h4>
-                                          <h4 class="card-title2">Seguidores: <?php echo $followers_tiktok ?></h4>
-                                          <h4 class="card-title2">Número de vídeos publicados: <?php echo $number_videos; ?></h4>
-                                          <h4 class="card-title2">Número de lives realizadas: <?php echo $number_lives; ?></h4>
-                                        <?php } ?>
-                                        <?php if ($network == "twitch") { ?>
-                                          <h4 class="card-title2">Média de espectadores : <?php echo $media; ?></h4>
-                                          <h4 class="card-title2">Minutos assistidos gerados: <?php echo $minutes; ?></h4>
-                                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_twitch; ?></h4>
-                                          <h4 class="card-title2">Participantes únicos do chat: <?php echo $unique_participants ?></h4>
-                                        <?php } ?>
-                                    </div>
-                                  </div>
-                                </div>
-                              <?php
-                              }
-                            } else {
-                              ?>
-                              <div class="alert alert-warning col-md-3">
-                                <span class="fw-bolder">Sem post cadastrado...</span>
+                                  <li><a class="dropdown-item" href="#">Today</a></li>
+                                  <li><a class="dropdown-item" href="#">This Month</a></li>
+                                  <li><a class="dropdown-item" href="#">This Year</a></li>
+                                </ul>
                               </div>
-                            <?php
-                            }
-                            ?>
-                          </div>
+
+                              <div class="card-body">
+                                <h5 class="card-title">Recent Sales <span>| Today</span></h5>
+
+                                <table class="table table-borderless datatable">
+                                  <thead>
+                                    <tr>
+                                      <th scope="col">#</th>
+                                      <th scope="col">Customer</th>
+                                      <th scope="col">Product</th>
+                                      <th scope="col">Price</th>
+                                      <th scope="col">Status</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <th scope="row"><a href="#">#2457</a></th>
+                                      <td>Brandon Jacob</td>
+                                      <td><a href="#" class="text-primary">At praesentium minu</a></td>
+                                      <td>$64</td>
+                                      <td><span class="badge bg-success">Approved</span></td>
+                                    </tr>
+                                    <tr>
+                                      <th scope="row"><a href="#">#2147</a></th>
+                                      <td>Bridie Kessler</td>
+                                      <td><a href="#" class="text-primary">Blanditiis dolor omnis similique</a></td>
+                                      <td>$47</td>
+                                      <td><span class="badge bg-warning">Pending</span></td>
+                                    </tr>
+                                    <tr>
+                                      <th scope="row"><a href="#">#2049</a></th>
+                                      <td>Ashleigh Langosh</td>
+                                      <td><a href="#" class="text-primary">At recusandae consectetur</a></td>
+                                      <td>$147</td>
+                                      <td><span class="badge bg-success">Approved</span></td>
+                                    </tr>
+                                    <tr>
+                                      <th scope="row"><a href="#">#2644</a></th>
+                                      <td>Angus Grady</td>
+                                      <td><a href="#" class="text-primar">Ut voluptatem id earum et</a></td>
+                                      <td>$67</td>
+                                      <td><span class="badge bg-danger">Rejected</span></td>
+                                    </tr>
+                                    <tr>
+                                      <th scope="row"><a href="#">#2644</a></th>
+                                      <td>Raheem Lehner</td>
+                                      <td><a href="#" class="text-primary">Sunt similique distinctio</a></td>
+                                      <td>$165</td>
+                                      <td><span class="badge bg-success">Approved</span></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+
+                              </div>
+
+                            </div>
+                          </div><!-- End Recent Sales -->
                         </div>
                         <div class="twitter">
                           <div class="row">
