@@ -216,12 +216,21 @@ if (isset($_POST['btnsave'])) {
                       </div>
                       <div class="col-md-6 pb-2">
                         <div class="form-floating mb-2">
-                          <select name="type" class="form-select" id="floatingSelect" aria-label="Tipo de post">
-                            <option value="story">STORY</option>
-                            <option value="feed">FEED</option>
-                            <option value="status">STATUS</option>
+                          <select name="type" class="form-select" id="floatingSelect" aria-label="Marca do post">
+                            <?php
+                            $stmt = $DB_con->prepare("SELECT id,name,type FROM categorys where status='1' ORDER BY id DESC");
+                            $stmt->execute();
+                            if ($stmt->rowCount() > 0) {
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                            ?>
+                                <option value='<?php echo $name ?>'><?php echo $name ?></option>
+                            <?php
+                              }
+                            }
+                            ?>
                           </select>
-                          <label for="floatingSelect">TIPO</label>
+                          <label for="floatingSelect">MARCA</label>
                         </div>
                       </div>
                       <div class="col-md-12 pb-3">

@@ -13,7 +13,7 @@ abstract class Conexao{
         try{
             if(self::$instance == null):
                 /*Abaixo mostro a instancia de qual DB estou utilizando e o nome do database*/
-                $dsn = "mysql:host=localhost;dbname=cairod46_sg";
+                $dsn = "mysql:host=localhost;dbname=sg";
                 self::$instance = new PDO($dsn, self::USER, self::PASS);
                 self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

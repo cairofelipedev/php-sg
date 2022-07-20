@@ -30,9 +30,9 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-black border" href="<?php echo $URI->base('/docs') ?>">
+        <a class="nav-link text-black border" href="<?php echo $URI->base('/categorias') ?>">
           <i class="text-black bi bi-journal-text"></i>
-          <span>Docs</span>
+          <span>Categorias</span>
         </a>
       </li>
     <?php } ?>
