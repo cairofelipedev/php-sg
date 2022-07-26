@@ -65,7 +65,7 @@ if ($_SESSION['type'] != 1) {
             extract($row);
         ?>
 
-            <div class="col-lg-4">
+            <div class="col-lg-2">
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title text-center"><?php echo $name; ?></h5>
@@ -80,7 +80,7 @@ if ($_SESSION['type'] != 1) {
                   <img class="img-fluid rounded" src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/semperfil.png'">
                   <h5 class="card-title text-center">Pontos: <?php echo $points; ?></h5>
                   <div class="d-flex justify-content-between pt-2">
-                    <a href="<?php echo $URI->base('/perfil/' . slugify($name)); ?>">
+                    <a href="<?php echo $URI->base('/perfil/' . $name); ?>">
                       <button type="button" class="btn btn-success">Editar</button>
                     </a>
                     <a href="usuarios.php?delete_id=<?php echo $row['id']; ?>">
@@ -107,20 +107,20 @@ if ($_SESSION['type'] != 1) {
 
   <?php include "components/Footer.php"; ?>
 
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!-- Vendor JS Files -->
-<script src="<?php echo $URI->base('/assets/vendor/apexcharts/apexcharts.min.js') ?>"></script>
-<script src="<?php echo $URI->base('/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
-<script src="<?php echo $URI->base('/assets/vendor/chart.js/chart.min.js') ?>"></script>
-<script src="<?php echo $URI->base('/assets/vendor/echarts/echarts.min.js') ?>"></script>
-<script src="<?php echo $URI->base('/assets/vendor/quill/quill.min.js') ?>"></script>
-<script src="<?php echo $URI->base('/assets/vendor/simple-datatables/simple-datatables.js') ?>"></script>
-<script src="<?php echo $URI->base('/assets/vendor/tinymce/tinymce.min.js') ?>"></script>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Vendor JS Files -->
+  <script src="<?php echo $URI->base('/assets/vendor/apexcharts/apexcharts.min.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/chart.js/chart.min.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/echarts/echarts.min.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/quill/quill.min.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/simple-datatables/simple-datatables.js') ?>"></script>
+  <script src="<?php echo $URI->base('/assets/vendor/tinymce/tinymce.min.js') ?>"></script>
 
-<!-- Template Main JS File -->
-<script src="<?php echo $URI->base('/assets/js/main.js') ?>"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.2/js/fileinput.min.js" integrity="sha512-OgkQrY08KbdmZRLKrsBkVCv105YJz+HdwKACjXqwL+r3mVZBwl20vsQqpWPdRnfoxJZePgaahK9G62SrY9hR7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- Template Main JS File -->
+  <script src="<?php echo $URI->base('/assets/js/main.js') ?>"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.2/js/fileinput.min.js" integrity="sha512-OgkQrY08KbdmZRLKrsBkVCv105YJz+HdwKACjXqwL+r3mVZBwl20vsQqpWPdRnfoxJZePgaahK9G62SrY9hR7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 
 </html>

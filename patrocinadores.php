@@ -59,11 +59,11 @@ if (isset($_POST['btnsave'])) {
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Categorias</h1>
+      <h1>Patrocinadores</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="painel-controle.php">Home</a></li>
-          <li class="breadcrumb-item active">Categorias</li>
+          <li class="breadcrumb-item active">Patrocinadores</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -85,12 +85,12 @@ if (isset($_POST['btnsave'])) {
               <!-- Vertical Form -->
               <form method="POST" class="row">
                 <div class="col-md-12">
-                  <h5 class="card-title">Adicionar Categoria</h5>
+                  <h5 class="card-title">Adicionar Patrocinador</h5>
                   <div class="row">
                     <div class="col-md-4 pb-3">
                       <div class="form-floating">
                         <input type="text" class="form-control" value="<?php echo $name; ?>" name="name" placeholder="Insira o nome da categoria">
-                        <label for="">Nome da Categoria</label>
+                        <label for="">Nome</label>
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -98,16 +98,16 @@ if (isset($_POST['btnsave'])) {
                         <select name="type" class="form-select" id="floatingSelect" aria-label="Exibir preço particular">
                           <option value="1">Marca</option>
                         </select>
-                        <label for="floatingSelect">Tipo da Categoria</label>
+                        <label for="floatingSelect">Tipo</label>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
                         <select name="status" class="form-select" id="floatingSelect" aria-label="Status da categoria">
-                          <option value="1">Ativada</option>
-                          <option value="2">Desativada</option>
+                          <option value="1">Ativado</option>
+                          <option value="2">Desativado</option>
                         </select>
-                        <label for="floatingSelect">Status da categoria</label>
+                        <label for="floatingSelect">Status</label>
                       </div>
                     </div>
                   </div>
@@ -116,7 +116,7 @@ if (isset($_POST['btnsave'])) {
                   <button type="submit" name="btnsave" class="btn btn-primary">Adicionar</button>
                 </div>
               </form><!-- Vertical Form -->
-              <h5 class="card-title">Categorias Marcas </h5>
+              <h5 class="card-title">Patrocinadores</h5>
               <?php
               $stmt = $DB_con->prepare("SELECT * FROM categorys where type='1' ORDER BY id DESC");
               $stmt->execute();
@@ -154,7 +154,9 @@ if (isset($_POST['btnsave'])) {
                 }
               } else {
                 ?>
-                Sem categoria Cadastrada ...
+                <div class="alert alert-warning col-md-12">
+                  <span class="fw-bolder"> Sem Patrocinador Cadastrado ...</span>
+                </div>
               <?php
               }
               ?>

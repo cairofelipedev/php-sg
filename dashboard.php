@@ -48,7 +48,7 @@ endif;
       <div class="row">
 
         <!-- Left side columns -->
-        <div class="col-lg-8">
+        <div class="col-lg-6">
           <div class="row">
             <?php
             if (($_SESSION['type'] == 1) or ($_SESSION['type'] == 2)) {
@@ -57,12 +57,8 @@ endif;
               <div class="col-xxl-4 col-md-6">
                 <div class="card info-card posts-card">
                   <div class="card-body">
-                    <h5 class="card-title">Posts <span>| Todos</span></h5>
-
+                    <h5 class="card-title">Posts <span>| <i class="text-black bi bi-layout-text-window-reverse"></i></span></h5>
                     <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="text-black bi bi-layout-text-window-reverse"></i>
-                      </div>
                       <div class="ps-3">
                         <h6>
                           <?php
@@ -95,12 +91,9 @@ endif;
               <div class="col-xxl-4 col-md-6">
                 <div class="card info-card posts-card">
                   <div class="card-body">
-                    <h5 class="card-title">Ranking <span>| do mês</span></h5>
+                    <h5 class="card-title">Ranking <span>| <i class="text-black bi bi-bar-chart"></i></span></h5>
 
                     <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="text-black bi bi-bar-chart"></i>
-                      </div>
                       <div class="ps-3 card-text-ranking">
                         <?php
                         $i = 1;
@@ -131,12 +124,8 @@ endif;
 
                 <div class="card info-card posts-card">
                   <div class="card-body">
-                    <h5 class="card-title">Usuários <span>| Todos</span></h5>
-
+                    <h5 class="card-title">Usuários <span>| <i class="text-black bi bi-people"></i></span></h5>
                     <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="text-black bi bi-people"></i>
-                      </div>
                       <div class="ps-3">
                         <h6>
                           <?php
@@ -323,7 +312,7 @@ endif;
                               }
                             } else {
                               ?>
-                              <div class="alert alert-warning col-md-3">
+                              <div class="alert alert-warning col-md-12">
                                 <span class="fw-bolder">Sem post cadastrado...</span>
                               </div>
                             <?php
@@ -2528,23 +2517,18 @@ endif;
         </div><!-- End Left side columns -->
 
         <!-- Right side columns -->
-        <div class="col-lg-4">
+        <div class="col-lg-6">
           <div class="card top-selling overflow-auto">
             <div class="card-body pb-0">
               <h5 class="card-title">Ranking <span>| Todos</span></h5>
-
-              <table class="table table-borderless">
+              <table id="example7" class="display" style="width:100%">
                 <thead>
                   <tr>
                     <th scope="col">Ranking</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col">Pontos</th>
-                    <?php
-                    if ($_SESSION['type'] == 1) {
-                    ?>
-                      <th scope="col">Opções</th>
-                    <?php } ?>
+                    <th scope="col">Opções</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -2563,7 +2547,7 @@ endif;
                           ?>
                         </td>
                         <th scope="row">
-                          <img src="./uploads/usuarios/<?php echo $_SESSION['img']; ?>" onerror="this.src='./assets/img/semperfil.png'" alt="Profile" class="rounded">
+                          <img src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/semperfil.png'" alt="Profile" class="rounded">
                         </th>
                         <td><a href="<?php echo $URI->base('/perfil/' . slugify($name)); ?>" class="text-primary fw-bold"><?php echo $name ?></a></td>
                         <td class="text-center">
@@ -2585,7 +2569,6 @@ endif;
                   ?>
                 </tbody>
               </table>
-
             </div>
 
           </div>
@@ -2686,6 +2669,16 @@ endif;
   <script>
     $(document).ready(function() {
       $('#example6').DataTable({
+        language: {
+          url: 'assets/js/dataBr.json'
+        },
+        responsive: true
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      $('#example7').DataTable({
         language: {
           url: 'assets/js/dataBr.json'
         },

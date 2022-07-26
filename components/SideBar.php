@@ -9,9 +9,9 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link text-black border" href="<?php echo $URI->base('/posts') ?>">
+      <a class="nav-link text-black border" href="<?php echo $URI->base('/estatisticas') ?>">
         <i class="text-black bi bi-layout-text-window-reverse"></i>
-        <span>Posts</span>
+        <span>Estatísticas</span>
       </a>
     </li>
     <li class="nav-item">
@@ -30,9 +30,9 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-black border" href="<?php echo $URI->base('/categorias') ?>">
-          <i class="text-black bi bi-journal-text"></i>
-          <span>Categorias</span>
+        <a class="nav-link text-black border" href="<?php echo $URI->base('/patrocinadores') ?>">
+          <i class="text-black bi bi-star"></i>
+          <span>Patrocinadores</span>
         </a>
       </li>
     <?php } ?>

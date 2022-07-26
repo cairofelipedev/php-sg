@@ -44,12 +44,12 @@ if (isset($_GET['delete_id'])) {
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Postagens</h1>
+      <h1>Estatísticas</h1>
       <div class="d-flex justify-content-between">
         <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?php echo $URI->base('/dashboard') ?>">Home</a></li>
-            <li class="breadcrumb-item active">Postagens</li>
+            <li class="breadcrumb-item active">Estatísticas</li>
           </ol>
         </nav>
         <?php
@@ -360,10 +360,10 @@ if (isset($_GET['delete_id'])) {
         </div>
       <?php } ?>
       <div class="col-12">
-        <!-- Postagens -->
+        <!-- Estatísticas -->
         <div class="card pb-4">
           <div class="card-body pb-0">
-            <h5 class="card-title">Postagens<span>| Todas</span></h5>
+            <h5 class="card-title">Estatísticas<span>| Todas</span></h5>
             <div class="news">
               <?php
               if ($_SESSION['type'] == 1) {
