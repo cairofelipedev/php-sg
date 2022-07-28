@@ -130,7 +130,7 @@ if (isset($_POST['btnsave'])) {
     $stmt->bindParam(':uunique_participants', $unique_participants);
 
     if ($stmt->execute()) {
-      echo ("<script>window.location = 'posts';</script>");
+      echo ("<script>window.location = 'estatisticas';</script>");
     } else {
       $errMSG = "Erro, solicite suporte";
     }
@@ -163,7 +163,7 @@ if (isset($_POST['btnsave'])) {
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="dashboard">Home</a></li>
-          <li class="breadcrumb-item"><a href="posts">Postagens</a></li>
+          <li class="breadcrumb-item"><a href="estatisticas">Postagens</a></li>
           <li class="breadcrumb-item active">Adicionar Post</li>
         </ol>
       </nav>
@@ -217,6 +217,7 @@ if (isset($_POST['btnsave'])) {
                       <div class="col-md-6 pb-2">
                         <div class="form-floating mb-2">
                           <select name="type" class="form-select" id="floatingSelect" aria-label="Marca do post">
+                          <option value="">SELECIONE UMA MARCA</option>
                             <?php
                             $stmt = $DB_con->prepare("SELECT id,name,type FROM categorys where status='1' ORDER BY id DESC");
                             $stmt->execute();

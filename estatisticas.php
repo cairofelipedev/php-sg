@@ -18,7 +18,7 @@ if (isset($_GET['delete_id'])) {
   $stmt_delete->bindParam(':uid', $_GET['delete_id']);
   $stmt_delete->execute();
 
-  header("Location: posts");
+  header("Location: estatisticas");
 }
 ?>
 <!DOCTYPE html>
@@ -48,9 +48,19 @@ if (isset($_GET['delete_id'])) {
       <div class="d-flex justify-content-between">
         <nav>
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?php echo $URI->base('/dashboard') ?>">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo $URI->base('dashboard') ?>">Home</a></li>
             <li class="breadcrumb-item active">Estatísticas</li>
           </ol>
+          <div class="filter mr-4">
+            <select name="network" class="form-select" id="SelectOptions" required>
+              <option value="all">TODAS</option>
+              <option value="twitter">TWITTER</option>
+              <option value="facebook">FACEBOOK</option>
+              <option value="instagram">INSTAGRAM</option>
+              <option value="tiktok">TIKTOK</option>
+              <option value="twitch">TWITCH</option>
+            </select>
+          </div>
         </nav>
         <?php
         if (($_SESSION['type'] == 1) or ($_SESSION['type'] == 2)) {
@@ -59,311 +69,14 @@ if (isset($_GET['delete_id'])) {
             <button class="btn btn-primary"><i class="bi bi-plus-circle-fill"></i> Adicionar Post</button>
           </a>
         <?php } ?>
-        <div class="filter mr-4">
-          <select name="network" class="form-select" id="SelectOptions" required>
-            <option value="all">TODAS</option>
-            <option value="twitter">TWITTER</option>
-            <option value="facebook">FACEBOOK</option>
-            <option value="instagram">INSTAGRAM</option>
-            <option value="tiktok">TIKTOK</option>
-            <option value="twitch">TWITCH</option>
-          </select>
-        </div>
       </div>
     </div><!-- End Page Title -->
 
     <section class="section">
-      <?php
-      if ($_SESSION['type'] == 1) {
-      ?>
-        <div class="row">
-          <?php
-          $stmt = $DB_con->prepare('SELECT * FROM posts ORDER BY id DESC');
-          $stmt->execute();
-          if ($stmt->rowCount() > 0) {
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-              extract($row);
-          ?>
-              <div class="col-lg-4">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
-                    <img src="./uploads/posts/<?php echo $row['img']; ?>" height="300px" width="100%" onerror="this.src='./assets/img/sem-imagem-10.jpg'">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <h5 class="card-title2 pt-2 text-center">
-                          <?php
-                          if ($status == "1") {
-                            echo "<span class='text-success'>APROVADO</span>";
-                          }
-                          if ($status == "2") {
-                            echo "<span class='text-danger'>NÃO APROVADO</span>";
-                          }
-                          if ($status == "3") {
-                            echo "<span class='text-warning'>EM ANALISE</span>";
-                          }
-                          if ($status == "4") {
-                            echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
-                          }
-                          ?>
-                        </h5>
-                        <h5 class="card-title2">
-                          <i class="bi bi-clock-fill"></i>
-                          <?php
-                          $date = new DateTime($data_create);
-                          $date2 = $date->format('m');
-                          $date3 = $date->format('d');
-                          $date4 = $date->format('Y');
-                          echo $date3;
-                          if ($date2 == 01) {
-                            echo " Jan. ";
-                          }
-                          if ($date2 == 02) {
-                            echo " Fev. ";
-                          }
-                          if ($date2 == "03") {
-                            echo " Mar. ";
-                          }
-                          if ($date2 == 04) {
-                            echo " Abr. ";
-                          }
-                          if ($date2 == 05) {
-                            echo " Mai. ";
-                          }
-                          if ($date2 == 06) {
-                            echo " Jun. ";
-                          }
-                          if ($date2 == 07) {
-                            echo " Jul. ";
-                          }
-                          if ($date2 == "08") {
-                            echo " Ago. ";
-                          }
-                          if ($date2 == "09") {
-                            echo " Set. ";
-                          }
-                          if ($date2 == "10") {
-                            echo " Out. ";
-                          }
-                          if ($date2 == "11") {
-                            echo " Nov. ";
-                          }
-                          if ($date2 == "09") {
-                            echo " Dez. ";
-                          }
-                          echo $date4;
-                          ?>
-                        </h5>
-                        <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
-                        <h4 class="card-title2">
-                          <?php
-                          if ($network == "instagram") {
-                            echo "<i class='bi bi-instagram'></i> ";
-                          }
-                          if ($network == "facebook") {
-                            echo "<i class='bi bi-facebook'></i> ";
-                          }
-                          if ($network == "twitter") {
-                            echo "<i class='bi bi-twitter'></i> ";
-                          }
-                          if ($network == "tiktok") {
-                            echo "<i class='bi bi-tiktok'></i>";
-                          }
-                          echo $type;
-                          ?>
-                          <h4 class="card-title2"><?php echo $links; ?></h4>
-                      </div>
-                      <div class="col-md-6">
-                        <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
-                        <?php if ($network == "twitter") { ?>
-                          <h4 class="card-title2">Impressões: <?php echo $impressions; ?></h4>
-                          <h4 class="card-title2">Menções: <?php echo $mentions; ?></h4>
-                          <h4 class="card-title2">Visualizações: <?php echo $views_tt; ?></h4>
-                          <h4 class="card-title2">Seguidores: <?php echo $followers_tt; ?></h4>
-                        <?php } ?>
-                        <?php if ($network == "facebook") { ?>
-                          <h4 class="card-title2">Alcance: <?php echo $reach_fb; ?></h4>
-                          <h4 class="card-title2">Visita à pagina: <?php echo $views_fb; ?></h4>
-                          <h4 class="card-title2">Novas Curtidas: <?php echo $likes_fb; ?></h4>
-                        <?php } ?>
-                        <?php if ($network == "instagram") { ?>
-                          <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
-                          <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
-                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
-                        <?php } ?>
-                        <?php if ($network == "tiktok") { ?>
-                          <h4 class="card-title2">Visualizações de vídeo : <?php echo $views_video; ?></h4>
-                          <h4 class="card-title2">Visualizações de perfil: <?php echo $views_profile; ?></h4>
-                          <h4 class="card-title2">Curtidas: <?php echo $comments; ?></h4>
-                          <h4 class="card-title2">Compartilhamentos: <?php echo $shares ?></h4>
-                          <h4 class="card-title2">Seguidores: <?php echo $followers_tiktok ?></h4>
-                          <h4 class="card-title2">Número de vídeos publicados: <?php echo $number_videos; ?></h4>
-                          <h4 class="card-title2">Número de lives realizadas: <?php echo $number_lives; ?></h4>
-                        <?php } ?>
-                        <?php if ($network == "twitch") { ?>
-                          <h4 class="card-title2">Média de espectadores : <?php echo $media; ?></h4>
-                          <h4 class="card-title2">Minutos assistidos gerados: <?php echo $minutes; ?></h4>
-                          <h4 class="card-title2">Novos seguidores: <?php echo $followers_twitch; ?></h4>
-                          <h4 class="card-title2">Participantes únicos do chat: <?php echo $unique_participants ?></h4>
-                        <?php } ?>
-                      </div>
-                    </div>
-                    <div class="d-flex justify-content-between pt-2">
-                      <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
-                        <button type="button" class="btn btn-success">Editar</button>
-                      </a>
-                      <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
-                        <button type="button" class="btn btn-danger">Excluir</button>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            <?php
-            }
-          } else {
-            ?>
-            <div class="alert alert-warning col-md-3">
-              <span class="fw-bolder">Sem post cadastrado...</span>
-            </div>
-          <?php
-          }
-          ?>
-        </div>
-      <?php } ?>
-      <?php
-      if ($_SESSION['type'] == 2) {
-      ?>
-        <div class="row">
-          <?php
-          $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[name]' ORDER BY id DESC");
-          $stmt->execute();
-          if ($stmt->rowCount() > 0) {
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-              extract($row);
-          ?>
-              <div class="col-lg-4">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
-                    <?php
-                    if ($type == 1) {
-                      echo "<h5 class='card-title-2 text-center'>Administrador</h5>";
-                    }
-                    if ($type == 2) {
-                      echo "<h5 class='card-title-2 text-center'>Afiliado</h5>";
-                    }
-                    if ($type == 4) {
-                      echo "<h5 class='card-title-2 text-center'>Cliente</h5>";
-                    }
-                    ?>
-                    <img class="img-fluid" src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'">
-                    <h5 class="card-title2 text-center pt-2">
-                      <i class="bi bi-clock"></i>
-                      <?php
-                      $date = new DateTime($data_create);
-                      $date2 = $date->format('m');
-                      $date3 = $date->format('d');
-                      $date4 = $date->format('Y');
-                      echo $date3;
-                      if ($date2 == 01) {
-                        echo " Jan. ";
-                      }
-                      if ($date2 == 02) {
-                        echo " Fev. ";
-                      }
-                      if ($date2 == "03") {
-                        echo " Mar. ";
-                      }
-                      if ($date2 == 04) {
-                        echo " Abr. ";
-                      }
-                      if ($date2 == 05) {
-                        echo " Mai. ";
-                      }
-                      if ($date2 == 06) {
-                        echo " Jun. ";
-                      }
-                      if ($date2 == 07) {
-                        echo " Jul. ";
-                      }
-                      if ($date2 == "08") {
-                        echo " Ago. ";
-                      }
-                      if ($date2 == "09") {
-                        echo " Set. ";
-                      }
-                      if ($date2 == "10") {
-                        echo " Out. ";
-                      }
-                      if ($date2 == "11") {
-                        echo " Nov. ";
-                      }
-                      if ($date2 == "09") {
-                        echo " Dez. ";
-                      }
-                      echo $date4;
-                      ?>
-                    </h5>
-                    <h4 class="card-title2"><i class="bi bi-person"></i> <?php echo $user_create; ?></h4>
-                    <h4 class="card-title2">
-                      <?php
-                      if ($network == "insta") {
-                        echo "<i class='bi bi-instagram'></i> ";
-                      }
-                      if ($network == "face") {
-                        echo "<i class='bi bi-facebook'></i> ";
-                      }
-                      if ($network == "whats") {
-                        echo "<i class='bi bi-whatsapp'></i> ";
-                      }
-                      echo $network . " - " . $type;
-                      ?>
-                      <h5 class="card-title2">
-                        <?php
-                        if ($status == "1") {
-                          echo "<span class='text-success'>APROVADO</span>";
-                        }
-                        if ($status == "2") {
-                          echo "<span class='text-danger'>NÃO APROVADO</span>";
-                        }
-                        if ($status == "3") {
-                          echo "<span class='text-warning'>EM ANALISE</span>";
-                        }
-                        if ($status == "4") {
-                          echo "<span style='color:gray'>AGUARDANDO ANALISE</span>";
-                        }
-                        ?>
-                      </h5>
-                      <h4 class="card-title2"><?php echo $links; ?></h4>
-                      <div class="d-flex justify-content-between pt-2">
-                        <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
-                          <button type="button" class="btn btn-success">Editar</button>
-                        </a>
-                        <a href="<?php echo $URI->base('/delete-post/' . slugify($id)); ?>">
-                          <button type="button" class="btn btn-danger">Excluir</button>
-                        </a>
-                      </div>
-                  </div>
-                </div>
-              </div>
-            <?php
-            }
-          } else {
-            ?>
-            <div class="alert alert-warning col-md-3">
-              <span class="fw-bolder">Sem post cadastrado...</span>
-            </div>
-          <?php
-          }
-          ?>
-        </div>
-      <?php } ?>
       <div class="col-12">
         <!-- Estatísticas -->
         <div class="card pb-4">
-          <div class="card-body pb-0">
-            <h5 class="card-title">Estatísticas<span>| Todas</span></h5>
+          <div class="card-body pb-0 pt-4">
             <div class="news">
               <?php
               if ($_SESSION['type'] == 1) {
@@ -378,7 +91,7 @@ if (isset($_GET['delete_id'])) {
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                           extract($row);
                       ?>
-                          <div class="col-lg-6">
+                          <div class="col-lg-4">
                             <div class="card">
                               <div class="card-body pt-4">
                                 <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
@@ -473,42 +186,42 @@ if (isset($_GET['delete_id'])) {
 
                                   <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
                                   <?php if ($network == "twitter") { ?>
-                                    <h4 class="card-title2">Impressões: <?php echo $impressions; ?></h4>
-                                    <h4 class="card-title2">Menções: <?php echo $mentions; ?></h4>
-                                    <h4 class="card-title2">Visualizações: <?php echo $views_tt; ?></h4>
-                                    <h4 class="card-title2">Seguidores: <?php echo $followers_tt; ?></h4>
+                                    <h4 class="card-title2">Impressões: <?php echo number_format($impressions, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Menções: <?php echo number_format($mentions, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visualizações: <?php echo number_format($views_tt, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Seguidores: <?php echo number_format($followers_tt, 0, ',', '.'); ?></h4>
                                   <?php } ?>
                                   <?php if ($network == "facebook") { ?>
-                                    <h4 class="card-title2">Alcance: <?php echo $reach_fb; ?></h4>
-                                    <h4 class="card-title2">Visita à pagina: <?php echo $views_fb; ?></h4>
-                                    <h4 class="card-title2">Novas Curtidas: <?php echo $likes_fb; ?></h4>
+                                    <h4 class="card-title2">Alcance: <?php echo number_format($reach_fb, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visita à pagina: <?php echo number_format($views_fb, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Novas Curtidas: <?php echo number_format($likes_fb, 0, ',', '.'); ?></h4>
                                   <?php } ?>
                                   <?php if ($network == "instagram") { ?>
-                                    <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
-                                    <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
-                                    <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
+                                    <h4 class="card-title2">Alcance: <?php echo number_format($reach_insta, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visita ao perfil: <?php echo number_format($views_insta, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Novos seguidores: <?php echo number_format($followers_insta, 0, ',', '.'); ?></h4>
                                   <?php } ?>
                                   <?php if ($network == "tiktok") { ?>
-                                    <h4 class="card-title2">Visualizações de vídeo : <?php echo $views_video; ?></h4>
-                                    <h4 class="card-title2">Visualizações de perfil: <?php echo $views_profile; ?></h4>
-                                    <h4 class="card-title2">Curtidas: <?php echo $comments; ?></h4>
-                                    <h4 class="card-title2">Compartilhamentos: <?php echo $shares ?></h4>
-                                    <h4 class="card-title2">Seguidores: <?php echo $followers_tiktok ?></h4>
-                                    <h4 class="card-title2">Número de vídeos publicados: <?php echo $number_videos; ?></h4>
-                                    <h4 class="card-title2">Número de lives realizadas: <?php echo $number_lives; ?></h4>
+                                    <h4 class="card-title2">Visualizações de vídeo : <?php echo number_format($views_video, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visualizações de perfil: <?php echo number_format($views_profile, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Curtidas: <?php echo number_format($comments, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Compartilhamentos: <?php echo number_format($shares, 0, ',', '.') ?></h4>
+                                    <h4 class="card-title2">Seguidores: <?php echo number_format($followers_tiktok, 0, ',', '.') ?></h4>
+                                    <h4 class="card-title2">Número de vídeos publicados: <?php echo number_format($number_videos, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Número de lives realizadas: <?php echo number_format($number_lives, 0, ',', '.'); ?></h4>
                                   <?php } ?>
                                   <?php if ($network == "twitch") { ?>
-                                    <h4 class="card-title2">Média de espectadores : <?php echo $media; ?></h4>
-                                    <h4 class="card-title2">Minutos assistidos gerados: <?php echo $minutes; ?></h4>
-                                    <h4 class="card-title2">Novos seguidores: <?php echo $followers_twitch; ?></h4>
-                                    <h4 class="card-title2">Participantes únicos do chat: <?php echo $unique_participants ?></h4>
+                                    <h4 class="card-title2">Média de espectadores : <?php echo number_format($media, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Minutos assistidos gerados: <?php echo number_format($minutes, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Novos seguidores: <?php echo number_format($followers_twitch, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Participantes únicos do chat: <?php echo number_format($unique_participants, 0, ',', '.') ?></h4>
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
-                                    <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                    <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                       <button type="button" class="btn btn-success">Editar</button>
                                     </a>
-                                    <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                    <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                       <button type="button" class="btn btn-danger">Excluir</button>
                                     </a>
                                   </div>
@@ -640,10 +353,10 @@ if (isset($_GET['delete_id'])) {
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
-                                    <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                    <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                       <button type="button" class="btn btn-success">Editar</button>
                                     </a>
-                                    <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                    <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                       <button type="button" class="btn btn-danger">Excluir</button>
                                     </a>
                                   </div>
@@ -781,10 +494,10 @@ if (isset($_GET['delete_id'])) {
 
 
                                   <div class="d-flex justify-content-between pt-2">
-                                    <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                    <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                       <button type="button" class="btn btn-success">Editar</button>
                                     </a>
-                                    <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                    <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                       <button type="button" class="btn btn-danger">Excluir</button>
                                     </a>
                                   </div>
@@ -916,10 +629,10 @@ if (isset($_GET['delete_id'])) {
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
-                                    <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                    <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                       <button type="button" class="btn btn-success">Editar</button>
                                     </a>
-                                    <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                    <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                       <button type="button" class="btn btn-danger">Excluir</button>
                                     </a>
                                   </div>
@@ -1056,10 +769,10 @@ if (isset($_GET['delete_id'])) {
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
-                                    <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                    <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                       <button type="button" class="btn btn-success">Editar</button>
                                     </a>
-                                    <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                    <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                       <button type="button" class="btn btn-danger">Excluir</button>
                                     </a>
                                   </div>
@@ -1191,10 +904,10 @@ if (isset($_GET['delete_id'])) {
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
-                                    <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                    <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                       <button type="button" class="btn btn-success">Editar</button>
                                     </a>
-                                    <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                    <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                       <button type="button" class="btn btn-danger">Excluir</button>
                                     </a>
                                   </div>
@@ -1228,7 +941,7 @@ if (isset($_GET['delete_id'])) {
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                           extract($row);
                       ?>
-                          <div class="col-lg-6">
+                          <div class="col-lg-4">
                             <div class="card">
                               <div class="card-body pt-4">
                                 <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
@@ -1353,10 +1066,10 @@ if (isset($_GET['delete_id'])) {
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
-                                    <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                    <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                       <button type="button" class="btn btn-success">Editar</button>
                                     </a>
-                                    <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                    <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                       <button type="button" class="btn btn-danger">Excluir</button>
                                     </a>
                                   </div>
@@ -1484,10 +1197,10 @@ if (isset($_GET['delete_id'])) {
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
-                                    <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                    <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                       <button type="button" class="btn btn-success">Editar</button>
                                     </a>
-                                    <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                    <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                       <button type="button" class="btn btn-danger">Excluir</button>
                                     </a>
                                   </div>
@@ -1623,10 +1336,10 @@ if (isset($_GET['delete_id'])) {
 
 
                                   <div class="d-flex justify-content-between pt-2">
-                                    <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                    <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                       <button type="button" class="btn btn-success">Editar</button>
                                     </a>
-                                    <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                    <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                       <button type="button" class="btn btn-danger">Excluir</button>
                                     </a>
                                   </div>
@@ -1756,10 +1469,10 @@ if (isset($_GET['delete_id'])) {
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
-                                    <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                    <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                       <button type="button" class="btn btn-success">Editar</button>
                                     </a>
-                                    <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                    <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                       <button type="button" class="btn btn-danger">Excluir</button>
                                     </a>
                                   </div>
@@ -1894,10 +1607,10 @@ if (isset($_GET['delete_id'])) {
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
-                                    <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                    <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                       <button type="button" class="btn btn-success">Editar</button>
                                     </a>
-                                    <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                    <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                       <button type="button" class="btn btn-danger">Excluir</button>
                                     </a>
                                   </div>
@@ -2027,10 +1740,10 @@ if (isset($_GET['delete_id'])) {
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
-                                    <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                    <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                       <button type="button" class="btn btn-success">Editar</button>
                                     </a>
-                                    <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                    <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                       <button type="button" class="btn btn-danger">Excluir</button>
                                     </a>
                                   </div>

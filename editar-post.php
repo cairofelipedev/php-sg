@@ -18,7 +18,7 @@ $url = explode("/", $_SERVER['REQUEST_URI']);
 $idPost = $url[3];
 
 if (empty($idPost)) {
-  header("Location: ../posts");
+  header("Location: ../estatisticas");
 }
 
 $stmt2 = $DB_con->prepare("SELECT id FROM posts where id='$idPost'");
@@ -121,7 +121,7 @@ if (isset($_POST['btnsave'])) {
     $stmt->bindParam(':uid', $id);
 
     if ($stmt->execute()) {
-      echo ("<script>window.location = '../posts';</script>");
+      echo ("<script>window.location = '../estatisticas';</script>");
     } else {
       $errMSG = "Erro..";
     }
@@ -144,8 +144,8 @@ if (isset($_POST['btnsave'])) {
       <h1>Editar Post</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo $URI->base('/dashboard') ?>">Home</a></li>
-          <li class="breadcrumb-item"><a href="<?php echo $URI->base('/posts') ?>">Postagens</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo $URI->base('dashboard') ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo $URI->base('posts') ?>">Postagens</a></li>
           <li class="breadcrumb-item active">Editar Post</li>
         </ol>
       </nav>

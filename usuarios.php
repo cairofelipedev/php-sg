@@ -45,7 +45,7 @@ if ($_SESSION['type'] != 1) {
       <div class="d-flex justify-content-between">
         <nav>
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?php echo $URI->base('/dashboard') ?>">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo $URI->base('dashboard') ?>">Dashboard</a></li>
             <li class="breadcrumb-item active">Usuários</li>
           </ol>
         </nav>
@@ -76,11 +76,14 @@ if ($_SESSION['type'] != 1) {
                   if ($type == 2) {
                     echo "<h5 class='card-title-2 text-center'>Stremear</h5>";
                   }
+                  if ($type == 3) {
+                    echo "<h5 class='card-title-2 text-center'>Patrocinandor</h5>";
+                  }
                   ?>
                   <img class="img-fluid rounded" src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/semperfil.png'">
                   <h5 class="card-title text-center">Pontos: <?php echo $points; ?></h5>
                   <div class="d-flex justify-content-between pt-2">
-                    <a href="<?php echo $URI->base('/perfil/' . $name); ?>">
+                    <a href="<?php echo $URI->base('perfil/' . $name); ?>">
                       <button type="button" class="btn btn-success">Editar</button>
                     </a>
                     <a href="usuarios.php?delete_id=<?php echo $row['id']; ?>">

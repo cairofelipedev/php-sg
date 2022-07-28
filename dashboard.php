@@ -57,7 +57,7 @@ endif;
               <div class="col-xxl-4 col-md-6">
                 <div class="card info-card posts-card">
                   <div class="card-body">
-                    <h5 class="card-title">Posts <span>| <i class="text-black bi bi-layout-text-window-reverse"></i></span></h5>
+                    <h5 class="card-title">Estatísticas <span>| <i class="text-black bi bi-layout-text-window-reverse"></i></span></h5>
                     <div class="d-flex align-items-center">
                       <div class="ps-3">
                         <h6>
@@ -298,10 +298,10 @@ endif;
                                         <?php } ?>
 
                                         <div class="d-flex justify-content-between pt-2">
-                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                          <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                             <button type="button" class="btn btn-success">Editar</button>
                                           </a>
-                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                          <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                             <button type="button" class="btn btn-danger">Excluir</button>
                                           </a>
                                         </div>
@@ -433,10 +433,10 @@ endif;
                                         <?php } ?>
 
                                         <div class="d-flex justify-content-between pt-2">
-                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                          <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                             <button type="button" class="btn btn-success">Editar</button>
                                           </a>
-                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                          <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                             <button type="button" class="btn btn-danger">Excluir</button>
                                           </a>
                                         </div>
@@ -574,10 +574,10 @@ endif;
 
 
                                         <div class="d-flex justify-content-between pt-2">
-                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                          <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                             <button type="button" class="btn btn-success">Editar</button>
                                           </a>
-                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                          <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                             <button type="button" class="btn btn-danger">Excluir</button>
                                           </a>
                                         </div>
@@ -709,10 +709,10 @@ endif;
                                         <?php } ?>
 
                                         <div class="d-flex justify-content-between pt-2">
-                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                          <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                             <button type="button" class="btn btn-success">Editar</button>
                                           </a>
-                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                          <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                             <button type="button" class="btn btn-danger">Excluir</button>
                                           </a>
                                         </div>
@@ -849,10 +849,10 @@ endif;
                                         <?php } ?>
 
                                         <div class="d-flex justify-content-between pt-2">
-                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                          <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                             <button type="button" class="btn btn-success">Editar</button>
                                           </a>
-                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                          <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                             <button type="button" class="btn btn-danger">Excluir</button>
                                           </a>
                                         </div>
@@ -984,10 +984,10 @@ endif;
                                         <?php } ?>
 
                                         <div class="d-flex justify-content-between pt-2">
-                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                          <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                             <button type="button" class="btn btn-success">Editar</button>
                                           </a>
-                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                          <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                             <button type="button" class="btn btn-danger">Excluir</button>
                                           </a>
                                         </div>
@@ -1146,10 +1146,10 @@ endif;
                                         <?php } ?>
 
                                         <div class="d-flex justify-content-between pt-2">
-                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                          <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                             <button type="button" class="btn btn-success">Editar</button>
                                           </a>
-                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                          <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                             <button type="button" class="btn btn-danger">Excluir</button>
                                           </a>
                                         </div>
@@ -1277,10 +1277,10 @@ endif;
                                         <?php } ?>
 
                                         <div class="d-flex justify-content-between pt-2">
-                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                          <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                             <button type="button" class="btn btn-success">Editar</button>
                                           </a>
-                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                          <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                             <button type="button" class="btn btn-danger">Excluir</button>
                                           </a>
                                         </div>
@@ -1416,10 +1416,10 @@ endif;
 
 
                                         <div class="d-flex justify-content-between pt-2">
-                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                          <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                             <button type="button" class="btn btn-success">Editar</button>
                                           </a>
-                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                          <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                             <button type="button" class="btn btn-danger">Excluir</button>
                                           </a>
                                         </div>
@@ -1549,10 +1549,10 @@ endif;
                                         <?php } ?>
 
                                         <div class="d-flex justify-content-between pt-2">
-                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                          <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                             <button type="button" class="btn btn-success">Editar</button>
                                           </a>
-                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                          <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                             <button type="button" class="btn btn-danger">Excluir</button>
                                           </a>
                                         </div>
@@ -1687,10 +1687,10 @@ endif;
                                         <?php } ?>
 
                                         <div class="d-flex justify-content-between pt-2">
-                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                          <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                             <button type="button" class="btn btn-success">Editar</button>
                                           </a>
-                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                          <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                             <button type="button" class="btn btn-danger">Excluir</button>
                                           </a>
                                         </div>
@@ -1820,10 +1820,10 @@ endif;
                                         <?php } ?>
 
                                         <div class="d-flex justify-content-between pt-2">
-                                          <a href="<?php echo $URI->base('/editar-post/' . slugify($id)); ?>">
+                                          <a href="<?php echo $URI->base('editar-post/' . slugify($id)); ?>">
                                             <button type="button" class="btn btn-success">Editar</button>
                                           </a>
-                                          <a href="posts.php?delete_id=<?php echo $row['id']; ?>">
+                                          <a href="estatisticas.php?delete_id=<?php echo $row['id']; ?>">
                                             <button type="button" class="btn btn-danger">Excluir</button>
                                           </a>
                                         </div>
@@ -2518,10 +2518,10 @@ endif;
 
         <!-- Right side columns -->
         <div class="col-lg-6">
-          <div class="card top-selling overflow-auto">
+          <div class="card top-selling">
             <div class="card-body pb-0">
               <h5 class="card-title">Ranking <span>| Todos</span></h5>
-              <table id="example7" class="display" style="width:100%">
+              <table class="table table-borderless datatable">
                 <thead>
                   <tr>
                     <th scope="col">Ranking</th>
@@ -2557,7 +2557,7 @@ endif;
                         if ($_SESSION['type'] == 1) {
                         ?>
                           <td>
-                            <a href="#">
+                            <a href="<?php echo $URI->base('perfil/' . $name); ?>">
                               <button type="button" class="btn btn-success">Editar</button>
                             </a>
                           </td>

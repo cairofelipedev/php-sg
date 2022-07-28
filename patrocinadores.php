@@ -19,7 +19,7 @@ if (isset($_GET['delete_id'])) {
   $stmt_delete->bindParam(':uid', $_GET['delete_id']);
   $stmt_delete->execute();
 
-  header("Location: categorias.php");
+  header("Location: patrocinadores.php");
 }
 
 if (isset($_POST['btnsave'])) {
@@ -52,17 +52,15 @@ if (isset($_POST['btnsave'])) {
 </head>
 
 <body>
-
-  <?php include "components/header.php" ?>
-  <?php include "components/sidebar.php" ?>
-
+  <?php include "components/Header.php"; ?>
+  <?php include "components/SideBar.php"; ?>
   <main id="main" class="main">
 
     <div class="pagetitle">
       <h1>Patrocinadores</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="painel-controle.php">Home</a></li>
+          <li class="breadcrumb-item"><a href="dashboard">Home</a></li>
           <li class="breadcrumb-item active">Patrocinadores</li>
         </ol>
       </nav>
@@ -89,7 +87,7 @@ if (isset($_POST['btnsave'])) {
                   <div class="row">
                     <div class="col-md-4 pb-3">
                       <div class="form-floating">
-                        <input type="text" class="form-control" value="<?php echo $name; ?>" name="name" placeholder="Insira o nome da categoria">
+                        <input type="text" class="form-control" value="<?php echo $name; ?>" name="name" placeholder="Insira o nome">
                         <label for="">Nome</label>
                       </div>
                     </div>
@@ -103,7 +101,7 @@ if (isset($_POST['btnsave'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <select name="status" class="form-select" id="floatingSelect" aria-label="Status da categoria">
+                        <select name="status" class="form-select" id="floatingSelect" aria-label="Status">
                           <option value="1">Ativado</option>
                           <option value="2">Desativado</option>
                         </select>
@@ -142,10 +140,10 @@ if (isset($_POST['btnsave'])) {
                       ?>
                     </h6>
                     <div>
-                      <a href="categorias.php?delete_id=<?php echo $row['id']; ?>">
+                      <a href="patrocinadores.php?delete_id=<?php echo $row['id']; ?>">
                         <button type="button" class="btn btn-danger">Excluir</button>
                       </a>
-                      <a href="editar-categoria.php?edit_id=<?php echo $row['id']; ?>">
+                      <a href="editar-patrocinador.php?edit_id=<?php echo $row['id']; ?>">
                         <button type="button" class="btn btn-success">Editar</button>
                       </a>
                     </div>

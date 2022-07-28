@@ -20,7 +20,7 @@ if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
   $edit_row = $stmt_edit->fetch(PDO::FETCH_ASSOC);
   extract($edit_row);
 } else {
-  header("Location: categorias.php");
+  header("Location: patrocinadores.php");
 }
 
 
@@ -43,7 +43,7 @@ if (isset($_POST['btnsave'])) {
     $stmt->bindParam(':uid', $id);
 
     if ($stmt->execute()) {
-      header("Location: categorias.php");
+      header("Location: patrocinadores.php");
     } else {
       $errMSG = "Erro..";
     }
@@ -59,17 +59,17 @@ if (isset($_POST['btnsave'])) {
 
 <body>
 
-  <?php include "components/header.php" ?>
-  <?php include "components/sidebar.php" ?>
+  <?php include "components/Header.php" ?>
+  <?php include "components/SideBar.php" ?>
 
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Categorias</h1>
+      <h1>Patrocinador</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="painel-controle.php">Home</a></li>
-          <li class="breadcrumb-item active">Categorias</li>
+          <li class="breadcrumb-item"><a href="dashboard">Home</a></li>
+          <li class="breadcrumb-item active">Patrocinadores</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -91,12 +91,12 @@ if (isset($_POST['btnsave'])) {
               <!-- Vertical Form -->
               <form method="POST" class="row">
                 <div class="col-md-12">
-                  <h5 class="card-title">Editar Categoria</h5>
+                  <h5 class="card-title">Editar Patrocinador</h5>
                   <div class="row">
                     <div class="col-md-4 pb-3">
                       <div class="form-floating">
-                        <input type="text" class="form-control" value="<?php echo $name; ?>" name="name" placeholder="Insira o nome da categoria">
-                        <label for="">Nome da Categoria</label>
+                        <input type="text" class="form-control" value="<?php echo $name; ?>" name="name" placeholder="Insira o nome">
+                        <label for="">Nome</label>
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -110,7 +110,7 @@ if (isset($_POST['btnsave'])) {
                           </option>
                           <option value="1">Marca</option>
                         </select>
-                        <label for="floatingSelect">Tipo da Categoria</label>
+                        <label for="floatingSelect">Tipo</label>
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -119,16 +119,16 @@ if (isset($_POST['btnsave'])) {
                           <option value="<?php echo $status; ?>">
                             <?php
                             if ($status == 1) {
-                              echo "ATIVADA";
+                              echo "ATIVADO";
                             }
                             if ($status == 2) {
-                              echo "DESATIVADA";
+                              echo "DESATIVADO";
                             } ?> (selecionado)
                           </option>
-                          <option value="1">ATIVADA</option>
-                          <option value="2">DESATIVADA</option>
+                          <option value="1">ATIVADO</option>
+                          <option value="2">DESATIVADO</option>
                         </select>
-                        <label for="floatingSelect">Status da Categoria</label>
+                        <label for="floatingSelect">Status</label>
                       </div>
                     </div>
                   </div>
@@ -137,7 +137,7 @@ if (isset($_POST['btnsave'])) {
                   <button type="submit" name="btnsave" class="btn btn-primary">Editar</button>
                 </div>
               </form><!-- Vertical Form -->
-              <h5 class="card-title">Categorias Marcas </h5>
+              <h5 class="card-title">Patrocinadores</h5>
               <?php
               $stmt = $DB_con->prepare("SELECT * FROM categorys where type='1' ORDER BY id DESC");
               $stmt->execute();
@@ -163,10 +163,10 @@ if (isset($_POST['btnsave'])) {
                       ?>
                     </h6>
                     <div>
-                      <a href="categorias.php?delete_id=<?php echo $row['id']; ?>">
+                      <a href="patrocinadores.php?delete_id=<?php echo $row['id']; ?>">
                         <button type="button" class="btn btn-danger">Excluir</button>
                       </a>
-                      <a href="editar-categoria.php?edit_id=<?php echo $row['id']; ?>">
+                      <a href="editar-patrocinador.php?edit_id=<?php echo $row['id']; ?>">
                         <button type="button" class="btn btn-success">Editar</button>
                       </a>
                     </div>
@@ -175,7 +175,7 @@ if (isset($_POST['btnsave'])) {
                 }
               } else {
                 ?>
-                Sem categoria Cadastrada ...
+                Sem patrocinador CadastradO ...
               <?php
               }
               ?>
