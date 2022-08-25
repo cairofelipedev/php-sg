@@ -21,16 +21,16 @@ if (empty($idUser)) {
   header("Location: ./dashboard");
 }
 
-$stmt2 = $DB_con->prepare("SELECT name FROM users where name='$idUser'");
+$stmt2 = $DB_con->prepare("SELECT id FROM users where id='$idUser'");
 $stmt2->execute();
 while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
   extract($row);
-  $user = $name;
+  $user = $id;
 }
 
 $name = $idUser;
-$stmt_edit = $DB_con->prepare('SELECT * FROM users WHERE name =:uname');
-$stmt_edit->execute(array(':uname' => $name));
+$stmt_edit = $DB_con->prepare('SELECT * FROM users WHERE id =:uid');
+$stmt_edit->execute(array(':uid' => $id));
 $edit_row = $stmt_edit->fetch(PDO::FETCH_ASSOC);
 extract($edit_row);
 
@@ -149,7 +149,7 @@ if (isset($_POST['btnsave'])) {
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-              <img src="./uploads/usuarios/<?php echo $_SESSION['img']; ?>" onerror="this.src='<?php echo $URI->base('/assets/img/semperfil.png') ?>'" alt="Profile" class="rounded">
+              <img src="<?php echo $URI->base("/uploads/usuarios/$img") ?>" onerror="this.src='./assets/img/semperfil.png'" alt="Profile" class="rounded">
               <h2><?php echo $name; ?></h2>
               <h3>
                 <?php
@@ -246,7 +246,7 @@ if (isset($_POST['btnsave'])) {
                     <div class="row mb-3">
                       <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Imagem do perfil</label>
                       <div class="col-md-8 col-lg-9">
-                        <img src="./uploads/usuarios/<?php echo $_SESSION['img']; ?>" onerror="this.src='<?php echo $URI->base('/assets/img/semperfil.png') ?>'" alt="Profile" class="rounded">
+                        <img src="<?php echo $URI->base("/uploads/usuarios/$img") ?>" onerror="this.src='<?php echo $URI->base('/assets/img/semperfil.png') ?>'" alt="Profile" class="rounded">
                         <div class="pt-2">
                           <input id="curriculo" class="file" data-theme="fas" type="file" name="user_image" accept="image/*">
                           <!-- <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>

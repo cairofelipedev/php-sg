@@ -161,7 +161,7 @@ if (isset($_GET['delete_id'])) {
                                   ?>
                                 </h5>
                                 <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                  <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                  <h4><i class="bi bi-person-fill"></i> <?php echo $user_name; ?></h4>
                                 </a>
                                 <h4 class="card-title2">
                                   <?php
@@ -319,7 +319,7 @@ if (isset($_GET['delete_id'])) {
                                   ?>
                                 </h5>
                                 <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                  <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                  <h4><i class="bi bi-person-fill"></i> <?php echo $user_name; ?></h4>
                                 </a>
                                 <h4 class="card-title2">
                                   <?php
@@ -346,10 +346,10 @@ if (isset($_GET['delete_id'])) {
 
                                   <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
                                   <?php if ($network == "twitter") { ?>
-                                    <h4 class="card-title2">Impressões: <?php echo $impressions; ?></h4>
-                                    <h4 class="card-title2">Menções: <?php echo $mentions; ?></h4>
-                                    <h4 class="card-title2">Visualizações: <?php echo $views_tt; ?></h4>
-                                    <h4 class="card-title2">Seguidores: <?php echo $followers_tt; ?></h4>
+                                    <h4 class="card-title2">Impressões: <?php echo number_format($impressions, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Menções: <?php echo number_format($mentions, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visualizações: <?php echo number_format($views_tt, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Seguidores: <?php echo number_format($followers_tt, 0, ',', '.'); ?></h4>
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
@@ -454,7 +454,7 @@ if (isset($_GET['delete_id'])) {
                                   ?>
                                 </h5>
                                 <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                  <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                  <h4><i class="bi bi-person-fill"></i> <?php echo $user_name; ?></h4>
                                 </a>
                                 <h4 class="card-title2">
                                   <?php
@@ -482,14 +482,14 @@ if (isset($_GET['delete_id'])) {
                                   <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
 
                                   <?php if ($network == "facebook") { ?>
-                                    <h4 class="card-title2">Alcance: <?php echo $reach_fb; ?></h4>
-                                    <h4 class="card-title2">Visita à pagina: <?php echo $views_fb; ?></h4>
-                                    <h4 class="card-title2">Novas Curtidas: <?php echo $likes_fb; ?></h4>
+                                    <h4 class="card-title2">Alcance: <?php echo number_format($reach_fb, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visita à pagina: <?php echo number_format($views_fb, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Novas Curtidas: <?php echo number_format($likes_fb, 0, ',', '.'); ?></h4>
                                   <?php } ?>
                                   <?php if ($network == "instagram") { ?>
-                                    <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
-                                    <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
-                                    <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
+                                    <h4 class="card-title2">Alcance: <?php echo number_format($reach_insta, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visita ao perfil: <?php echo number_format($views_insta, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Novos seguidores: <?php echo number_format($followers_insta, 0, ',', '.'); ?></h4>
                                   <?php } ?>
 
 
@@ -595,7 +595,7 @@ if (isset($_GET['delete_id'])) {
                                   ?>
                                 </h5>
                                 <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                  <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                  <h4><i class="bi bi-person-fill"></i> <?php echo $user_name; ?></h4>
                                 </a>
                                 <h4 class="card-title2">
                                   <?php
@@ -623,9 +623,9 @@ if (isset($_GET['delete_id'])) {
                                   <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
 
                                   <?php if ($network == "instagram") { ?>
-                                    <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
-                                    <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
-                                    <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
+                                    <h4 class="card-title2">Alcance: <?php echo number_format($reach_insta, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visita ao perfil: <?php echo number_format($views_insta, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Novos seguidores: <?php echo number_format($followers_insta, 0, ',', '.'); ?></h4>
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
@@ -730,7 +730,7 @@ if (isset($_GET['delete_id'])) {
                                   ?>
                                 </h5>
                                 <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                  <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                  <h4><i class="bi bi-person-fill"></i> <?php echo $user_name; ?></h4>
                                 </a>
                                 <h4 class="card-title2">
                                   <?php
@@ -759,13 +759,13 @@ if (isset($_GET['delete_id'])) {
 
 
                                   <?php if ($network == "tiktok") { ?>
-                                    <h4 class="card-title2">Visualizações de vídeo : <?php echo $views_video; ?></h4>
-                                    <h4 class="card-title2">Visualizações de perfil: <?php echo $views_profile; ?></h4>
-                                    <h4 class="card-title2">Curtidas: <?php echo $comments; ?></h4>
-                                    <h4 class="card-title2">Compartilhamentos: <?php echo $shares ?></h4>
-                                    <h4 class="card-title2">Seguidores: <?php echo $followers_tiktok ?></h4>
-                                    <h4 class="card-title2">Número de vídeos publicados: <?php echo $number_videos; ?></h4>
-                                    <h4 class="card-title2">Número de lives realizadas: <?php echo $number_lives; ?></h4>
+                                    <h4 class="card-title2">Visualizações de vídeo : <?php echo number_format($views_video, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visualizações de perfil: <?php echo number_format($views_profile, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Curtidas: <?php echo number_format($comments, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Compartilhamentos: <?php echo number_format($shares, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Seguidores: <?php echo number_format($followers_tiktok, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Número de vídeos publicados: <?php echo number_format($number_videos, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Número de lives realizadas: <?php echo number_format($number_lives, 0, ',', '.'); ?></h4>
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
@@ -870,7 +870,7 @@ if (isset($_GET['delete_id'])) {
                                   ?>
                                 </h5>
                                 <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                  <h4><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                  <h4><i class="bi bi-person-fill"></i> <?php echo $user_name; ?></h4>
                                 </a>
                                 <h4 class="card-title2">
                                   <?php
@@ -897,10 +897,10 @@ if (isset($_GET['delete_id'])) {
                                   <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
 
                                   <?php if ($network == "twitch") { ?>
-                                    <h4 class="card-title2">Média de espectadores : <?php echo $media; ?></h4>
-                                    <h4 class="card-title2">Minutos assistidos gerados: <?php echo $minutes; ?></h4>
-                                    <h4 class="card-title2">Novos seguidores: <?php echo $followers_twitch; ?></h4>
-                                    <h4 class="card-title2">Participantes únicos do chat: <?php echo $unique_participants ?></h4>
+                                    <h4 class="card-title2">Média de espectadores : <?php echo number_format($media, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Minutos assistidos gerados: <?php echo number_format($minutes, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Novos seguidores: <?php echo number_format($followers_twitch, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Participantes únicos do chat: <?php echo number_format($unique_participants, 0, ',', '.'); ?></h4>
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
@@ -935,7 +935,7 @@ if (isset($_GET['delete_id'])) {
                   <div class="all">
                     <div class="row">
                       <?php
-                      $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[name]' ORDER BY id DESC");
+                      $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[id]' ORDER BY id DESC");
                       $stmt->execute();
                       if ($stmt->rowCount() > 0) {
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -1010,7 +1010,7 @@ if (isset($_GET['delete_id'])) {
                                   echo $date4;
                                   ?>
                                 </h5>
-                                <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_name; ?></h4>
                                 <h4 class="card-title2">
                                   <?php
                                   if ($network == "instagram") {
@@ -1034,35 +1034,35 @@ if (isset($_GET['delete_id'])) {
 
                                   <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
                                   <?php if ($network == "twitter") { ?>
-                                    <h4 class="card-title2">Impressões: <?php echo $impressions; ?></h4>
-                                    <h4 class="card-title2">Menções: <?php echo $mentions; ?></h4>
-                                    <h4 class="card-title2">Visualizações: <?php echo $views_tt; ?></h4>
-                                    <h4 class="card-title2">Seguidores: <?php echo $followers_tt; ?></h4>
+                                    <h4 class="card-title2">Impressões: <?php echo number_format($impressions, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Menções: <?php echo number_format($mentions, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visualizações: <?php echo number_format($views_tt, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Seguidores: <?php echo number_format($followers_tt, 0, ',', '.'); ?></h4>
                                   <?php } ?>
                                   <?php if ($network == "facebook") { ?>
-                                    <h4 class="card-title2">Alcance: <?php echo $reach_fb; ?></h4>
-                                    <h4 class="card-title2">Visita à pagina: <?php echo $views_fb; ?></h4>
-                                    <h4 class="card-title2">Novas Curtidas: <?php echo $likes_fb; ?></h4>
+                                    <h4 class="card-title2">Alcance: <?php echo number_format($reach_fb, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visita à pagina: <?php echo number_format($views_fb, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Novas Curtidas: <?php echo number_format($likes_fb, 0, ',', '.'); ?></h4>
                                   <?php } ?>
                                   <?php if ($network == "instagram") { ?>
-                                    <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
-                                    <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
-                                    <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
+                                    <h4 class="card-title2">Alcance: <?php echo number_format($reach_insta, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visita ao perfil: <?php echo number_format($views_insta, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Novos seguidores: <?php echo number_format($followers_insta, 0, ',', '.'); ?></h4>
                                   <?php } ?>
                                   <?php if ($network == "tiktok") { ?>
-                                    <h4 class="card-title2">Visualizações de vídeo : <?php echo $views_video; ?></h4>
-                                    <h4 class="card-title2">Visualizações de perfil: <?php echo $views_profile; ?></h4>
-                                    <h4 class="card-title2">Curtidas: <?php echo $comments; ?></h4>
-                                    <h4 class="card-title2">Compartilhamentos: <?php echo $shares ?></h4>
-                                    <h4 class="card-title2">Seguidores: <?php echo $followers_tiktok ?></h4>
-                                    <h4 class="card-title2">Número de vídeos publicados: <?php echo $number_videos; ?></h4>
-                                    <h4 class="card-title2">Número de lives realizadas: <?php echo $number_lives; ?></h4>
+                                    <h4 class="card-title2">Visualizações de vídeo : <?php echo number_format($views_video, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visualizações de perfil: <?php echo number_format($views_profile, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Curtidas: <?php echo number_format($comments, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Compartilhamentos: <?php echo number_format($shares, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Seguidores: <?php echo number_format($followers_tiktok, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Número de vídeos publicados: <?php echo number_format($number_videos, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Número de lives realizadas: <?php echo number_format($number_lives, 0, ',', '.'); ?></h4>
                                   <?php } ?>
                                   <?php if ($network == "twitch") { ?>
-                                    <h4 class="card-title2">Média de espectadores : <?php echo $media; ?></h4>
-                                    <h4 class="card-title2">Minutos assistidos gerados: <?php echo $minutes; ?></h4>
-                                    <h4 class="card-title2">Novos seguidores: <?php echo $followers_twitch; ?></h4>
-                                    <h4 class="card-title2">Participantes únicos do chat: <?php echo $unique_participants ?></h4>
+                                    <h4 class="card-title2">Média de espectadores : <?php echo number_format($media, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Minutos assistidos gerados: <?php echo number_format($minutes, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Novos seguidores: <?php echo number_format($followers_twitch, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Participantes únicos do chat: <?php echo number_format($unique_participants, 0, ',', '.'); ?></h4>
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
@@ -1091,7 +1091,7 @@ if (isset($_GET['delete_id'])) {
                   <div class="twitter">
                     <div class="row">
                       <?php
-                      $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[name]' and network='twitter' ORDER BY id DESC");
+                      $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[id]' and network='twitter' ORDER BY id DESC");
                       $stmt->execute();
                       if ($stmt->rowCount() > 0) {
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -1166,7 +1166,7 @@ if (isset($_GET['delete_id'])) {
                                   echo $date4;
                                   ?>
                                 </h5>
-                                <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_name; ?></h4>
                                 <h4 class="card-title2">
                                   <?php
                                   if ($network == "instagram") {
@@ -1190,10 +1190,10 @@ if (isset($_GET['delete_id'])) {
 
                                   <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
                                   <?php if ($network == "twitter") { ?>
-                                    <h4 class="card-title2">Impressões: <?php echo $impressions; ?></h4>
-                                    <h4 class="card-title2">Menções: <?php echo $mentions; ?></h4>
-                                    <h4 class="card-title2">Visualizações: <?php echo $views_tt; ?></h4>
-                                    <h4 class="card-title2">Seguidores: <?php echo $followers_tt; ?></h4>
+                                    <h4 class="card-title2">Impressões: <?php echo number_format($impressions, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Menções: <?php echo number_format($mentions, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visualizações: <?php echo number_format($views_tt, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Seguidores: <?php echo number_format($followers_tt, 0, ',', '.'); ?></h4>
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
@@ -1222,7 +1222,7 @@ if (isset($_GET['delete_id'])) {
                   <div class="facebook">
                     <div class="row">
                       <?php
-                      $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[name]' and network='facebook' ORDER BY id DESC");
+                      $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[id]' and network='facebook' ORDER BY id DESC");
                       $stmt->execute();
                       if ($stmt->rowCount() > 0) {
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -1297,7 +1297,7 @@ if (isset($_GET['delete_id'])) {
                                   echo $date4;
                                   ?>
                                 </h5>
-                                <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_name; ?></h4>
                                 <h4 class="card-title2">
                                   <?php
                                   if ($network == "instagram") {
@@ -1324,14 +1324,14 @@ if (isset($_GET['delete_id'])) {
                                   <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
 
                                   <?php if ($network == "facebook") { ?>
-                                    <h4 class="card-title2">Alcance: <?php echo $reach_fb; ?></h4>
-                                    <h4 class="card-title2">Visita à pagina: <?php echo $views_fb; ?></h4>
-                                    <h4 class="card-title2">Novas Curtidas: <?php echo $likes_fb; ?></h4>
+                                    <h4 class="card-title2">Alcance: <?php echo number_format($reach_fb, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visita à pagina: <?php echo number_format($views_fb, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Novas Curtidas: <?php echo number_format($likes_fb, 0, ',', '.'); ?></h4>
                                   <?php } ?>
                                   <?php if ($network == "instagram") { ?>
-                                    <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
-                                    <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
-                                    <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
+                                    <h4 class="card-title2">Alcance: <?php echo number_format($reach_insta, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visita ao perfil: <?php echo number_format($views_insta, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Novos seguidores: <?php echo number_format($followers_insta, 0, ',', '.'); ?></h4>
                                   <?php } ?>
 
 
@@ -1361,7 +1361,7 @@ if (isset($_GET['delete_id'])) {
                   <div class="instagram">
                     <div class="row">
                       <?php
-                      $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[name]' and network='instagram' ORDER BY id DESC");
+                      $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[id]' and network='instagram' ORDER BY id DESC");
                       $stmt->execute();
                       if ($stmt->rowCount() > 0) {
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -1436,7 +1436,7 @@ if (isset($_GET['delete_id'])) {
                                   echo $date4;
                                   ?>
                                 </h5>
-                                <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_name; ?></h4>
                                 <h4 class="card-title2">
                                   <?php
                                   if ($network == "instagram") {
@@ -1463,9 +1463,9 @@ if (isset($_GET['delete_id'])) {
                                   <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
 
                                   <?php if ($network == "instagram") { ?>
-                                    <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
-                                    <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
-                                    <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
+                                    <h4 class="card-title2">Alcance: <?php echo number_format($reach_insta, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visita ao perfil: <?php echo number_format($views_insta, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Novos seguidores: <?php echo number_format($followers_insta, 0, ',', '.'); ?></h4>
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
@@ -1494,7 +1494,7 @@ if (isset($_GET['delete_id'])) {
                   <div class="tiktok">
                     <div class="row">
                       <?php
-                      $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[name]' and network='tiktok' ORDER BY id DESC");
+                      $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[id]' and network='tiktok' ORDER BY id DESC");
                       $stmt->execute();
                       if ($stmt->rowCount() > 0) {
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -1569,7 +1569,7 @@ if (isset($_GET['delete_id'])) {
                                   echo $date4;
                                   ?>
                                 </h5>
-                                <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_name; ?></h4>
                                 <h4 class="card-title2">
                                   <?php
                                   if ($network == "instagram") {
@@ -1597,13 +1597,13 @@ if (isset($_GET['delete_id'])) {
 
 
                                   <?php if ($network == "tiktok") { ?>
-                                    <h4 class="card-title2">Visualizações de vídeo : <?php echo $views_video; ?></h4>
-                                    <h4 class="card-title2">Visualizações de perfil: <?php echo $views_profile; ?></h4>
-                                    <h4 class="card-title2">Curtidas: <?php echo $comments; ?></h4>
-                                    <h4 class="card-title2">Compartilhamentos: <?php echo $shares ?></h4>
-                                    <h4 class="card-title2">Seguidores: <?php echo $followers_tiktok ?></h4>
-                                    <h4 class="card-title2">Número de vídeos publicados: <?php echo $number_videos; ?></h4>
-                                    <h4 class="card-title2">Número de lives realizadas: <?php echo $number_lives; ?></h4>
+                                    <h4 class="card-title2">Visualizações de vídeo : <?php echo number_format($views_video, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Visualizações de perfil: <?php echo number_format($views_profile, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Curtidas: <?php echo number_format($comments, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Compartilhamentos: <?php echo number_format($shares, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Seguidores: <?php echo number_format($followers_tiktok, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Número de vídeos publicados: <?php echo number_format($number_videos, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Número de lives realizadas: <?php echo number_format($number_lives, 0, ',', '.'); ?></h4>
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
@@ -1632,7 +1632,7 @@ if (isset($_GET['delete_id'])) {
                   <div class="twitch">
                     <div class="row">
                       <?php
-                      $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[name]' and network='twitch' ORDER BY id DESC");
+                      $stmt = $DB_con->prepare("SELECT * FROM posts where user_create='$_SESSION[id]' and network='twitch' ORDER BY id DESC");
                       $stmt->execute();
                       if ($stmt->rowCount() > 0) {
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -1707,7 +1707,7 @@ if (isset($_GET['delete_id'])) {
                                   echo $date4;
                                   ?>
                                 </h5>
-                                <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_name; ?></h4>
                                 <h4 class="card-title2">
                                   <?php
                                   if ($network == "instagram") {
@@ -1733,10 +1733,10 @@ if (isset($_GET['delete_id'])) {
                                   <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
 
                                   <?php if ($network == "twitch") { ?>
-                                    <h4 class="card-title2">Média de espectadores : <?php echo $media; ?></h4>
-                                    <h4 class="card-title2">Minutos assistidos gerados: <?php echo $minutes; ?></h4>
-                                    <h4 class="card-title2">Novos seguidores: <?php echo $followers_twitch; ?></h4>
-                                    <h4 class="card-title2">Participantes únicos do chat: <?php echo $unique_participants ?></h4>
+                                    <h4 class="card-title2">Média de espectadores : <?php echo number_format($media, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Minutos assistidos gerados: <?php echo number_format($minutes, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Novos seguidores: <?php echo number_format($followers_twitch, 0, ',', '.'); ?></h4>
+                                    <h4 class="card-title2">Participantes únicos do chat: <?php echo number_format($unique_participants, 0, ',', '.'); ?></h4>
                                   <?php } ?>
 
                                   <div class="d-flex justify-content-between pt-2">
@@ -1839,7 +1839,7 @@ if (isset($_GET['delete_id'])) {
                                         ?>
                                       </a></th>
                                     <td> <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                        <h4><?php echo $user_create; ?></h4>
+                                        <h4><?php echo $user_name; ?></h4>
                                       </a></td>
                                     <td><?php
                                         if ($network == "instagram") {
@@ -1936,7 +1936,7 @@ if (isset($_GET['delete_id'])) {
                                             echo $date4;
                                             ?>
                                           </h5>
-                                          <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_create; ?></h4>
+                                          <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_name; ?></h4>
                                           <h4 class="card-title2">
                                             <?php
                                             if ($network == "instagram") {
@@ -1959,35 +1959,35 @@ if (isset($_GET['delete_id'])) {
                                             <h4 class="card-title2"><?php echo $link; ?></h4>
                                             <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
                                             <?php if ($network == "twitch") { ?>
-                                              <h4 class="card-title2">Média de espectadores : <?php echo $media; ?></h4>
-                                              <h4 class="card-title2">Minutos assistidos gerados: <?php echo $minutes; ?></h4>
-                                              <h4 class="card-title2">Novos seguidores: <?php echo $followers_twitch; ?></h4>
-                                              <h4 class="card-title2">Participantes únicos do chat: <?php echo $unique_participants ?></h4>
+                                              <h4 class="card-title2">Média de espectadores : <?php echo number_format($media, 0, ',', '.'); ?></h4>
+                                              <h4 class="card-title2">Minutos assistidos gerados: <?php echo number_format($minutes, 0, ',', '.'); ?></h4>
+                                              <h4 class="card-title2">Novos seguidores: <?php echo number_format($followers_twitch, 0, ',', '.'); ?></h4>
+                                              <h4 class="card-title2">Participantes únicos do chat: <?php echo number_format($unique_participants, 0, ',', '.'); ?></h4>
                                             <?php } ?>
                                             <?php if ($network == "twitter") { ?>
-                                              <h4 class="card-title2">Impressões: <?php echo $impressions; ?></h4>
-                                              <h4 class="card-title2">Menções: <?php echo $mentions; ?></h4>
-                                              <h4 class="card-title2">Visualizações: <?php echo $views_tt; ?></h4>
-                                              <h4 class="card-title2">Seguidores: <?php echo $followers_tt; ?></h4>
+                                              <h4 class="card-title2">Impressões: <?php echo number_format($impressions, 0, ',', '.'); ?></h4>
+                                              <h4 class="card-title2">Menções: <?php echo number_format($mentions, 0, ',', '.'); ?></h4>
+                                              <h4 class="card-title2">Visualizações: <?php echo number_format($views_tt, 0, ',', '.'); ?></h4>
+                                              <h4 class="card-title2">Seguidores: <?php echo number_format($followers_tt, 0, ',', '.'); ?></h4>
                                             <?php } ?>
                                             <?php if ($network == "facebook") { ?>
-                                              <h4 class="card-title2">Alcance: <?php echo $reach_fb; ?></h4>
-                                              <h4 class="card-title2">Visita à pagina: <?php echo $views_fb; ?></h4>
-                                              <h4 class="card-title2">Novas Curtidas: <?php echo $likes_fb; ?></h4>
+                                              <h4 class="card-title2">Alcance: <?php echo number_format($reach_fb, 0, ',', '.'); ?></h4>
+                                              <h4 class="card-title2">Visita à pagina: <?php echo number_format($views_fb, 0, ',', '.'); ?></h4>
+                                              <h4 class="card-title2">Novas Curtidas: <?php echo number_format($likes_fb, 0, ',', '.'); ?></h4>
                                             <?php } ?>
                                             <?php if ($network == "instagram") { ?>
-                                              <h4 class="card-title2">Alcance: <?php echo $reach_insta; ?></h4>
-                                              <h4 class="card-title2">Visita ao perfil: <?php echo $views_insta; ?></h4>
-                                              <h4 class="card-title2">Novos seguidores: <?php echo $followers_insta; ?></h4>
+                                              <h4 class="card-title2">Alcance: <?php echo number_format($reach_insta, 0, ',', '.'); ?></h4>
+                                              <h4 class="card-title2">Visita ao perfil: <?php echo number_format($views_insta, 0, ',', '.'); ?></h4>
+                                              <h4 class="card-title2">Novos seguidores: <?php echo number_format($followers_insta, 0, ',', '.'); ?></h4>
                                             <?php } ?>
                                             <?php if ($network == "tiktok") { ?>
-                                              <h4 class="card-title2">Visualizações de vídeo : <?php echo $views_video; ?></h4>
-                                              <h4 class="card-title2">Visualizações de perfil: <?php echo $views_profile; ?></h4>
-                                              <h4 class="card-title2">Curtidas: <?php echo $comments; ?></h4>
-                                              <h4 class="card-title2">Compartilhamentos: <?php echo $shares ?></h4>
-                                              <h4 class="card-title2">Seguidores: <?php echo $followers_tiktok ?></h4>
-                                              <h4 class="card-title2">Número de vídeos publicados: <?php echo $number_videos; ?></h4>
-                                              <h4 class="card-title2">Número de lives realizadas: <?php echo $number_lives; ?></h4>
+                                              <h4 class="card-title2">Visualizações de vídeo : <?php echo number_format($views_video, 0, ',', '.'); ?></h4>
+                                              <h4 class="card-title2">Visualizações de perfil: <?php echo number_format($views_profile, 0, ',', '.'); ?></h4>
+                                              <h4 class="card-title2">Curtidas: <?php echo number_format($comments, 0, ',', '.'); ?></h4>
+                                              <h4 class="card-title2">Compartilhamentos: <?php echo number_format($shares, 0, ',', '.'); ?></h4>
+                                              <h4 class="card-title2">Seguidores: <?php echo number_format($followers_tiktok, 0, ',', '.'); ?></h4>
+                                              <h4 class="card-title2">Número de vídeos publicados: <?php echo number_format($number_videos, 0, ',', '.'); ?></h4>
+                                              <h4 class="card-title2">Número de lives realizadas: <?php echo number_format($number_lives, 0, ',', '.'); ?></h4>
                                             <?php } ?>
 
                                         </div>
@@ -2074,13 +2074,13 @@ if (isset($_GET['delete_id'])) {
                                   ?>
                                 </a></th>
                               <td> <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                  <h4><?php echo $user_create; ?></h4>
+                                  <h4><?php echo $user_name; ?></h4>
                                 </a></td>
                               <td><?php echo $type; ?></td>
-                              <td><?php echo $impressions; ?></td>
-                              <td><?php echo $mentions; ?></td>
-                              <td><?php echo $views_tt; ?></td>
-                              <td><?php echo $followers_tt; ?></td>
+                              <td><?php echo number_format($impressions, 0, ',', '.'); ?></td>
+                              <td><?php echo number_format($mentions, 0, ',', '.'); ?></td>
+                              <td><?php echo number_format($views_tt, 0, ',', '.'); ?></td>
+                              <td><?php echo number_format($followers_tt, 0, ',', '.'); ?></td>
                             </tr>
                         <?php
                           }
@@ -2157,12 +2157,12 @@ if (isset($_GET['delete_id'])) {
                                   ?>
                                 </a></th>
                               <td> <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                  <h4><?php echo $user_create; ?></h4>
+                                  <h4><?php echo $user_name; ?></h4>
                                 </a></td>
                               <td><?php echo $type; ?></td>
-                              <td><?php echo $reach_fb; ?></td>
-                              <td><?php echo $views_fb; ?></td>
-                              <td><?php echo $likes_fb; ?></td>
+                              <td><?php echo number_format($reach_fb, 0, ',', '.'); ?></td>
+                              <td><?php echo number_format($views_fb, 0, ',', '.'); ?></td>
+                              <td><?php echo number_format($likes_fb, 0, ',', '.'); ?></td>
                             </tr>
                         <?php
                           }
@@ -2239,12 +2239,12 @@ if (isset($_GET['delete_id'])) {
                                   ?>
                                 </a></th>
                               <td> <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                  <h4><?php echo $user_create; ?></h4>
+                                  <h4><?php echo $user_name; ?></h4>
                                 </a></td>
                               <td><?php echo $type; ?></td>
-                              <td><?php echo $reach_insta; ?></td>
-                              <td><?php echo $views_insta; ?></td>
-                              <td><?php echo $followers_insta; ?></td>
+                              <td><?php echo number_format($reach_insta, 0, ',', '.'); ?></td>
+                              <td><?php echo number_format($views_insta, 0, ',', '.'); ?></td>
+                              <td><?php echo number_format($followers_insta, 0, ',', '.'); ?></td>
                             </tr>
                         <?php
                           }
@@ -2326,15 +2326,15 @@ if (isset($_GET['delete_id'])) {
                                   ?>
                                 </a></th>
                               <td> <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                  <h4><?php echo $user_create; ?></h4>
+                                  <h4><?php echo $user_name; ?></h4>
                                 </a></td>
                               <td><?php echo $type; ?></td>
-                              <td><?php echo $views_profile; ?></td>
-                              <td><?php echo $comments; ?></td>
-                              <td><?php echo $shares; ?></td>
-                              <td><?php echo $followers_tiktok; ?></td>
-                              <td><?php echo $number_videos; ?></td>
-                              <td><?php echo $number_lives; ?></td>
+                              <td><?php echo number_format($views_profile, 0, ',', '.'); ?></td>
+                              <td><?php echo number_format($comments, 0, ',', '.'); ?></td>
+                              <td><?php echo number_format($shares, 0, ',', '.'); ?></td>
+                              <td><?php echo number_format($followers_tiktok, 0, ',', '.'); ?></td>
+                              <td><?php echo number_format($number_videos, 0, ',', '.'); ?></td>
+                              <td><?php echo number_format($number_lives, 0, ',', '.'); ?></td>
                             </tr>
                         <?php
                           }
@@ -2411,12 +2411,12 @@ if (isset($_GET['delete_id'])) {
                                   ?>
                                 </a></th>
                               <td> <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                  <h4><?php echo $user_create; ?></h4>
+                                  <h4><?php echo $user_name; ?></h4>
                                 </a></td>
                               <td><?php echo $type; ?></td>
-                              <td><?php echo $minutes; ?></td>
-                              <td><?php echo $followers_twitch; ?></td>
-                              <td><?php echo $unique_participants; ?></td>
+                              <td><?php echo number_format($minutes, 0, ',', '.'); ?></td>
+                              <td><?php echo number_format($followers_twitch, 0, ',', '.'); ?></td>
+                              <td><?php echo number_format($unique_participants, 0, ',', '.'); ?></td>
                             </tr>
                         <?php
                           }
@@ -2456,6 +2456,7 @@ if (isset($_GET['delete_id'])) {
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/modal.js"></script>
   <script>
     $(document).ready(function() {
       //Select para mostrar e esconder divs

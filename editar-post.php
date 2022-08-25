@@ -34,7 +34,7 @@ $stmt_edit->execute(array(':uid' => $id));
 $edit_row = $stmt_edit->fetch(PDO::FETCH_ASSOC);
 extract($edit_row);
 
-if (($_SESSION['name'] != $user_create) and ($_SESSION['type'] != "1")) {
+if (($_SESSION['id'] != $user_create) and ($_SESSION['type'] != "1")) {
   echo ("<script type= 'text/javascript'>alert('Acesso Restrito!');</script><script>window.location = '../dashboard';</script>");
 }
 

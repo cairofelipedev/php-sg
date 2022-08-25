@@ -19,6 +19,7 @@ if (isset($_POST['btnsave'])) {
   $network = $_POST['network'];
   $type = $_POST['type'];
   $user_create = $_POST['user_create'];
+  $user_name = $_POST['user_name'];
   /* twitter */
   $impressions = $_POST['impressions'];
   $mentions = $_POST['mentions'];
@@ -46,6 +47,11 @@ if (isset($_POST['btnsave'])) {
   $minutes = $_POST['minutes'];
   $unique_participants = $_POST['unique_participants'];
   $followers_twitch = $_POST['followers_twitch'];
+  /* youtube */
+  $views_you = $_POST['views_you'];
+  $time_you = $_POST['time_you'];
+  $total_you  = $_POST['total_you'];
+  $unique_you  = $_POST['unique_you'];
 
   $imgFile = $_FILES['user_image']['name'];
   $tmp_dir = $_FILES['user_image']['tmp_name'];
@@ -90,7 +96,9 @@ if (isset($_POST['btnsave'])) {
   }
 
   if (!isset($errMSG)) {
-    $stmt = $DB_con->prepare('INSERT INTO posts (title,description,link,status,img,img2,user_create,type,network,comments,likes_fb,likes_tiktok,views_insta,views_tt,views_fb,impressions,mentions,followers_tt,followers_insta,followers_tiktok,followers_twitch,reach_insta,reach_fb,views_video,views_profile,shares,number_videos,number_lives,media,minutes,unique_participants) VALUES(:utitle,:udescription,:ulink,:ustatus,:upic,:upic2,:uuser_create,:utype,:unetwork,:ucomments,:ulikes_fb,:ulikes_tiktok,:uviews_insta,:uviews_tt,:uviews_fb,:uimpressions,:umentions,:ufollowers_tt,:ufollowers_insta,:ufollowers_tiktok,:ufollowers_twitch,:ureach_insta,   :ureach_fb,:uviews_video,:uviews_profile,:ushares,:unumber_videos, :unumber_lives,:umedia,:uminutes,:uunique_participants)');
+    $total_you  = $_POST['total_you'];
+    $stmt = $DB_con->prepare('INSERT INTO posts (title,description,link,status,img,img2,user_create,user_name,type,network,comments,likes_fb,likes_tiktok,views_insta,views_tt,views_fb,impressions,mentions,followers_tt,followers_insta,followers_tiktok,followers_twitch,reach_insta,reach_fb,views_video,views_profile,shares,number_videos,number_lives,media,minutes,unique_participants,views_you,time_you,total_you,unique_you) VALUES(:utitle,:udescription,:ulink,:ustatus,:upic,:upic2,:uuser_create,:uuser_name,:utype,:unetwork,:ucomments,:ulikes_fb,:ulikes_tiktok,:uviews_insta,:uviews_tt,:uviews_fb,:uimpressions,:umentions,:ufollowers_tt,:ufollowers_insta,:ufollowers_tiktok,:ufollowers_twitch,:ureach_insta,   :ureach_fb,:uviews_video,:uviews_profile,:ushares,:unumber_videos, :unumber_lives,:umedia,:uminutes,:uunique_participants,:uviews_you,:utime_you,:utotal_you,:uunique_you)');
+
 
     $stmt->bindParam(':utitle', $title);
     $stmt->bindParam(':udescription', $description);
@@ -99,6 +107,7 @@ if (isset($_POST['btnsave'])) {
     $stmt->bindParam(':upic', $userpic);
     $stmt->bindParam(':upic2', $userpic2);
     $stmt->bindParam(':uuser_create', $user_create);
+    $stmt->bindParam(':uuser_name', $user_name);
     $stmt->bindParam(':utype', $type);
     $stmt->bindParam(':unetwork', $network);
     /* twitter */
@@ -128,6 +137,11 @@ if (isset($_POST['btnsave'])) {
     $stmt->bindParam(':umedia', $media);
     $stmt->bindParam(':uminutes', $minutes);
     $stmt->bindParam(':uunique_participants', $unique_participants);
+    /* youtube */
+    $stmt->bindParam(':uviews_you', $views_you);
+    $stmt->bindParam(':utime_you', $time_you);
+    $stmt->bindParam(':utotal_you', $total_you);
+    $stmt->bindParam(':uunique_you', $unique_you);
 
     if ($stmt->execute()) {
       echo ("<script>window.location = 'estatisticas';</script>");
@@ -150,7 +164,8 @@ if (isset($_POST['btnsave'])) {
     .facebook,
     .instagram,
     .tiktok,
-    .twitch {
+    .twitch,
+    .youtube {
       display: none;
     }
   </style>
@@ -210,6 +225,7 @@ if (isset($_POST['btnsave'])) {
                             <option value="instagram">INSTAGRAM</option>
                             <option value="tiktok">TIKTOK</option>
                             <option value="twitch">TWITCH</option>
+                            <option value="youtube">YOUTUBE</option>
                           </select>
                           <label for="floatingSelect">REDE SOCIAL</label>
                         </div>
@@ -217,7 +233,7 @@ if (isset($_POST['btnsave'])) {
                       <div class="col-md-6 pb-2">
                         <div class="form-floating mb-2">
                           <select name="type" class="form-select" id="floatingSelect" aria-label="Marca do post">
-                          <option value="">SELECIONE UMA MARCA</option>
+                            <option value="">SELECIONE UMA MARCA</option>
                             <?php
                             $stmt = $DB_con->prepare("SELECT id,name,type FROM categorys where status='1' ORDER BY id DESC");
                             $stmt->execute();
@@ -397,6 +413,34 @@ if (isset($_POST['btnsave'])) {
                           </div>
                         </div>
                       </div>
+                      <div class="youtube">
+                        <div class="row">
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="views_you" placeholder="Visualizações">
+                              <label for="">Visualizações</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="time_you" placeholder="Tempo de exibição">
+                              <label for="">Tempo de exibição</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="total_you" placeholder="Total de inscritos">
+                              <label for="">Total de inscritos</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6 pb-3">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" value="" name="unique_you" placeholder="Espectadores Unicos">
+                              <label for="">Espectadores únicos</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -416,7 +460,8 @@ if (isset($_POST['btnsave'])) {
                   </div>
                 </div>
                 <input type="hidden" value="4" name="status">
-                <input type="hidden" value="<?php echo $_SESSION['name']; ?>" name="user_create">
+                <input type="hidden" value="<?php echo $_SESSION['id']; ?>" name="user_create">
+                <input type="hidden" value="<?php echo $_SESSION['name']; ?>" name="user_name">
                 <div class="text-center pt-2">
                   <button type="submit" name="btnsave" class="btn btn-primary">Adicionar</button>
                   <button type="reset" class="btn btn-secondary">Resetar</button>
@@ -457,6 +502,7 @@ if (isset($_POST['btnsave'])) {
         $('.DivPai .instagram').hide();
         $('.DivPai .tiktok').hide();
         $('.DivPai .twitch').hide();
+        $('.DivPai .youtube').hide();
         $(SelectValue).toggle();
       });
     });

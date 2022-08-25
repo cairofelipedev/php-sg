@@ -83,7 +83,7 @@ if ($_SESSION['type'] != 1) {
                   <img class="img-fluid rounded" src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/semperfil.png'">
                   <h5 class="card-title text-center">Pontos: <?php echo $points; ?></h5>
                   <div class="d-flex justify-content-between pt-2">
-                    <a href="<?php echo $URI->base('perfil/' . $name); ?>">
+                    <a href="<?php echo $URI->base('perfil/' . $id); ?>">
                       <button type="button" class="btn btn-success">Editar</button>
                     </a>
                     <a href="usuarios.php?delete_id=<?php echo $row['id']; ?>">
