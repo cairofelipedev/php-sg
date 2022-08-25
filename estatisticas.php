@@ -1770,102 +1770,55 @@ if (isset($_GET['delete_id'])) {
                 <div class="DivPai">
                   <div class="all">
                     <!-- Recent Sales -->
-                    <div class="col-12">
-                      <div class="card recent-sales overflow-auto">
-                        <div class="card-body">
-                          <table id="example" class="display" style="width:100%">
+                    <div class="col-lg-12">
+                      <div class="card top-selling">
+                        <div class="card-body pb-0">
+                          <h5 class="card-title">Ranking <span>| Todos</span></h5>
+                          <table class="table table-borderless datatable">
                             <thead>
                               <tr>
-                                <th scope="col">DATA</th>
-                                <th scope="col">STREMEAR</th>
-                                <th scope="col">REDE SOCIAL</th>
-                                <th scope="col">MARCA</th>
-                                <th scope="col">DETALHES</th>
+                                <th scope="col">Ranking</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                <th scope="col">Pontos</th>
+                                <?php
+                                if ($_SESSION['type'] == 1) {
+                                ?>
+                                  <th scope="col">Opções</th>
+                                <?php } ?>
                               </tr>
                             </thead>
                             <tbody>
                               <?php
-                              $stmt = $DB_con->prepare("SELECT * FROM posts WHERE status='1' ORDER BY id DESC");
+                              $i = 1;
+                              $stmt = $DB_con->prepare("SELECT * FROM users where type='2' ORDER BY points DESC");
                               $stmt->execute();
                               if ($stmt->rowCount() > 0) {
                                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                   extract($row);
                               ?>
                                   <tr>
-                                    <th scope="row"><a href="#">
-                                        <?php
-                                        $date = new DateTime($data_create);
-                                        $date2 = $date->format('m');
-                                        $date3 = $date->format('d');
-                                        $date4 = $date->format('Y');
-                                        echo $date3;
-                                        if ($date2 == 01) {
-                                          echo " Jan. ";
-                                        }
-                                        if ($date2 == 02) {
-                                          echo " Fev. ";
-                                        }
-                                        if ($date2 == "03") {
-                                          echo " Mar. ";
-                                        }
-                                        if ($date2 == 04) {
-                                          echo " Abr. ";
-                                        }
-                                        if ($date2 == 05) {
-                                          echo " Mai. ";
-                                        }
-                                        if ($date2 == 06) {
-                                          echo " Jun. ";
-                                        }
-                                        if ($date2 == 07) {
-                                          echo " Jul. ";
-                                        }
-                                        if ($date2 == "08") {
-                                          echo " Ago. ";
-                                        }
-                                        if ($date2 == "09") {
-                                          echo " Set. ";
-                                        }
-                                        if ($date2 == "10") {
-                                          echo " Out. ";
-                                        }
-                                        if ($date2 == "11") {
-                                          echo " Nov. ";
-                                        }
-                                        if ($date2 == "09") {
-                                          echo " Dez. ";
-                                        }
-                                        echo $date4;
-                                        ?>
-                                      </a></th>
-                                    <td> <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                        <h4><?php echo $user_name; ?></h4>
-                                      </a></td>
-                                    <td><?php
-                                        if ($network == "instagram") {
-                                          echo "<i class='bi bi-instagram'></i> INSTAGRAM ";
-                                        }
-                                        if ($network == "facebook") {
-                                          echo "<i class='bi bi-facebook'></i> FACEBOOK";
-                                        }
-                                        if ($network == "twitter") {
-                                          echo "<i class='bi bi-twitter'></i> TWITTER";
-                                        }
-                                        if ($network == "tiktok") {
-                                          echo "<i class='bi bi-tiktok'></i> TIKTOK";
-                                        }
-                                        if ($network == "twitch") {
-                                          echo "<i class='bi bi-twitch'></i> TWITCH";
-                                        }
-                                        ?></td>
-                                    <td><?php echo $type; ?></td>
-                                    <td>
-                                      <a href="#jsModal<?php echo $id; ?>" id="popup" class="jsModalTrigger">
-                                        <button class="btn btn-faq" type="button" id="popup" class="jsModalTrigger">
-                                          <i class="bi bi-eye-fill"></i>
-                                        </button>
-                                      </a>
+                                    <td class="fw-bold text-center">
+                                      <?php
+                                      echo $i++ . "º";
+                                      ?>
                                     </td>
+                                    <th scope="row">
+                                      <img src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/semperfil.png'" alt="Profile" class="rounded img-fluid">
+                                    </th>
+                                    <td><a href="<?php echo $URI->base('/perfil/' . slugify($id)); ?>" class="text-primary fw-bold"><?php echo $name ?></a></td>
+                                    <td class="text-center">
+                                      <?php echo $points ?>
+                                    </td>
+                                    <?php
+                                    if ($_SESSION['type'] == 1) {
+                                    ?>
+                                      <td>
+                                        <a href="<?php echo $URI->base('perfil/' . $id); ?>">
+                                          <button type="button" class="btn btn-success">Editar</button>
+                                        </a>
+                                      </td>
+                                    <?php } ?>
                                   </tr>
                               <?php
                                 }
@@ -1873,137 +1826,11 @@ if (isset($_GET['delete_id'])) {
                               ?>
                             </tbody>
                           </table>
-                          <?php
-                          $stmt = $DB_con->prepare("SELECT * FROM posts where status='1' ORDER BY id DESC");
-                          $stmt->execute();
-                          if ($stmt->rowCount() > 0) {
-                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                              extract($row);
-                          ?>
-                              <div id="jsModal<?php echo $id; ?>" class="modal2">
-                                <div class="modal__overlay jsOverlay"></div>
-                                <div class="modal__container">
-                                  <div class="row justify-content-center">
-                                    <div class="col-md-6">
-                                      <div class="card">
-                                        <div class="card-body pt-4">
-                                          <img src="./uploads/posts/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/sem-imagem-10.jpg'" width="100%" height="200px">
-                                          <h5 class="card-title2 text-center pt-3"><?php echo $title; ?></h5>
-                                          <h5 class="card-title2">
-                                            <i class="bi bi-clock-fill"></i>
-                                            <?php
-                                            $date = new DateTime($data_create);
-                                            $date2 = $date->format('m');
-                                            $date3 = $date->format('d');
-                                            $date4 = $date->format('Y');
-                                            echo $date3;
-                                            if ($date2 == 01) {
-                                              echo " Jan. ";
-                                            }
-                                            if ($date2 == 02) {
-                                              echo " Fev. ";
-                                            }
-                                            if ($date2 == "03") {
-                                              echo " Mar. ";
-                                            }
-                                            if ($date2 == 04) {
-                                              echo " Abr. ";
-                                            }
-                                            if ($date2 == 05) {
-                                              echo " Mai. ";
-                                            }
-                                            if ($date2 == 06) {
-                                              echo " Jun. ";
-                                            }
-                                            if ($date2 == 07) {
-                                              echo " Jul. ";
-                                            }
-                                            if ($date2 == "08") {
-                                              echo " Ago. ";
-                                            }
-                                            if ($date2 == "09") {
-                                              echo " Set. ";
-                                            }
-                                            if ($date2 == "10") {
-                                              echo " Out. ";
-                                            }
-                                            if ($date2 == "11") {
-                                              echo " Nov. ";
-                                            }
-                                            if ($date2 == "09") {
-                                              echo " Dez. ";
-                                            }
-                                            echo $date4;
-                                            ?>
-                                          </h5>
-                                          <h4 class="card-title2"><i class="bi bi-person-fill"></i> <?php echo $user_name; ?></h4>
-                                          <h4 class="card-title2">
-                                            <?php
-                                            if ($network == "instagram") {
-                                              echo "<i class='bi bi-instagram'></i> INSTAGRAM";
-                                            }
-                                            if ($network == "facebook") {
-                                              echo "<i class='bi bi-facebook'></i> FACEBOOK";
-                                            }
-                                            if ($network == "twitter") {
-                                              echo "<i class='bi bi-twitter'></i> TWITTER";
-                                            }
-                                            if ($network == "tiktok") {
-                                              echo "<i class='bi bi-tiktok'></i> TIKTOK";
-                                            }
-                                            if ($network == "twitch") {
-                                              echo "<i class='bi bi-twitch'></i>TWITCH";
-                                            }
-                                            ?>
-                                            <h4 class="card-title2"><?php echo $type; ?></h4>
-                                            <h4 class="card-title2"><?php echo $link; ?></h4>
-                                            <h4 class="card-title2 text-center pt-2">ENGAJAMENTO</h4>
-                                            <?php if ($network == "twitch") { ?>
-                                              <h4 class="card-title2">Média de espectadores : <?php echo number_format($media, 0, ',', '.'); ?></h4>
-                                              <h4 class="card-title2">Minutos assistidos gerados: <?php echo number_format($minutes, 0, ',', '.'); ?></h4>
-                                              <h4 class="card-title2">Novos seguidores: <?php echo number_format($followers_twitch, 0, ',', '.'); ?></h4>
-                                              <h4 class="card-title2">Participantes únicos do chat: <?php echo number_format($unique_participants, 0, ',', '.'); ?></h4>
-                                            <?php } ?>
-                                            <?php if ($network == "twitter") { ?>
-                                              <h4 class="card-title2">Impressões: <?php echo number_format($impressions, 0, ',', '.'); ?></h4>
-                                              <h4 class="card-title2">Menções: <?php echo number_format($mentions, 0, ',', '.'); ?></h4>
-                                              <h4 class="card-title2">Visualizações: <?php echo number_format($views_tt, 0, ',', '.'); ?></h4>
-                                              <h4 class="card-title2">Seguidores: <?php echo number_format($followers_tt, 0, ',', '.'); ?></h4>
-                                            <?php } ?>
-                                            <?php if ($network == "facebook") { ?>
-                                              <h4 class="card-title2">Alcance: <?php echo number_format($reach_fb, 0, ',', '.'); ?></h4>
-                                              <h4 class="card-title2">Visita à pagina: <?php echo number_format($views_fb, 0, ',', '.'); ?></h4>
-                                              <h4 class="card-title2">Novas Curtidas: <?php echo number_format($likes_fb, 0, ',', '.'); ?></h4>
-                                            <?php } ?>
-                                            <?php if ($network == "instagram") { ?>
-                                              <h4 class="card-title2">Alcance: <?php echo number_format($reach_insta, 0, ',', '.'); ?></h4>
-                                              <h4 class="card-title2">Visita ao perfil: <?php echo number_format($views_insta, 0, ',', '.'); ?></h4>
-                                              <h4 class="card-title2">Novos seguidores: <?php echo number_format($followers_insta, 0, ',', '.'); ?></h4>
-                                            <?php } ?>
-                                            <?php if ($network == "tiktok") { ?>
-                                              <h4 class="card-title2">Visualizações de vídeo : <?php echo number_format($views_video, 0, ',', '.'); ?></h4>
-                                              <h4 class="card-title2">Visualizações de perfil: <?php echo number_format($views_profile, 0, ',', '.'); ?></h4>
-                                              <h4 class="card-title2">Curtidas: <?php echo number_format($comments, 0, ',', '.'); ?></h4>
-                                              <h4 class="card-title2">Compartilhamentos: <?php echo number_format($shares, 0, ',', '.'); ?></h4>
-                                              <h4 class="card-title2">Seguidores: <?php echo number_format($followers_tiktok, 0, ',', '.'); ?></h4>
-                                              <h4 class="card-title2">Número de vídeos publicados: <?php echo number_format($number_videos, 0, ',', '.'); ?></h4>
-                                              <h4 class="card-title2">Número de lives realizadas: <?php echo number_format($number_lives, 0, ',', '.'); ?></h4>
-                                            <?php } ?>
-
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <button class="modal__close jsModalClose">&#10005;</button>
-                                </div>
-                              </div>
-                          <?php
-                            }
-                          } ?>
                         </div>
 
                       </div>
-                    </div><!-- End Recent Sales -->
+                    </div><!-- End Right side columns -->
+
                   </div>
                   <div class="twitter">
                     <table id="example2" class="display" style="width:100%">
