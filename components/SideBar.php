@@ -8,19 +8,23 @@
         <span>Dashboard</span>
       </a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link text-black border" href="<?php echo $URI->base('estatisticas') ?>">
-        <i class="text-black bi bi-layout-text-window-reverse"></i>
-        <span>Estatísticas</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-black border" href="<?php echo $URI->base('ranking') ?>">
-        <i class="text-black bi bi-bar-chart"></i>
-        <span>Ranking</span>
-      </a>
-    </li>
     <?php
+    if (($_SESSION['type'] == 1) or ($_SESSION['type'] == 2)) {
+    ?>
+      <li class="nav-item">
+        <a class="nav-link text-black border" href="<?php echo $URI->base('estatisticas') ?>">
+          <i class="text-black bi bi-layout-text-window-reverse"></i>
+          <span>Estatísticas</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-black border" href="<?php echo $URI->base('ranking') ?>">
+          <i class="text-black bi bi-bar-chart"></i>
+          <span>Ranking</span>
+        </a>
+      </li>
+    <?php
+    }
     if ($_SESSION['type'] == 1) {
     ?>
       <li class="nav-item">

@@ -28,13 +28,26 @@ if (isset($_GET['delete_id'])) {
   <?php include "components/Head.php"; ?>
 </head>
 <style>
-  .twitter,
+  <?php
+  if (($_SESSION['type'] == 1) or ($_SESSION['type'] == 2)) {
+  ?>.twitter,
   .facebook,
   .instagram,
   .tiktok,
   .twitch {
     display: none;
   }
+
+  <?php }
+  if (($_SESSION['type'] == 3)) {
+  ?>.twitter,
+  .facebook,
+  .instagram,
+  .tiktok {
+    display: none;
+  }
+
+  <?php } ?>
 </style>
 
 <body>
@@ -53,12 +66,16 @@ if (isset($_GET['delete_id'])) {
           </ol>
           <div class="filter mr-4">
             <select name="network" class="form-select" id="SelectOptions" required>
-              <option value="all">TODAS</option>
+              <?php
+              if (($_SESSION['type'] == 1) or ($_SESSION['type'] == 2)) {
+              ?>
+                <option value="all">TODAS</option>
+              <?php } ?>
+              <option value="twitch">TWITCH</option>
               <option value="twitter">TWITTER</option>
               <option value="facebook">FACEBOOK</option>
               <option value="instagram">INSTAGRAM</option>
               <option value="tiktok">TIKTOK</option>
-              <option value="twitch">TWITCH</option>
             </select>
           </div>
         </nav>
@@ -1768,8 +1785,244 @@ if (isset($_GET['delete_id'])) {
               ?>
               <?php if (($_SESSION['type'] == 1) or ($_SESSION['type'] == 3)) { ?>
                 <div class="DivPai">
-                  <div class="all">
-                    <!-- Recent Sales -->
+                  <?php
+                  if (($_SESSION['type'] == 1) or ($_SESSION['type'] == 2)) {
+                  ?>
+                    <div class="all">
+                      <!-- Recent Sales -->
+                      <div class="col-lg-12">
+                        <div class="card top-selling">
+                          <div class="card-body pb-0">
+                            <h5 class="card-title">Ranking <span>| Todos</span></h5>
+                            <table class="table table-borderless datatable">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Usuário</th>
+                                  <th scope="col"></th>
+                                  <th scope="col"><i class='bi bi-twitch'></i> Média de espectadores</th>
+                                  <th scope="col"><i class='bi bi-twitch'></i> Minutos assistidos</th>
+                                  <th scope="col"><i class='bi bi-twitch'></i> Novos seguidores</th>
+                                  <th scope="col"><i class='bi bi-twitch'></i> Participantes únicos chat</th>
+                                  <th scope="col"><i class='bi bi-twitter'></i> Impressões</th>
+                                  <th scope="col"><i class='bi bi-twitter'></i> Menções</th>
+                                  <th scope="col"><i class='bi bi-twitter'></i> Visualizações</th>
+                                  <th scope="col"><i class='bi bi-twitter'></i> Seguidores</th>
+                                  <th scope="col"><i class='bi bi-facebook'></i> Alcance</th>
+                                  <th scope="col"><i class='bi bi-facebook'></i> Visita pagina</th>
+                                  <th scope="col"><i class='bi bi-facebook'></i> Novas Curtidas</th>
+                                  <th scope="col"><i class='bi bi-instagram'></i> Alcance</th>
+                                  <th scope="col"><i class='bi bi-instagram'></i> Visita perfil</th>
+                                  <th scope="col"><i class='bi bi-instagram'></i> Novos seguidores</th>
+                                  <?php
+                                  if ($_SESSION['type'] == 1) {
+                                  ?>
+                                    <th scope="col">Opções</th>
+                                  <?php } ?>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <!-- <td class="fw-bold text-center">
+                                      <?php
+                                      // echo $i++ . "º";
+                                      ?>
+                                    </td> -->
+                                  <?php
+                                  // $i = 1;
+                                  $stmt = $DB_con->prepare("SELECT * FROM users where type='2' ORDER BY points DESC");
+                                  $stmt->execute();
+                                  if ($stmt->rowCount() > 0) {
+                                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                      extract($row);
+                                  ?>
+                                      <th scope="row">
+                                        <img src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/semperfil.png'" alt="Profile" class="rounded" width="50px" width="50px">
+                                      </th>
+                                      <td> <a href="<?php echo $URI->base('/perfil/' . slugify($id)); ?>" class="text-primary fw-bold" style="font-size:12px"><?php echo $name ?></a></td>
+                                      <?php
+                                      if ($_SESSION['type'] == 1) {
+                                      ?>
+                                        <td>
+                                          <a href="<?php echo $URI->base('perfil/' . $id); ?>">
+                                            <button type="button" class="btn btn-success">Editar</button>
+                                          </a>
+                                        </td>
+                                      <?php } ?>
+                                      <td class="text-center">
+                                        <?php
+                                        $stmt2 = $DB_con->prepare("SELECT SUM(media) as total_media FROM posts where user_create=$id");
+                                        $stmt2->execute();
+                                        if ($stmt2->rowCount() > 0) {
+                                          while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
+                                            extract($row);
+                                            echo number_format($total_media, 0, ',', '.');
+                                          }
+                                        }
+                                        ?>
+                                      </td>
+                                      <td class="text-center">
+                                        <?php
+                                        $stmt3 = $DB_con->prepare("SELECT SUM(minutes) as total_minutes FROM posts where user_create=$id");
+                                        $stmt3->execute();
+                                        if ($stmt3->rowCount() > 0) {
+                                          while ($row = $stmt3->fetch(PDO::FETCH_ASSOC)) {
+                                            extract($row);
+                                            echo number_format($total_minutes, 0, ',', '.');
+                                          }
+                                        }
+                                        ?>
+                                      </td>
+                                      <td class="text-center">
+                                        <?php
+                                        $stmt4 = $DB_con->prepare("SELECT SUM(followers_twitch) as total_followers_twitch FROM posts where user_create=$id");
+                                        $stmt4->execute();
+                                        if ($stmt4->rowCount() > 0) {
+                                          while ($row = $stmt4->fetch(PDO::FETCH_ASSOC)) {
+                                            extract($row);
+                                            echo number_format($total_followers_twitch, 0, ',', '.');
+                                          }
+                                        }
+                                        ?>
+                                      </td>
+                                      <td class="text-center">
+                                        <?php
+                                        $stmt5 = $DB_con->prepare("SELECT SUM(unique_participants) as total_unique_participants FROM posts where user_create=$id");
+                                        $stmt5->execute();
+                                        if ($stmt5->rowCount() > 0) {
+                                          while ($row = $stmt5->fetch(PDO::FETCH_ASSOC)) {
+                                            extract($row);
+                                            echo number_format($total_unique_participants, 0, ',', '.');
+                                          }
+                                        }
+                                        ?>
+                                      </td>
+                                      <td class="text-center">
+                                        <?php
+                                        $stmt6 = $DB_con->prepare("SELECT SUM(impressions) as total_impressions FROM posts where user_create=$id");
+                                        $stmt6->execute();
+                                        if ($stmt6->rowCount() > 0) {
+                                          while ($row = $stmt6->fetch(PDO::FETCH_ASSOC)) {
+                                            extract($row);
+                                            echo number_format($total_impressions, 0, ',', '.');
+                                          }
+                                        }
+                                        ?>
+                                      </td>
+                                      <td class="text-center">
+                                        <?php
+                                        $stmt7 = $DB_con->prepare("SELECT SUM(mentions) as total_mentions FROM posts where user_create=$id");
+                                        $stmt7->execute();
+                                        if ($stmt7->rowCount() > 0) {
+                                          while ($row = $stmt7->fetch(PDO::FETCH_ASSOC)) {
+                                            extract($row);
+                                            echo number_format($total_mentions, 0, ',', '.');
+                                          }
+                                        }
+                                        ?>
+                                      </td>
+                                      <td class="text-center">
+                                        <?php
+                                        $stmt8 = $DB_con->prepare("SELECT SUM(views_tt) as total_views_tt FROM posts where user_create=$id");
+                                        $stmt8->execute();
+                                        if ($stmt8->rowCount() > 0) {
+                                          while ($row = $stmt8->fetch(PDO::FETCH_ASSOC)) {
+                                            extract($row);
+                                            echo number_format($total_views_tt, 0, ',', '.');
+                                          }
+                                        }
+                                        ?>
+                                      </td>
+                                      <td class="text-center">
+                                        <?php
+                                        $stmt9 = $DB_con->prepare("SELECT SUM(followers_tt) as total_followers_tt FROM posts where user_create=$id");
+                                        $stmt9->execute();
+                                        if ($stmt9->rowCount() > 0) {
+                                          while ($row = $stmt9->fetch(PDO::FETCH_ASSOC)) {
+                                            extract($row);
+                                            echo number_format($total_followers_tt, 0, ',', '.');
+                                          }
+                                        }
+                                        ?>
+                                      </td>
+                                      <td class="text-center">
+                                        <?php
+                                        $stmt10 = $DB_con->prepare("SELECT SUM(reach_fb) as total_reach_fb FROM posts where user_create=$id");
+                                        $stmt10->execute();
+                                        if ($stmt10->rowCount() > 0) {
+                                          while ($row = $stmt10->fetch(PDO::FETCH_ASSOC)) {
+                                            extract($row);
+                                            echo number_format($total_reach_fb, 0, ',', '.');
+                                          }
+                                        }
+                                        ?>
+
+                                      </td>
+                                      <td class="text-center">
+                                        <?php
+                                        $stmt11 = $DB_con->prepare("SELECT SUM(views_fb) as total_views_fb FROM posts where user_create=$id");
+                                        $stmt11->execute();
+                                        if ($stmt11->rowCount() > 0) {
+                                          while ($row = $stmt11->fetch(PDO::FETCH_ASSOC)) {
+                                            extract($row);
+                                            echo number_format($total_views_fb, 0, ',', '.');
+                                          }
+                                        }
+                                        ?>
+
+                                      </td>
+                                      <td class="text-center">
+                                        <?php
+                                        $stmt12 = $DB_con->prepare("SELECT SUM(followers_tt) as total_followers_tt FROM posts where user_create=$id");
+                                        $stmt12->execute();
+                                        if ($stmt12->rowCount() > 0) {
+                                          while ($row = $stmt12->fetch(PDO::FETCH_ASSOC)) {
+                                            extract($row);
+                                            echo number_format($total_followers_tt, 0, ',', '.');
+                                          }
+                                        }
+                                        ?>
+
+                                      </td>
+                                      <td class="text-center">
+                                        <?php
+                                        $stmt13 = $DB_con->prepare("SELECT SUM(likes_fb) as total_likes_fb FROM posts where user_create=$id");
+                                        $stmt13->execute();
+                                        if ($stmt13->rowCount() > 0) {
+                                          while ($row = $stmt13->fetch(PDO::FETCH_ASSOC)) {
+                                            extract($row);
+                                            echo number_format($total_likes_fb, 0, ',', '.');
+                                          }
+                                        }
+                                        ?>
+
+                                      </td>
+                                      <td class="text-center">
+                                        <?php
+                                        $stmt14 = $DB_con->prepare("SELECT SUM(views_insta) as total_views_insta FROM posts where user_create=$id");
+                                        $stmt14->execute();
+                                        if ($stmt14->rowCount() > 0) {
+                                          while ($row = $stmt14->fetch(PDO::FETCH_ASSOC)) {
+                                            extract($row);
+                                            echo number_format($total_views_insta, 0, ',', '.');
+                                          }
+                                        }
+                                        ?>
+                                      </td>
+                                </tr>
+                            <?php
+                                    }
+                                  }
+                            ?>
+                              </tbody>
+                            </table>
+                          </div>
+
+                        </div>
+                      </div><!-- End Right side columns -->
+
+                    </div>
+                  <?php } ?>
+                  <div class="twitter">
                     <div class="col-lg-12">
                       <div class="card top-selling">
                         <div class="card-body pb-0">
@@ -1777,10 +2030,12 @@ if (isset($_GET['delete_id'])) {
                           <table class="table table-borderless datatable">
                             <thead>
                               <tr>
-                                <th scope="col">Ranking</th>
+                                <th scope="col">Usuário</th>
                                 <th scope="col"></th>
-                                <th scope="col"></th>
-                                <th scope="col">Pontos</th>
+                                <th scope="col"><i class='bi bi-twitter'></i> Impressões</th>
+                                <th scope="col"><i class='bi bi-twitter'></i> Menções</th>
+                                <th scope="col"><i class='bi bi-twitter'></i> Visualizações</th>
+                                <th scope="col"><i class='bi bi-twitter'></i> Seguidores</th>
                                 <?php
                                 if ($_SESSION['type'] == 1) {
                                 ?>
@@ -1789,27 +2044,24 @@ if (isset($_GET['delete_id'])) {
                               </tr>
                             </thead>
                             <tbody>
-                              <?php
-                              $i = 1;
-                              $stmt = $DB_con->prepare("SELECT * FROM users where type='2' ORDER BY points DESC");
-                              $stmt->execute();
-                              if ($stmt->rowCount() > 0) {
-                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                  extract($row);
-                              ?>
-                                  <tr>
-                                    <td class="fw-bold text-center">
+                              <tr>
+                                <!-- <td class="fw-bold text-center">
                                       <?php
-                                      echo $i++ . "º";
+                                      // echo $i++ . "º";
                                       ?>
-                                    </td>
+                                    </td> -->
+                                <?php
+                                // $i = 1;
+                                $stmt = $DB_con->prepare("SELECT * FROM users where type='2' ORDER BY points DESC");
+                                $stmt->execute();
+                                if ($stmt->rowCount() > 0) {
+                                  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    extract($row);
+                                ?>
                                     <th scope="row">
-                                      <img src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/semperfil.png'" alt="Profile" class="rounded img-fluid">
+                                      <img src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/semperfil.png'" alt="Profile" class="rounded" width="50px" width="50px">
                                     </th>
-                                    <td><a href="<?php echo $URI->base('/perfil/' . slugify($id)); ?>" class="text-primary fw-bold"><?php echo $name ?></a></td>
-                                    <td class="text-center">
-                                      <?php echo $points ?>
-                                    </td>
+                                    <td> <a href="<?php echo $URI->base('/perfil/' . slugify($id)); ?>" class="text-primary fw-bold" style="font-size:12px"><?php echo $name ?></a></td>
                                     <?php
                                     if ($_SESSION['type'] == 1) {
                                     ?>
@@ -1819,438 +2071,520 @@ if (isset($_GET['delete_id'])) {
                                         </a>
                                       </td>
                                     <?php } ?>
-                                  </tr>
-                              <?php
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt6 = $DB_con->prepare("SELECT SUM(impressions) as total_impressions FROM posts where user_create=$id");
+                                      $stmt6->execute();
+                                      if ($stmt6->rowCount() > 0) {
+                                        while ($row = $stmt6->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_impressions, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt7 = $DB_con->prepare("SELECT SUM(mentions) as total_mentions FROM posts where user_create=$id");
+                                      $stmt7->execute();
+                                      if ($stmt7->rowCount() > 0) {
+                                        while ($row = $stmt7->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_mentions, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt8 = $DB_con->prepare("SELECT SUM(views_tt) as total_views_tt FROM posts where user_create=$id");
+                                      $stmt8->execute();
+                                      if ($stmt8->rowCount() > 0) {
+                                        while ($row = $stmt8->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_views_tt, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt9 = $DB_con->prepare("SELECT SUM(followers_tt) as total_followers_tt FROM posts where user_create=$id");
+                                      $stmt9->execute();
+                                      if ($stmt9->rowCount() > 0) {
+                                        while ($row = $stmt9->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_followers_tt, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                              </tr>
+                          <?php
+                                  }
                                 }
-                              }
-                              ?>
+                          ?>
+                            </tbody>
+                          </table>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="facebook">
+                    <div class="col-lg-12">
+                      <div class="card top-selling">
+                        <div class="card-body pb-0">
+                          <h5 class="card-title">Ranking <span>| Todos</span></h5>
+                          <table class="table table-borderless datatable">
+                            <thead>
+                              <tr>
+                                <th scope="col">Usuário</th>
+                                <th scope="col"></th>
+
+                                <th scope="col"><i class='bi bi-facebook'></i> Alcance</th>
+                                <th scope="col"><i class='bi bi-facebook'></i> Visita pagina</th>
+                                <th scope="col"><i class='bi bi-facebook'></i> Novas Curtidas</th>
+
+                                <?php
+                                if ($_SESSION['type'] == 1) {
+                                ?>
+                                  <th scope="col">Opções</th>
+                                <?php } ?>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <!-- <td class="fw-bold text-center">
+                                      <?php
+                                      // echo $i++ . "º";
+                                      ?>
+                                    </td> -->
+                                <?php
+                                // $i = 1;
+                                $stmt = $DB_con->prepare("SELECT * FROM users where type='2' ORDER BY points DESC");
+                                $stmt->execute();
+                                if ($stmt->rowCount() > 0) {
+                                  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    extract($row);
+                                ?>
+                                    <th scope="row">
+                                      <img src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/semperfil.png'" alt="Profile" class="rounded" width="50px" width="50px">
+                                    </th>
+                                    <td> <a href="<?php echo $URI->base('/perfil/' . slugify($id)); ?>" class="text-primary fw-bold" style="font-size:12px"><?php echo $name ?></a></td>
+                                    <?php
+                                    if ($_SESSION['type'] == 1) {
+                                    ?>
+                                      <td>
+                                        <a href="<?php echo $URI->base('perfil/' . $id); ?>">
+                                          <button type="button" class="btn btn-success">Editar</button>
+                                        </a>
+                                      </td>
+                                    <?php } ?>
+
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt10 = $DB_con->prepare("SELECT SUM(reach_fb) as total_reach_fb FROM posts where user_create=$id");
+                                      $stmt10->execute();
+                                      if ($stmt10->rowCount() > 0) {
+                                        while ($row = $stmt10->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_reach_fb, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+
+                                    </td>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt11 = $DB_con->prepare("SELECT SUM(views_fb) as total_views_fb FROM posts where user_create=$id");
+                                      $stmt11->execute();
+                                      if ($stmt11->rowCount() > 0) {
+                                        while ($row = $stmt11->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_views_fb, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+
+                                    </td>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt15 = $DB_con->prepare("SELECT SUM(likes_fb) as total_likes_fb FROM posts where user_create=$id");
+                                      $stmt15->execute();
+                                      if ($stmt15->rowCount() > 0) {
+                                        while ($row = $stmt15->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_likes_fb, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+
+                                    </td>
+                              </tr>
+                          <?php
+                                  }
+                                }
+                          ?>
                             </tbody>
                           </table>
                         </div>
 
                       </div>
                     </div><!-- End Right side columns -->
-
-                  </div>
-                  <div class="twitter">
-                    <table id="example2" class="display" style="width:100%">
-                      <thead>
-                        <tr>
-                          <th scope="col">DATA</th>
-                          <th scope="col">STREMEAR</th>
-                          <th scope="col">MARCA</th>
-                          <th scope="col">IMPRESSÕES</th>
-                          <th scope="col">MENÇÕES</th>
-                          <th scope="col">VISUALIZAÇÕES</th>
-                          <th scope="col">SEGUIDORES</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php
-                        $stmt = $DB_con->prepare("SELECT * FROM posts where network='twitter' ORDER BY id DESC");
-                        $stmt->execute();
-                        if ($stmt->rowCount() > 0) {
-                          while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            extract($row);
-                        ?>
-                            <tr>
-                              <th scope="row"><a href="#">
-                                  <?php
-                                  $date = new DateTime($data_create);
-                                  $date2 = $date->format('m');
-                                  $date3 = $date->format('d');
-                                  $date4 = $date->format('Y');
-                                  echo $date3;
-                                  if ($date2 == 01) {
-                                    echo " Jan. ";
-                                  }
-                                  if ($date2 == 02) {
-                                    echo " Fev. ";
-                                  }
-                                  if ($date2 == "03") {
-                                    echo " Mar. ";
-                                  }
-                                  if ($date2 == 04) {
-                                    echo " Abr. ";
-                                  }
-                                  if ($date2 == 05) {
-                                    echo " Mai. ";
-                                  }
-                                  if ($date2 == 06) {
-                                    echo " Jun. ";
-                                  }
-                                  if ($date2 == 07) {
-                                    echo " Jul. ";
-                                  }
-                                  if ($date2 == "08") {
-                                    echo " Ago. ";
-                                  }
-                                  if ($date2 == "09") {
-                                    echo " Set. ";
-                                  }
-                                  if ($date2 == "10") {
-                                    echo " Out. ";
-                                  }
-                                  if ($date2 == "11") {
-                                    echo " Nov. ";
-                                  }
-                                  if ($date2 == "09") {
-                                    echo " Dez. ";
-                                  }
-                                  echo $date4;
-                                  ?>
-                                </a></th>
-                              <td> <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                  <h4><?php echo $user_name; ?></h4>
-                                </a></td>
-                              <td><?php echo $type; ?></td>
-                              <td><?php echo number_format($impressions, 0, ',', '.'); ?></td>
-                              <td><?php echo number_format($mentions, 0, ',', '.'); ?></td>
-                              <td><?php echo number_format($views_tt, 0, ',', '.'); ?></td>
-                              <td><?php echo number_format($followers_tt, 0, ',', '.'); ?></td>
-                            </tr>
-                        <?php
-                          }
-                        }
-                        ?>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div class="facebook">
-                    <table id="example3" class="display" style="width:100%">
-                      <thead>
-                        <tr>
-                          <th scope="col">DATA</th>
-                          <th scope="col">STREMEAR</th>
-                          <th scope="col">MARCA</th>
-                          <th scope="col">ALCANCE</th>
-                          <th scope="col">VISITAS</th>
-                          <th scope="col">NOVAS CURTIDAS</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php
-                        $stmt = $DB_con->prepare("SELECT * FROM posts where status='1' and network='facebook' ORDER BY id DESC");
-                        $stmt->execute();
-                        if ($stmt->rowCount() > 0) {
-                          while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            extract($row);
-                        ?>
-                            <tr>
-                              <th scope="row"><a href="#">
-                                  <?php
-                                  $date = new DateTime($data_create);
-                                  $date2 = $date->format('m');
-                                  $date3 = $date->format('d');
-                                  $date4 = $date->format('Y');
-                                  echo $date3;
-                                  if ($date2 == 01) {
-                                    echo " Jan. ";
-                                  }
-                                  if ($date2 == 02) {
-                                    echo " Fev. ";
-                                  }
-                                  if ($date2 == "03") {
-                                    echo " Mar. ";
-                                  }
-                                  if ($date2 == 04) {
-                                    echo " Abr. ";
-                                  }
-                                  if ($date2 == 05) {
-                                    echo " Mai. ";
-                                  }
-                                  if ($date2 == 06) {
-                                    echo " Jun. ";
-                                  }
-                                  if ($date2 == 07) {
-                                    echo " Jul. ";
-                                  }
-                                  if ($date2 == "08") {
-                                    echo " Ago. ";
-                                  }
-                                  if ($date2 == "09") {
-                                    echo " Set. ";
-                                  }
-                                  if ($date2 == "10") {
-                                    echo " Out. ";
-                                  }
-                                  if ($date2 == "11") {
-                                    echo " Nov. ";
-                                  }
-                                  if ($date2 == "09") {
-                                    echo " Dez. ";
-                                  }
-                                  echo $date4;
-                                  ?>
-                                </a></th>
-                              <td> <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                  <h4><?php echo $user_name; ?></h4>
-                                </a></td>
-                              <td><?php echo $type; ?></td>
-                              <td><?php echo number_format($reach_fb, 0, ',', '.'); ?></td>
-                              <td><?php echo number_format($views_fb, 0, ',', '.'); ?></td>
-                              <td><?php echo number_format($likes_fb, 0, ',', '.'); ?></td>
-                            </tr>
-                        <?php
-                          }
-                        }
-                        ?>
-                      </tbody>
-                    </table>
                   </div>
                   <div class="instagram">
-                    <table id="example4" class="display" style="width:100%">
-                      <thead>
-                        <tr>
-                          <th scope="col">DATA</th>
-                          <th scope="col">STREMEAR</th>
-                          <th scope="col">MARCA</th>
-                          <th scope="col">ALCANCE</th>
-                          <th scope="col">VISUALIZAÇÕES</th>
-                          <th scope="col">SEGUIDORES</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php
-                        $stmt = $DB_con->prepare("SELECT * FROM posts where status='1' and network='instagram' ORDER BY id DESC");
-                        $stmt->execute();
-                        if ($stmt->rowCount() > 0) {
-                          while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            extract($row);
-                        ?>
-                            <tr>
-                              <th scope="row"><a href="#">
-                                  <?php
-                                  $date = new DateTime($data_create);
-                                  $date2 = $date->format('m');
-                                  $date3 = $date->format('d');
-                                  $date4 = $date->format('Y');
-                                  echo $date3;
-                                  if ($date2 == 01) {
-                                    echo " Jan. ";
+                    <div class="col-lg-12">
+                      <div class="card top-selling">
+                        <div class="card-body pb-0">
+                          <h5 class="card-title">Ranking <span>| Todos</span></h5>
+                          <table class="table table-borderless datatable">
+                            <thead>
+                              <tr>
+                                <th scope="col">Usuário</th>
+                                <th scope="col"></th>
+                                <th scope="col"><i class='bi bi-instagram'></i> Alcance</th>
+                                <th scope="col"><i class='bi bi-instagram'></i> Visita perfil</th>
+                                <th scope="col"><i class='bi bi-instagram'></i> Novos seguidores</th>
+                                <?php
+                                if ($_SESSION['type'] == 1) {
+                                ?>
+                                  <th scope="col">Opções</th>
+                                <?php } ?>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <!-- <td class="fw-bold text-center">
+                                      <?php
+                                      // echo $i++ . "º";
+                                      ?>
+                                    </td> -->
+                                <?php
+                                // $i = 1;
+                                $stmt = $DB_con->prepare("SELECT * FROM users where type='2' ORDER BY points DESC");
+                                $stmt->execute();
+                                if ($stmt->rowCount() > 0) {
+                                  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    extract($row);
+                                ?>
+                                    <th scope="row">
+                                      <img src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/semperfil.png'" alt="Profile" class="rounded" width="50px" width="50px">
+                                    </th>
+                                    <td> <a href="<?php echo $URI->base('/perfil/' . slugify($id)); ?>" class="text-primary fw-bold" style="font-size:12px"><?php echo $name ?></a></td>
+                                    <?php
+                                    if ($_SESSION['type'] == 1) {
+                                    ?>
+                                      <td>
+                                        <a href="<?php echo $URI->base('perfil/' . $id); ?>">
+                                          <button type="button" class="btn btn-success">Editar</button>
+                                        </a>
+                                      </td>
+                                    <?php } ?>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt2 = $DB_con->prepare("SELECT SUM(reach_insta) as total_reach_insta FROM posts where user_create=$id");
+                                      $stmt2->execute();
+                                      if ($stmt2->rowCount() > 0) {
+                                        while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_reach_insta, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt3 = $DB_con->prepare("SELECT SUM(views_insta) as total_views_insta FROM posts where user_create=$id");
+                                      $stmt3->execute();
+                                      if ($stmt3->rowCount() > 0) {
+                                        while ($row = $stmt3->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_views_insta, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt3 = $DB_con->prepare("SELECT SUM(followers_insta) as total_followers_insta FROM posts where user_create=$id");
+                                      $stmt3->execute();
+                                      if ($stmt3->rowCount() > 0) {
+                                        while ($row = $stmt3->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_followers_insta, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                              </tr>
+                          <?php
                                   }
-                                  if ($date2 == 02) {
-                                    echo " Fev. ";
-                                  }
-                                  if ($date2 == "03") {
-                                    echo " Mar. ";
-                                  }
-                                  if ($date2 == 04) {
-                                    echo " Abr. ";
-                                  }
-                                  if ($date2 == 05) {
-                                    echo " Mai. ";
-                                  }
-                                  if ($date2 == 06) {
-                                    echo " Jun. ";
-                                  }
-                                  if ($date2 == 07) {
-                                    echo " Jul. ";
-                                  }
-                                  if ($date2 == "08") {
-                                    echo " Ago. ";
-                                  }
-                                  if ($date2 == "09") {
-                                    echo " Set. ";
-                                  }
-                                  if ($date2 == "10") {
-                                    echo " Out. ";
-                                  }
-                                  if ($date2 == "11") {
-                                    echo " Nov. ";
-                                  }
-                                  if ($date2 == "09") {
-                                    echo " Dez. ";
-                                  }
-                                  echo $date4;
-                                  ?>
-                                </a></th>
-                              <td> <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                  <h4><?php echo $user_name; ?></h4>
-                                </a></td>
-                              <td><?php echo $type; ?></td>
-                              <td><?php echo number_format($reach_insta, 0, ',', '.'); ?></td>
-                              <td><?php echo number_format($views_insta, 0, ',', '.'); ?></td>
-                              <td><?php echo number_format($followers_insta, 0, ',', '.'); ?></td>
-                            </tr>
-                        <?php
-                          }
-                        }
-                        ?>
-                      </tbody>
-                    </table>
+                                }
+                          ?>
+                            </tbody>
+                          </table>
+                        </div>
+
+                      </div>
+                    </div>
                   </div>
                   <div class="tiktok">
-                    <table id="example5" class="display" style="width:100%">
-                      <thead>
-                        <tr>
-                          <th scope="col">DATA</th>
-                          <th scope="col">STREMEAR</th>
-                          <th scope="col">MARCA</th>
-                          <th scope="col">ALCANCE</th>
-                          <th scope="col" class="text-uppercase">Visualizações de vídeo</th>
-                          <th scope="col" class="text-uppercase">Visualizações de perfil</th>
-                          <th scope="col" class="text-uppercase">Curtidas</th>
-                          <th scope="col" class="text-uppercase">Compartilhamentos</th>
-                          <th scope="col" class="text-uppercase">Seguidores</th>
-                          <th scope="col" class="text-uppercase">Número de vídeos publicados</th>
-                          <th scope="col" class="text-uppercase">Número de lives realizadas</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php
-                        $stmt = $DB_con->prepare("SELECT * FROM posts where status='1' and network='tiktok' ORDER BY id DESC");
-                        $stmt->execute();
-                        if ($stmt->rowCount() > 0) {
-                          while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            extract($row);
-                        ?>
-                            <tr>
-                              <th scope="row"><a href="#">
-                                  <?php
-                                  $date = new DateTime($data_create);
-                                  $date2 = $date->format('m');
-                                  $date3 = $date->format('d');
-                                  $date4 = $date->format('Y');
-                                  echo $date3;
-                                  if ($date2 == 01) {
-                                    echo " Jan. ";
+                    <div class="col-lg-12">
+                      <div class="card top-selling">
+                        <div class="card-body pb-0">
+                          <h5 class="card-title">Ranking <span>| TikTok</span></h5>
+                          <table class="table table-borderless datatable">
+                            <thead>
+                              <tr>
+                                <th scope="col">Usuário</th>
+                                <th scope="col"></th>
+                                <th scope="col"><i class='bi bi-tiktok'></i> Visualizações de vídeo</th>
+                                <th scope="col"><i class='bi bi-tiktok'></i> Visualizações de perfil</th>
+                                <th scope="col"><i class='bi bi-tiktok'></i> Curtidas</th>
+                                <th scope="col"><i class='bi bi-tiktok'></i> Compartilhamentos</th>
+                                <th scope="col"><i class='bi bi-tiktok'></i> Seguidores</th>
+                                <th scope="col"><i class='bi bi-tiktok'></i> Número de vídeos publicados</th>
+                                <th scope="col"><i class='bi bi-tiktok'></i> Número de lives realizadas</th>
+                                <?php
+                                if ($_SESSION['type'] == 1) {
+                                ?>
+                                  <th scope="col">Opções</th>
+                                <?php } ?>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <!-- <td class="fw-bold text-center">
+                                      <?php
+                                      // echo $i++ . "º";
+                                      ?>
+                                    </td> -->
+                                <?php
+                                // $i = 1;
+                                $stmt = $DB_con->prepare("SELECT * FROM users where type='2' ORDER BY points DESC");
+                                $stmt->execute();
+                                if ($stmt->rowCount() > 0) {
+                                  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    extract($row);
+                                ?>
+                                    <th scope="row">
+                                      <img src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/semperfil.png'" alt="Profile" class="rounded" width="50px" width="50px">
+                                    </th>
+                                    <td> <a href="<?php echo $URI->base('/perfil/' . slugify($id)); ?>" class="text-primary fw-bold" style="font-size:12px"><?php echo $name ?></a></td>
+                                    <?php
+                                    if ($_SESSION['type'] == 1) {
+                                    ?>
+                                      <td>
+                                        <a href="<?php echo $URI->base('perfil/' . $id); ?>">
+                                          <button type="button" class="btn btn-success">Editar</button>
+                                        </a>
+                                      </td>
+                                    <?php } ?>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt2 = $DB_con->prepare("SELECT SUM(views_video) as total_views_video FROM posts where user_create=$id");
+                                      $stmt2->execute();
+                                      if ($stmt2->rowCount() > 0) {
+                                        while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_views_video, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt3 = $DB_con->prepare("SELECT SUM(views_profile) as total_views_profile FROM posts where user_create=$id");
+                                      $stmt3->execute();
+                                      if ($stmt3->rowCount() > 0) {
+                                        while ($row = $stmt3->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_views_profile, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt3 = $DB_con->prepare("SELECT SUM(comments) as total_comments FROM posts where user_create=$id");
+                                      $stmt3->execute();
+                                      if ($stmt3->rowCount() > 0) {
+                                        while ($row = $stmt3->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($comments, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt3 = $DB_con->prepare("SELECT SUM(shares) as total_shares FROM posts where user_create=$id");
+                                      $stmt3->execute();
+                                      if ($stmt3->rowCount() > 0) {
+                                        while ($row = $stmt3->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_shares, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt4 = $DB_con->prepare("SELECT SUM(followers_tiktok) as total_followers_tiktok FROM posts where user_create=$id");
+                                      $stmt4->execute();
+                                      if ($stmt4->rowCount() > 0) {
+                                        while ($row = $stmt4->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_followers_tiktok, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt5 = $DB_con->prepare("SELECT SUM(number_videos) as total_number_videos FROM posts where user_create=$id");
+                                      $stmt5->execute();
+                                      if ($stmt5->rowCount() > 0) {
+                                        while ($row = $stmt5->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_number_videos, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt6 = $DB_con->prepare("SELECT SUM(number_lives) as total_number_lives FROM posts where user_create=$id");
+                                      $stmt6->execute();
+                                      if ($stmt6->rowCount() > 0) {
+                                        while ($row = $stmt6->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_number_lives, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                              </tr>
+                          <?php
                                   }
-                                  if ($date2 == 02) {
-                                    echo " Fev. ";
-                                  }
-                                  if ($date2 == "03") {
-                                    echo " Mar. ";
-                                  }
-                                  if ($date2 == 04) {
-                                    echo " Abr. ";
-                                  }
-                                  if ($date2 == 05) {
-                                    echo " Mai. ";
-                                  }
-                                  if ($date2 == 06) {
-                                    echo " Jun. ";
-                                  }
-                                  if ($date2 == 07) {
-                                    echo " Jul. ";
-                                  }
-                                  if ($date2 == "08") {
-                                    echo " Ago. ";
-                                  }
-                                  if ($date2 == "09") {
-                                    echo " Set. ";
-                                  }
-                                  if ($date2 == "10") {
-                                    echo " Out. ";
-                                  }
-                                  if ($date2 == "11") {
-                                    echo " Nov. ";
-                                  }
-                                  if ($date2 == "09") {
-                                    echo " Dez. ";
-                                  }
-                                  echo $date4;
-                                  ?>
-                                </a></th>
-                              <td> <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                  <h4><?php echo $user_name; ?></h4>
-                                </a></td>
-                              <td><?php echo $type; ?></td>
-                              <td><?php echo number_format($views_profile, 0, ',', '.'); ?></td>
-                              <td><?php echo number_format($comments, 0, ',', '.'); ?></td>
-                              <td><?php echo number_format($shares, 0, ',', '.'); ?></td>
-                              <td><?php echo number_format($followers_tiktok, 0, ',', '.'); ?></td>
-                              <td><?php echo number_format($number_videos, 0, ',', '.'); ?></td>
-                              <td><?php echo number_format($number_lives, 0, ',', '.'); ?></td>
-                            </tr>
-                        <?php
-                          }
-                        }
-                        ?>
-                      </tbody>
-                    </table>
+                                }
+                          ?>
+                            </tbody>
+                          </table>
+                        </div>
+
+                      </div>
+                    </div>
                   </div>
                   <div class="twitch">
-                    <table id="example5" class="display" style="width:100%">
-                      <thead>
-                        <tr>
-                          <th scope="col">DATA</th>
-                          <th scope="col">STREMEAR</th>
-                          <th scope="col">MARCA</th>
-                          <th scope="col" class="text-uppercase">Minutos assistidos gerados:</th>
-                          <th scope="col" class="text-uppercase">Novos seguidores:</th>
-                          <th scope="col" class="text-uppercase">Participantes únicos do chat</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php
-                        $stmt = $DB_con->prepare("SELECT * FROM posts where status='1' and network='twitch' ORDER BY id DESC");
-                        $stmt->execute();
-                        if ($stmt->rowCount() > 0) {
-                          while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            extract($row);
-                        ?>
-                            <tr>
-                              <th scope="row"><a href="#">
-                                  <?php
-                                  $date = new DateTime($data_create);
-                                  $date2 = $date->format('m');
-                                  $date3 = $date->format('d');
-                                  $date4 = $date->format('Y');
-                                  echo $date3;
-                                  if ($date2 == 01) {
-                                    echo " Jan. ";
+                    <div class="col-lg-12">
+                      <div class="card top-selling">
+                        <div class="card-body pb-0">
+                          <h5 class="card-title">Ranking <span>| Twitch</span></h5>
+                          <table class="table table-borderless datatable">
+                            <thead>
+                              <tr>
+                                <th scope="col">Usuário</th>
+                                <th scope="col"></th>
+                                <th scope="col"><i class='bi bi-twitch'></i> Média de espectadores</th>
+                                <th scope="col"><i class='bi bi-twitch'></i> Minutos assistidos</th>
+                                <th scope="col"><i class='bi bi-twitch'></i> Novos seguidores</th>
+                                <th scope="col"><i class='bi bi-twitch'></i> Participantes únicos chat</th>
+                                <?php
+                                if ($_SESSION['type'] == 1) {
+                                ?>
+                                  <th scope="col">Opções</th>
+                                <?php } ?>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <!-- <td class="fw-bold text-center">
+                                      <?php
+                                      // echo $i++ . "º";
+                                      ?>
+                                    </td> -->
+                                <?php
+                                // $i = 1;
+                                $stmt = $DB_con->prepare("SELECT * FROM users where type='2' ORDER BY points DESC");
+                                $stmt->execute();
+                                if ($stmt->rowCount() > 0) {
+                                  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    extract($row);
+                                ?>
+                                    <th scope="row">
+                                      <img src="./uploads/usuarios/<?php echo $row['img']; ?>" onerror="this.src='./assets/img/semperfil.png'" alt="Profile" class="rounded" width="50px" width="50px">
+                                    </th>
+                                    <td> <a href="<?php echo $URI->base('/perfil/' . slugify($id)); ?>" class="text-primary fw-bold" style="font-size:12px"><?php echo $name ?></a></td>
+                                    <?php
+                                    if ($_SESSION['type'] == 1) {
+                                    ?>
+                                      <td>
+                                        <a href="<?php echo $URI->base('perfil/' . $id); ?>">
+                                          <button type="button" class="btn btn-success">Editar</button>
+                                        </a>
+                                      </td>
+                                    <?php } ?>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt2 = $DB_con->prepare("SELECT SUM(media) as total_media FROM posts where user_create=$id");
+                                      $stmt2->execute();
+                                      if ($stmt2->rowCount() > 0) {
+                                        while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_media, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt3 = $DB_con->prepare("SELECT SUM(minutes) as total_minutes FROM posts where user_create=$id");
+                                      $stmt3->execute();
+                                      if ($stmt3->rowCount() > 0) {
+                                        while ($row = $stmt3->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_minutes, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt4 = $DB_con->prepare("SELECT SUM(followers_twitch) as total_followers_twitch FROM posts where user_create=$id");
+                                      $stmt4->execute();
+                                      if ($stmt4->rowCount() > 0) {
+                                        while ($row = $stmt4->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_followers_twitch, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                                    <td class="text-center">
+                                      <?php
+                                      $stmt5 = $DB_con->prepare("SELECT SUM(unique_participants) as total_unique_participants FROM posts where user_create=$id");
+                                      $stmt5->execute();
+                                      if ($stmt5->rowCount() > 0) {
+                                        while ($row = $stmt5->fetch(PDO::FETCH_ASSOC)) {
+                                          extract($row);
+                                          echo number_format($total_unique_participants, 0, ',', '.');
+                                        }
+                                      }
+                                      ?>
+                                    </td>
+                              </tr>
+                          <?php
                                   }
-                                  if ($date2 == 02) {
-                                    echo " Fev. ";
-                                  }
-                                  if ($date2 == "03") {
-                                    echo " Mar. ";
-                                  }
-                                  if ($date2 == 04) {
-                                    echo " Abr. ";
-                                  }
-                                  if ($date2 == 05) {
-                                    echo " Mai. ";
-                                  }
-                                  if ($date2 == 06) {
-                                    echo " Jun. ";
-                                  }
-                                  if ($date2 == 07) {
-                                    echo " Jul. ";
-                                  }
-                                  if ($date2 == "08") {
-                                    echo " Ago. ";
-                                  }
-                                  if ($date2 == "09") {
-                                    echo " Set. ";
-                                  }
-                                  if ($date2 == "10") {
-                                    echo " Out. ";
-                                  }
-                                  if ($date2 == "11") {
-                                    echo " Nov. ";
-                                  }
-                                  if ($date2 == "09") {
-                                    echo " Dez. ";
-                                  }
-                                  echo $date4;
-                                  ?>
-                                </a></th>
-                              <td> <a href="<?php echo $URI->base('/perfil/' . slugify($user_create)); ?>">
-                                  <h4><?php echo $user_name; ?></h4>
-                                </a></td>
-                              <td><?php echo $type; ?></td>
-                              <td><?php echo number_format($minutes, 0, ',', '.'); ?></td>
-                              <td><?php echo number_format($followers_twitch, 0, ',', '.'); ?></td>
-                              <td><?php echo number_format($unique_participants, 0, ',', '.'); ?></td>
-                            </tr>
-                        <?php
-                          }
-                        }
-                        ?>
-                      </tbody>
-                    </table>
+                                }
+                          ?>
+                            </tbody>
+                          </table>
+                        </div>
+
+                      </div>
+                    </div>
                   </div>
                 </div>
               <?php } ?>
